@@ -1,69 +1,142 @@
-# React + TypeScript + Vite
+# Bitforce Web Application
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Современное веб-приложение с адаптивным дизайном, анимациями и продвинутым UI/UX.
 
-Currently, two official plugins are available:
+## 🚀 Особенности
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- **Адаптивный дизайн** для всех устройств
+- **Продвинутые анимации** и переходы
+- **Персональный кабинет** с детальной аналитикой
+- **Интерактивные графики** и диаграммы
+- **Современный UI/UX** с Material Design
+- **Оптимизация производительности**
 
-## Expanding the ESLint configuration
+## 🛠️ Технологии
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+- React 19
+- TypeScript
+- Vite
+- CSS3 с анимациями
+- Material Icons
+- Responsive Design
 
-```js
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+## 📱 Функции
 
-      // Remove tseslint.configs.recommended and replace with this
-      ...tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      ...tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      ...tseslint.configs.stylisticTypeChecked,
+### Главная страница
+- Hero секция с анимированным логотипом
+- Торговые кнопки (Купить/Продать)
+- Пул карточки с активными и завершенными пулами
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+### Персональный кабинет (ЛК)
+- **Общая информация**: ФИО, ник, email, телефон, паспорт, кошелек
+- **Проприетарный трейдинг**: тарифы, графики успешности и P&L
+- **Конвертация**: статус заявок и информация о тарифах
+- **История операций**: детальный просмотр всех транзакций
+- **Редактирование профиля**: удобная панель для изменения данных
+
+### Адаптивность
+- Полная поддержка мобильных устройств
+- Оптимизация для планшетов
+- Адаптивные графики и таблицы
+
+## 🚀 Установка и запуск
+
+```bash
+# Клонирование репозитория
+git clone https://github.com/Bitforce-Foundation/web.git
+cd web
+
+# Установка зависимостей
+npm install
+
+# Запуск в режиме разработки
+npm run dev
+
+# Сборка для продакшена
+npm run build
+
+# Предварительный просмотр сборки
+npm run preview
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## 🌐 Деплой
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+### GitHub Pages (Автоматический)
+При каждом push в ветку `main` автоматически запускается деплой на GitHub Pages.
 
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+### Ручной деплой
+```bash
+npm run deploy
 ```
+
+## 📁 Структура проекта
+
+```
+src/
+├── components/          # React компоненты
+│   ├── EditProfilePanel/    # Панель редактирования профиля
+│   ├── LoadingScreen/       # Экран загрузки
+│   └── Footer/              # Подвал сайта
+├── pages/               # Страницы приложения
+│   ├── Home.tsx         # Главная страница
+│   ├── Profile.tsx      # Персональный кабинет
+│   ├── Buy.tsx          # Страница покупки
+│   └── Sell.tsx         # Страница продажи
+├── assets/              # Статические ресурсы
+└── App.tsx              # Главный компонент
+```
+
+## 🎨 Стили и анимации
+
+- **CSS анимации**: fadeIn, slideIn, scaleIn, shimmerGlow
+- **Интерактивные эффекты**: hover, ripple, bounce, heartbeat
+- **Адаптивные breakpoints**: 1400px, 1200px, 1000px, 900px, 768px, 600px, 480px
+- **GPU ускорение**: will-change, transform3d
+
+## 🔧 Конфигурация
+
+### Vite
+- Оптимизация сборки с manual chunks
+- CSS code splitting
+- Source maps отключены для продакшена
+
+### TypeScript
+- Строгая типизация
+- ESLint конфигурация
+- React Hooks правила
+
+## 📱 Поддерживаемые устройства
+
+- **Desktop**: 1400px+
+- **Laptop**: 1200px - 1399px
+- **Tablet**: 768px - 1199px
+- **Mobile**: до 767px
+
+## 🌟 Основные компоненты
+
+### LoadingScreen
+Анимированный экран загрузки с логотипом FB и линией роста.
+
+### EditProfilePanel
+Слайд-панель для редактирования профиля с адаптивным дизайном.
+
+### Profile
+Полнофункциональный персональный кабинет с 5 основными разделами.
+
+## 📊 Данные и состояние
+
+- Mock данные для демонстрации
+- React hooks для управления состоянием
+- Мемоизация для оптимизации производительности
+
+## 🔄 Обновления
+
+Проект постоянно развивается с учетом пользовательского опыта и современных стандартов веб-разработки.
+
+## 📄 Лицензия
+
+Проект разработан для Bitforce Foundation.
+
+---
+
+**Разработано с ❤️ для Bitforce Foundation**
