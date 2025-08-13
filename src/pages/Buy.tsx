@@ -1,6 +1,5 @@
 import { Link } from 'react-router-dom'
 import { useState, useMemo, useCallback, memo } from 'react'
-import LazyImage from '../components/LazyImage'
 import Footer from '../components/Footer'
 import logo from '../assets/logo2.png'
 

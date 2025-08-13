@@ -6,14 +6,31 @@ import logo from '../assets/logo2.png'
 import mainlogo from '../assets/mainlogo.png'
 import leadImage from '../assets/lead.png'
 
+// Типы для пулов
+type PoolData = {
+  id: string
+  date: string
+  buyRate: number
+  sellRate: number
+  currentVolume: number
+  maxVolume: number
+  status: string
+  statusColor: string
+}
+
+type PoolsData = {
+  main: PoolData
+  reserve: PoolData
+}
+
 const Home = memo(() => {
   const [activeOption, setActiveOption] = useState<number | null>(0)
 
   const [showTradingDescription, setShowTradingDescription] = useState(true)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [selectedAction, setSelectedAction] = useState('buy')
-  const [selectedPool, setSelectedPool] = useState('main')
-  const [poolType, setPoolType] = useState('active')
+  const [selectedPool, setSelectedPool] = useState<'main' | 'reserve'>('main')
+  const [poolType, setPoolType] = useState<'active' | 'completed'>('active')
 
   const handleOptionClick = useCallback((index: number) => {
     setActiveOption(prev => prev === index ? null : index)
@@ -32,15 +49,15 @@ const Home = memo(() => {
   }, [])
 
   const handlePoolChange = useCallback((pool: string) => {
-    setSelectedPool(pool)
+    setSelectedPool(pool as 'main' | 'reserve')
   }, [])
 
   const handlePoolTypeChange = useCallback((type: string) => {
-    setPoolType(type)
+    setPoolType(type as 'active' | 'completed')
   }, [])
 
   // Данные активных пулов
-  const activePools = useMemo(() => ({
+  const activePools: PoolsData = useMemo(() => ({
     main: {
       id: 'MAIN-2024-001',
       date: '2024-01-15',
@@ -64,7 +81,7 @@ const Home = memo(() => {
   }), [])
 
   // Данные завершенных пулов
-  const completedPools = useMemo(() => ({
+  const completedPools: PoolsData = useMemo(() => ({
     main: {
       id: 'MAIN-2024-002',
       date: '2024-01-10',
