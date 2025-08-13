@@ -1,0 +1,408 @@
+.footer {
+  background: linear-gradient(135deg, #1a2332 0%, #2c3e50 100%);
+  color: #ffffff;
+  height: 380px;
+  margin-top: auto;
+  display: flex;
+  flex-direction: column;
+  font-family: 'PT Sans Caption', sans-serif;
+}
+
+.footer__container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 3rem 2rem 2rem;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 4rem;
+  flex: 1;
+}
+
+/* Левая колонка - логотип и соцсети */
+.footer__left {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.footer__logo {
+  max-width: 120px;
+}
+
+.footer__logo img {
+  width: 100%;
+  height: auto;
+  filter: brightness(1.1);
+}
+
+.footer__social h4 {
+  color: #bfa77a;
+  font-size: 1rem;
+  margin-bottom: 1rem;
+  font-weight: 500;
+}
+
+.footer__social-links {
+  display: flex;
+  gap: 1rem;
+}
+
+.footer__social-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 50%;
+  color: #ffffff;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+.footer__social-link svg {
+  width: 20px;
+  height: 20px;
+  color: #ffffff;
+}
+
+.footer__social-link:hover {
+  transform: translateY(-2px);
+}
+
+/* Индивидуальные цвета для каждой соцсети */
+.footer__social-link[aria-label="Telegram"]:hover {
+  background: #0088cc;
+  box-shadow: 0 4px 12px rgba(0, 136, 204, 0.4);
+}
+
+.footer__social-link[aria-label="Instagram"]:hover {
+  background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+  box-shadow: 0 4px 12px rgba(225, 48, 108, 0.4);
+}
+
+.footer__social-link[aria-label="VK"]:hover {
+  background: #4c75a3;
+  box-shadow: 0 4px 12px rgba(76, 117, 163, 0.4);
+}
+
+/* Центральная колонка - почта и адрес */
+.footer__center {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.footer__contact h4,
+.footer__legal h4 {
+  color: #bfa77a;
+  font-size: 1rem;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+}
+
+.footer__email {
+  color: #ffffff;
+  text-decoration: none;
+  font-size: 0.9rem;
+  transition: color 0.3s ease;
+}
+
+.footer__email:hover {
+  color: #bfa77a;
+}
+
+.footer__address {
+  color: #e0e0e0;
+  font-size: 0.9rem;
+  line-height: 1.4;
+  margin: 0;
+}
+
+/* Правая колонка - навигация и документы */
+.footer__right {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.footer__navigation {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.footer__nav-link {
+  color: #ffffff;
+  text-decoration: none;
+  font-size: 0.9rem;
+  transition: color 0.3s ease;
+  line-height: 1.4;
+}
+
+.footer__nav-link:hover {
+  color: #bfa77a;
+}
+
+.footer__legal-links {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.footer__legal-link {
+  color: #cccccc;
+  text-decoration: none;
+  font-size: 0.85rem;
+  transition: color 0.3s ease;
+  line-height: 1.4;
+}
+
+.footer__legal-link:hover {
+  color: #bfa77a;
+}
+
+/* Нижняя часть */
+.footer__bottom {
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 1.5rem 0;
+  text-align: center;
+  margin-top: auto;
+  flex-shrink: 0;
+}
+
+.footer__bottom p {
+  color: #cccccc;
+  font-size: 0.85rem;
+  margin: 0;
+  line-height: 1.4;
+}
+
+/* Адаптивность */
+@media (max-width: 1024px) {
+  .footer__container {
+    gap: 3rem;
+    padding: 2.5rem 1.5rem;
+  }
+}
+
+@media (max-width: 900px) {
+  .footer__container {
+    gap: 2.5rem;
+    padding: 2rem 1.25rem;
+  }
+  
+  .footer__social h4,
+  .footer__contact h4,
+  .footer__legal h4 {
+    font-size: 0.95rem;
+  }
+  
+  .footer__email,
+  .footer__nav-link,
+  .footer__address {
+    font-size: 0.85rem;
+  }
+  
+  .footer__legal-link {
+    font-size: 0.8rem;
+  }
+}
+
+@media (max-width: 820px) {
+  .footer {
+    height: auto;
+    min-height: 450px;
+  }
+  
+  .footer__container {
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    padding: 2rem 1rem;
+  }
+  
+  .footer__left {
+    grid-column: 1 / -1;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    gap: 2rem;
+  }
+  
+  .footer__logo {
+    max-width: 100px;
+  }
+  
+  .footer__social {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+  }
+  
+  .footer__social h4 {
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem;
+  }
+  
+  .footer__center {
+    grid-column: 1;
+  }
+  
+  .footer__right {
+    grid-column: 2;
+  }
+}
+
+@media (max-width: 768px) {
+  .footer {
+    height: auto;
+    min-height: 400px;
+  }
+  
+  .footer__container {
+    padding: 2rem 1rem;
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+    text-align: left;
+  }
+  
+  .footer__left {
+    align-items: flex-start;
+    gap: 1.5rem;
+  }
+  
+  .footer__logo {
+    max-width: 100px;
+  }
+  
+  .footer__social h4 {
+    font-size: 0.95rem;
+    margin-bottom: 0.75rem;
+  }
+  
+  .footer__social-links {
+    gap: 0.75rem;
+  }
+  
+  .footer__social-link {
+    width: 35px;
+    height: 35px;
+  }
+  
+  .footer__social-link svg {
+    width: 18px;
+    height: 18px;
+    color: #ffffff;
+  }
+  
+  .footer__center,
+  .footer__right {
+    align-items: flex-start;
+    gap: 1.5rem;
+  }
+  
+  .footer__contact h4,
+  .footer__legal h4 {
+    font-size: 0.95rem;
+    margin-bottom: 0.5rem;
+  }
+  
+  .footer__email,
+  .footer__address {
+    font-size: 0.85rem;
+  }
+  
+  .footer__navigation,
+  .footer__legal-links {
+    align-items: flex-start;
+    gap: 0.4rem;
+  }
+  
+  .footer__nav-link {
+    font-size: 0.85rem;
+  }
+  
+  .footer__legal-link {
+    font-size: 0.8rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .footer {
+    height: auto;
+    min-height: 320px;
+  }
+  
+  .footer__container {
+    padding: 1.5rem 1rem;
+    gap: 2rem;
+  }
+  
+  .footer__left {
+    gap: 1.25rem;
+  }
+  
+  .footer__logo {
+    max-width: 90px;
+  }
+  
+  .footer__social h4 {
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem;
+  }
+  
+  .footer__social-links {
+    gap: 0.6rem;
+  }
+  
+  .footer__social-link {
+    width: 32px;
+    height: 32px;
+  }
+  
+  .footer__social-link svg {
+    width: 16px;
+    height: 16px;
+    color: #ffffff;
+  }
+  
+  .footer__center,
+  .footer__right {
+    gap: 1.25rem;
+  }
+  
+  .footer__contact h4,
+  .footer__legal h4 {
+    font-size: 0.9rem;
+    margin-bottom: 0.4rem;
+  }
+  
+  .footer__email,
+  .footer__address {
+    font-size: 0.8rem;
+    line-height: 1.3;
+  }
+  
+  .footer__navigation,
+  .footer__legal-links {
+    gap: 0.3rem;
+  }
+  
+  .footer__nav-link {
+    font-size: 0.8rem;
+    line-height: 1.3;
+  }
+  
+  .footer__legal-link {
+    font-size: 0.75rem;
+    line-height: 1.3;
+  }
+  
+  .footer__bottom {
+    padding: 0.75rem 0;
+  }
+  
+  .footer__bottom p {
+    font-size: 0.7rem;
+  }
+} 
