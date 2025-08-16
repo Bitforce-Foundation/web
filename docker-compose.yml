@@ -14,20 +14,6 @@ services:
     networks:
       - bitforce-network
 
-
-  nginx:
-    image: nginx:stable-alpine
-    container_name: bitforce-nginx
-    ports:
-      - "80:80"
-    volumes:
-      - ./nginx.conf:/etc/nginx/nginx.conf
-      - ./dist:/usr/share/nginx/html
-    networks:
-      - bitforce-network
-    depends_on:
-      - web
-
 networks:
   bitforce-network:
     driver: bridge
