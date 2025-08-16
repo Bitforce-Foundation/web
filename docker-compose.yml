@@ -8,11 +8,25 @@ services:
     container_name: bitforce-web
     ports:
       - "80:80"
+      - "443:443"
     restart: unless-stopped
     environment:
       - NODE_ENV=production
+    volumes:
+      - ./certbot/conf:/etc/letsencrypt
+      - ./certbot/www:/var/www/certbot
     networks:
       - bitforce-network
+
+  certbot:
+    image: certbot/certbot
+    container_name: bitforce-certbot
+    volumes:
+      - ./certbot/conf:/etc/letsencrypt
+      - ./certbot/www:/var/www/certbot
+    command: certonly --webroot -w /var/www/certbot --force-renewal --email your-email@example.com -d bitforce-foundation.ru -d www.bitforce-foundation.ru --agree-tos
+    depends_on:
+      - web
 
 networks:
   bitforce-network:
