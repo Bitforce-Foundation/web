@@ -1,8 +1,7 @@
 #!/bin/bash
 
-# Замените на ваш email
 email="turl06112002@gmail.com"
-domains=(bitforce-foundation.ru www.bitforce-foundation.ru)
+domains=(bitforce-fund.ru www.bitforce-fund.ru)
 rsa_key_size=4096
 data_path="./certbot"
 
