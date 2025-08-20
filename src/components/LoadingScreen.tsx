@@ -18,7 +18,16 @@ const LoadingScreen = ({ onLoadingComplete }: LoadingScreenProps) => {
       }, 500)
     }, 3500) // Возвращаю оригинальное время
 
-    return () => clearTimeout(timer)
+    // Таймаут безопасности - если что-то пойдет не так, показываем контент через 10 секунд
+    const safetyTimer = setTimeout(() => {
+      console.warn('LoadingScreen safety timeout triggered')
+      onLoadingComplete()
+    }, 10000)
+
+    return () => {
+      clearTimeout(timer)
+      clearTimeout(safetyTimer)
+    }
   }, [onLoadingComplete])
 
   return (
