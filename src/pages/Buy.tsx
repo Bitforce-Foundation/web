@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import { useState, useMemo, useCallback, memo } from 'react'
+import { useState, useMemo, useCallback, memo, useEffect } from 'react'
 import Footer from '../components/Footer'
 import logo from '../assets/logo2.png'
 
@@ -125,7 +125,26 @@ const Buy = memo(() => {
 
   const toggleMobileMenu = useCallback(() => {
     setMobileMenuOpen(!mobileMenuOpen)
+    // Блокируем скролл при открытом меню
+    if (!mobileMenuOpen) {
+      document.body.classList.add('menu-open')
+    } else {
+      document.body.classList.remove('menu-open')
+    }
   }, [mobileMenuOpen])
+
+  // Функция для закрытия мобильного меню при клике на ссылку
+  const closeMobileMenu = useCallback(() => {
+    setMobileMenuOpen(false)
+    document.body.classList.remove('menu-open')
+  }, [])
+
+  // Очищаем класс при размонтировании
+  useEffect(() => {
+    return () => {
+      document.body.classList.remove('menu-open')
+    }
+  }, [])
 
   const handleParticipate = useCallback((pool: Pool) => {
     setSelectedPool(pool)
@@ -212,12 +231,12 @@ const Buy = memo(() => {
             <img src={logo} alt="Logo" className="header__logo" />
           </Link>
           <nav className={`header__nav ${mobileMenuOpen ? 'mobile-open' : ''}`}>
-            <Link to="/">Главная</Link>
-            <Link to="/buy">Купить</Link>
-            <Link to="/sell">Продать</Link>
-            <a href="/#services">Услуги</a>
-            <a href="/#about">О нас</a>
-            <a href="/#conversion">Конвертация</a>
+            <Link to="/" onClick={closeMobileMenu}>Главная</Link>
+            <Link to="/buy" onClick={closeMobileMenu}>Купить</Link>
+            <Link to="/sell" onClick={closeMobileMenu}>Продать</Link>
+            <a href="#services" onClick={closeMobileMenu}>Услуги</a>
+            <a href="#about" onClick={closeMobileMenu}>О нас</a>
+            <a href="#conversion" onClick={closeMobileMenu}>Конвертация</a>
           </nav>
         </div>
         <div className="header__actions">

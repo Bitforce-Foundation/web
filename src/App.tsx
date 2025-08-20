@@ -13,14 +13,10 @@ const Profile = lazy(() => import('./pages/Profile'))
 const LoadingSpinner = () => (
   <div className="loading-container">
     <div className="loading-content">
-      <div className="loading-logo">
-        <div className="loading-spinner"></div>
-        <span className="loading-text">BitForce</span>
-      </div>
       <div className="loading-logo2">
-        <img src="/src/assets/logo2.png" alt="Logo 2" />
+        <img src="/src/assets/logo2.png" alt="BitForce Logo" />
       </div>
-      <p className="loading-subtitle">Загружаем цифровые активы...</p>
+      <p className="loading-subtitle">Пожалуйста, подождите...</p>
     </div>
   </div>
 )

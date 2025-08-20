@@ -36,7 +36,7 @@ html {
 }
 
 .header__logo {
-  height: 18px;
+  height: 24px;
   width: auto;
 }
 
@@ -478,17 +478,21 @@ html {
   
   .header__nav {
     position: fixed;
-    top: 60px;
+    top: 55px;
     left: 0;
     width: 100vw;
     background: #fff;
     flex-direction: column;
     gap: 0;
-    padding: 1rem 0;
+    padding: 0.8rem 0;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
     transform: translateY(-100%);
     opacity: 0;
     visibility: hidden;
+    transition: all 0.3s ease;
+    z-index: 999;
+    max-height: calc(100vh - 55px);
+    overflow-y: auto;
   }
   
   .header__nav.mobile-open {
@@ -498,13 +502,11 @@ html {
   }
   
   .header__nav a {
-    padding: 1rem 2rem;
-    font-size: 1.2rem;
+    padding: 0.8rem 1.5rem;
+    font-size: 0.9rem;
     border-bottom: 1px solid #f0f0f0;
-  }
-  
-  .header__nav a:last-child {
-    border-bottom: none;
+    width: 100%;
+    text-align: center;
   }
   
   .header__burger {
@@ -512,8 +514,15 @@ html {
   }
   
   .header__login {
-    padding: 0.6em 1.5em;
-    font-size: 0.9rem;
+    font-size: 0.75rem;
+    padding: 0.4em 1em;
+  }
+  
+
+  
+  /* Блокировка скролла при открытом меню */
+  body.menu-open {
+    overflow: hidden;
   }
 }
 
@@ -964,9 +973,11 @@ html {
   background: linear-gradient(145deg, #ffffff 0%, #f8fafc 100%);
   border: 3px solid #e2e8f0;
   border-radius: 16px;
-  padding: 2rem 2.5rem;
-  height: 160px;
-  width: 30%;
+  padding: 2.5rem 3rem;
+  height: 180px;
+  width: 28%;
+  min-width: 280px;
+  max-width: 400px;
   position: relative;
   transition: all 0.4s ease-in-out;
   z-index: 1;
@@ -1097,6 +1108,8 @@ html {
   .step-card {
     width: 100%;
     max-width: 320px;
+    height: 160px;
+    padding: 2rem 2.5rem;
   }
   
   .conversion-container h2 {
@@ -1138,6 +1151,8 @@ html {
   .step-card {
     padding: 1.2rem;
     max-width: 100%;
+    height: 140px;
+    width: 100%;
   }
   
   .step-card h4 {
@@ -1173,6 +1188,24 @@ html {
   .header__login {
     padding: 0.5em 1.3em;
     font-size: 0.85rem;
+  }
+  
+  .step-card {
+    padding: 2rem 2.5rem;
+    height: 170px;
+    width: 30%;
+    min-width: 300px;
+    max-width: 380px;
+  }
+  
+  .step-card h4 {
+    font-size: 1.4rem;
+    margin-bottom: 0.8rem;
+  }
+  
+  .step-card p {
+    font-size: 1rem;
+    line-height: 1.4;
   }
 }
 
@@ -1284,6 +1317,7 @@ html {
 @media (max-width: 768px) {
   .header__logo {
     height: 18px;
+    width: auto;
   }
 }
 
@@ -3019,12 +3053,12 @@ html {
 
 .participate-btn { 
   max-width: none;
-  padding: 1.8rem 2.5rem;
+  padding: 1.4rem 2rem;
   background: linear-gradient(135deg, #bfa77a, #d4c29a);
   color: #0b1e2d;
   border: none;
   border-radius: 12px;
-  font-size: 1.9rem;
+  font-size: 1.5rem;
   font-weight: 500;
   cursor: pointer;
   transition: all 0.3s ease;
@@ -3071,18 +3105,67 @@ html {
   }
 }
 
+/* Кнопки участия для больших экранов (ПК) */
+@media (min-width: 1001px) {
+  .participate-btn {
+    padding: 1.2rem 1.8rem;
+    font-size: 1.3rem;
+  }
+  
+  .step-card {
+    width: 32%;
+    min-width: 320px;
+    max-width: 450px;
+    height: 200px;
+    padding: 3rem 3.5rem;
+  }
+  
+  .step-card h4 {
+    font-size: 1.6rem;
+    margin-bottom: 1rem;
+  }
+  
+  .step-card p {
+    font-size: 1.1rem;
+    line-height: 1.5;
+  }
+  
+  .step-number {
+    width: 35px;
+    height: 35px;
+    font-size: 1.1rem;
+    top: -18px;
+  }
+}
+
 /* Кнопки участия для планшетов и средних экранов */
 @media (max-width: 1000px) and (min-width: 701px) {
   .participate-btn {
-    padding: 1.4rem 1.7rem;
-    font-size: 1.25rem;
+    padding: 1.2rem 1.5rem;
+    font-size: 1.1rem;
+  }
+  
+  .step-card {
+    padding: 2.2rem 2.8rem;
+    height: 175px;
+    width: 29%;
+    min-width: 280px;
+    max-width: 360px;
   }
 }
 
 @media (max-width: 820px) and (min-width: 601px) {
   .participate-btn {
-    padding: 1.3rem 1.6rem;
-    font-size: 1.2rem;
+    padding: 1.1rem 1.4rem;
+    font-size: 1rem;
+  }
+  
+  .step-card {
+    width: 28%;
+    min-width: 260px;
+    max-width: 340px;
+    height: 160px;
+    padding: 1.8rem 2.2rem;
   }
 }
 
@@ -7911,4 +7994,45 @@ button:hover,
 .profile__chart-fill {
   will-change: transform;
   transform: translateZ(0);
+}
+
+/* Блокировка скролла при открытом меню */
+body.menu-open {
+  overflow: hidden;
+}
+
+/* Стили для вторичной загрузки (между страницами) */
+.loading-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: linear-gradient(135deg, #041b2f 0%, #0a2c47 50%, #041b2f 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+
+.loading-container .loading-content {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
+}
+
+.loading-container .loading-logo2 img {
+  height: 100px;
+  width: auto;
+  object-fit: contain;
+}
+
+.loading-container .loading-subtitle {
+  color: #ffffff;
+  font-size: 1.4rem;
+  font-weight: 500;
+  margin: 0;
+  opacity: 0.9;
 }

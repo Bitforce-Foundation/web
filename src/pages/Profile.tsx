@@ -123,8 +123,8 @@ const Profile = memo(() => {
       createdAt: '2024-01-15T10:30:00Z'
     },
     tariffInfo: {
-      type: 'Торговля сразу',
-      description: 'Мгновенная конвертация по текущему курсу',
+      type: 'Информация о тарифе ',
+      description: 'Условия',
       fee: '0.5%',
       minAmount: 1000
     }

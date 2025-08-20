@@ -1,4 +1,4 @@
-import { useState, useMemo, useCallback, memo } from 'react'
+import { useState, useMemo, useCallback, memo, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 
 import Footer from '../components/Footer'
@@ -6,31 +6,14 @@ import logo from '../assets/logo2.png'
 import mainlogo from '../assets/mainlogo.png'
 import leadImage from '../assets/lead.png'
 
-// Типы для пулов
-type PoolData = {
-  id: string
-  date: string
-  buyRate: number
-  sellRate: number
-  currentVolume: number
-  maxVolume: number
-  status: string
-  statusColor: string
-}
-
-type PoolsData = {
-  main: PoolData
-  reserve: PoolData
-}
-
 const Home = memo(() => {
   const [activeOption, setActiveOption] = useState<number | null>(0)
 
   const [showTradingDescription, setShowTradingDescription] = useState(true)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [selectedAction, setSelectedAction] = useState('buy')
-  const [selectedPool, setSelectedPool] = useState<'main' | 'reserve'>('main')
-  const [poolType, setPoolType] = useState<'active' | 'completed'>('active')
+  const [selectedPool, setSelectedPool] = useState('main')
+  const [poolType, setPoolType] = useState('active')
 
   const handleOptionClick = useCallback((index: number) => {
     setActiveOption(prev => prev === index ? null : index)
@@ -38,6 +21,25 @@ const Home = memo(() => {
 
   const toggleMobileMenu = useCallback(() => {
     setMobileMenuOpen(prev => !prev)
+    // Блокируем скролл при открытом меню
+    if (!mobileMenuOpen) {
+      document.body.classList.add('menu-open')
+    } else {
+      document.body.classList.remove('menu-open')
+    }
+  }, [mobileMenuOpen])
+
+  // Функция для закрытия мобильного меню при клике на ссылку
+  const closeMobileMenu = useCallback(() => {
+    setMobileMenuOpen(false)
+    document.body.classList.remove('menu-open')
+  }, [])
+
+  // Очищаем класс при размонтировании
+  useEffect(() => {
+    return () => {
+      document.body.classList.remove('menu-open')
+    }
   }, [])
 
   const toggleTradingDescription = useCallback(() => {
@@ -49,15 +51,15 @@ const Home = memo(() => {
   }, [])
 
   const handlePoolChange = useCallback((pool: string) => {
-    setSelectedPool(pool as 'main' | 'reserve')
+    setSelectedPool(pool)
   }, [])
 
   const handlePoolTypeChange = useCallback((type: string) => {
-    setPoolType(type as 'active' | 'completed')
+    setPoolType(type)
   }, [])
 
   // Данные активных пулов
-  const activePools: PoolsData = useMemo(() => ({
+  const activePools = useMemo(() => ({
     main: {
       id: 'MAIN-2024-001',
       date: '2024-01-15',
@@ -81,7 +83,7 @@ const Home = memo(() => {
   }), [])
 
   // Данные завершенных пулов
-  const completedPools: PoolsData = useMemo(() => ({
+  const completedPools = useMemo(() => ({
     main: {
       id: 'MAIN-2024-002',
       date: '2024-01-10',
@@ -139,11 +141,11 @@ const Home = memo(() => {
             <img src={logo} alt="Logo" className="header__logo" />
           </Link>
           <nav className={`header__nav ${mobileMenuOpen ? 'mobile-open' : ''}`}>
-            <Link to="/buy">Купить</Link>
-            <Link to="/sell">Продать</Link>
-            <a href="#services">Услуги</a>
-            <a href="#about">О нас</a>
-            <a href="#conversion">Конвертация</a>
+            <Link to="/buy" onClick={closeMobileMenu}>Купить</Link>
+            <Link to="/sell" onClick={closeMobileMenu}>Продать</Link>
+            <a href="#services" onClick={closeMobileMenu}>Услуги</a>
+            <a href="#about" onClick={closeMobileMenu}>О нас</a>
+            <a href="#conversion" onClick={closeMobileMenu}>Конвертация</a>
           </nav>
         </div>
         <div className="header__actions">
