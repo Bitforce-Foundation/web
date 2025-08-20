@@ -1,6 +1,7 @@
 import { Routes, Route } from 'react-router-dom'
 import { lazy, Suspense, useState, useEffect } from 'react'
 import LoadingScreen from './components/LoadingScreen'
+import logo2 from './assets/logo2.png'
 import './App.css'
 
 // Ленивая загрузка компонентов
@@ -14,7 +15,7 @@ const LoadingSpinner = () => (
   <div className="loading-container">
     <div className="loading-content">
       <div className="loading-logo2">
-        <img src="/src/assets/logo2.png" alt="BitForce Logo" />
+        <img src={logo2} alt="BitForce Logo" />
       </div>
       <p className="loading-subtitle">Пожалуйста, подождите...</p>
     </div>

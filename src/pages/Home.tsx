@@ -108,7 +108,7 @@ const Home = memo(() => {
 
   // Выбираем текущие пулы в зависимости от типа
   const currentPools = poolType === 'active' ? activePools : completedPools
-  const currentPool = currentPools[selectedPool]
+  const currentPool = currentPools[selectedPool as keyof typeof currentPools]
 
   const conversionSectionClass = useMemo(() => {
     return `conversion-section ${activeOption !== null ? 'with-expanded-content' : ''}`
