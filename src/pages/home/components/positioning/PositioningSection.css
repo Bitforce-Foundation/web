@@ -1,6 +1,6 @@
 .positioning-section {
   padding: clamp(2rem, 8vw, 5rem) 0 clamp(3rem, 10vw, 6rem) 0;
-  background: linear-gradient(90deg, #ffffff, #edeef0, #e8eaed, #d0d4d9, #a8afb8, #8b9299, #9ca3aa, #b5bcc3);
+  /* background: linear-gradient(90deg, #ffffff, #edeef0, #e8eaed, #d0d4d9, #a8afb8, #8b9299, #9ca3aa, #b5bcc3); */
   min-height: 70vh;
   margin: 0;
   position: relative;

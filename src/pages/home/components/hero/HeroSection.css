@@ -60,11 +60,12 @@
   height: auto;
   object-fit: contain;
   transition: transform 0.3s ease, filter 0.3s ease;
+  filter: drop-shadow(0 12px 28px rgba(0, 0, 0, 0));
 }
 
 .hero__logo:hover {
   transform: scale(1.02);
-  filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.1));
+  filter: drop-shadow(0 12px 28px rgba(0, 0, 0, 0.1));
 }
 
 .hero__subtitle {
@@ -77,6 +78,7 @@
   max-width: 100%;
   word-wrap: break-word;
   margin-top: -1rem;
+  text-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 .hero__main-title {
@@ -88,6 +90,7 @@
   text-align: center;
   max-width: 100%;
   word-wrap: break-word;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .accent-partner {
@@ -117,11 +120,12 @@
   height: auto;
   object-fit: contain;
   transition: transform 0.3s ease, filter 0.3s ease;
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.15));
 }
 
 .hero__main-logo-img:hover {
   transform: scale(1.02);
-  filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.1));
+  filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.25));
 }
 
 .accent-first {
