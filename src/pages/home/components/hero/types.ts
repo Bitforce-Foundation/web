@@ -6,7 +6,7 @@ export interface HeroContentProps {
   className?: string
 }
 
-export interface HeroTextProps {
+export interface HeroLogo2Props {
   title: string
   className?: string
 }

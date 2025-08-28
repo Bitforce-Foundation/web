@@ -1,4 +1,4 @@
-import HeroText from './HeroText'
+import HeroLogo2 from './HeroLogo2'
 import HeroLogo from './HeroLogo'
 import type { HeroContentProps } from './types'
 
@@ -15,7 +15,7 @@ const HeroContent = ({
   return (
     <div className={`hero__content ${className}`}>
       <div className="hero__text-section">
-        <HeroText />
+        <HeroLogo2 />
         <HeroLogo 
           mainLogoSrc={mainLogoSrc}
           secondaryLogoSrc={secondaryLogoSrc}
