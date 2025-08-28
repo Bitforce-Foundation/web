@@ -1,19 +1,17 @@
 import { memo } from 'react'
 import Header from './components/header'
 import HeroSection from './components/hero'
-import TradingSection, { TradingButtons } from './components/trading'
-import ConversionSection from './components/conversion'
-import AboutSection from './components/about'
+import { ContentSection } from './components/principes'
+import { PositioningSection } from './components/positioning'
 import Footer from '../../components/Footer'
 
 // Импорт стилей компонентов
 import './components/header/Header.css'
 import './components/hero/HeroSection.css'
-import './components/trading/TradingSection.css'
-import './components/conversion/ConversionSection.css'
-import './components/about/AboutSection.css'
+import './components/principes/PrincipesSection.css'
+import './components/positioning/PositioningSection.css'
 import './components/common/Common.css'
-import './home.css'
+import './Home.css'
 
 const Home = memo(() => {
   return (
@@ -21,14 +19,10 @@ const Home = memo(() => {
       <Header />
       
       <HeroSection />
-      
-      <TradingSection />
-      
-      <ConversionSection />
-      
-      <TradingButtons />
-      
-      <AboutSection />
+
+      <ContentSection />
+
+      <PositioningSection />
       
       <Footer />
     </div>

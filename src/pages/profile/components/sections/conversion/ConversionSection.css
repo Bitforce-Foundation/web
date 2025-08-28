@@ -1,0 +1,12 @@
+.conversion-section {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+/* Mobile styles */
+@media (max-width: 768px) {
+  .conversion-section {
+    gap: 1.5rem;
+  }
+}

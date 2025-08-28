@@ -4,10 +4,8 @@ import LoadingScreen from './components/LoadingScreen'
 import './App.css'
 
 // Ленивая загрузка компонентов
-const Home = lazy(() => import('./pages/Home'))
-const Buy = lazy(() => import('./pages/Buy'))
-const Sell = lazy(() => import('./pages/Sell'))
-const Profile = lazy(() => import('./pages/Profile'))
+const Home = lazy(() => import('./pages/home/Home'))
+const Profile = lazy(() => import('./pages/profile/Profile'))
 
 // Компонент загрузки для переходов между страницами
 const LoadingSpinner = () => (
@@ -53,8 +51,6 @@ function App() {
     <Suspense fallback={<LoadingSpinner />}>
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/buy" element={<Buy />} />
-        <Route path="/sell" element={<Sell />} />
         <Route path="/profile" element={<Profile />} />
       </Routes>
     </Suspense>

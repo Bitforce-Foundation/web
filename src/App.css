@@ -916,7 +916,7 @@ html {
   width: 100%;
   padding: 5rem 0;
   background: #ffffff;
-  margin-top: -50px;
+  margin-top: 0;
   transition: margin-top 0.4s ease;
 }
 

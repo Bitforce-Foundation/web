@@ -1,6 +1,0 @@
-export { default } from './AboutSection'
-export { default as AboutHeader } from './AboutHeader'
-export { default as AboutContent } from './AboutContent'
-export { default as FeatureCard } from './FeatureCard'
-export { default as AboutImage } from './AboutImage'
-export { aboutContent, features } from './data'
