@@ -1,0 +1,463 @@
+/* Content Section Styles */
+
+.content-section {
+  min-height: 60vh;
+  position: relative;
+}
+
+.content-wrapper {
+  width: 100%;
+  position: relative;
+}
+
+/* Placeholder styles */
+.content-placeholder {
+  text-align: center;
+  padding: clamp(2rem, 8vw, 6rem) clamp(1rem, 4vw, 3rem) clamp(1rem, 4vw, 3rem) clamp(1rem, 4vw, 3rem);
+  max-width: min(1000px, 90vw);
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(1.5rem, 4vw, 3rem);
+}
+
+.content-placeholder-title {
+  font-size: clamp(1.8rem, 6vw, 3.5rem);
+  font-weight: 700;
+  margin: 0;
+  background: linear-gradient(135deg, #2c3e50 15%, #34495e 80%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  line-height: 1.2;
+  text-align: center;
+  word-wrap: break-word;
+  position: relative;
+}
+
+.content-placeholder-title::after {
+  content: '';
+  position: absolute;
+  bottom: -0.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  width: clamp(60px, 15vw, 120px);
+  height: 3px;
+  background: linear-gradient(90deg, #2c3e50 0%, #34495e 100%);
+  border-radius: 2px;
+}
+
+.content-placeholder-text {
+  font-size: clamp(1rem, 3.5vw, 1.4rem);
+  line-height: 1.8;
+  max-width: min(800px, 100%);
+  margin: 0;
+  color: #2c3e50;
+  text-align: left;
+  word-wrap: break-word;
+  hyphens: auto;
+  font-weight: 400;
+  letter-spacing: 0.02em;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(1rem, 3vw, 1.5rem);
+}
+
+.content-placeholder-text p {
+  margin: 0;
+  text-indent: 1.5em;
+  text-align: justify;
+  text-align-last: left;
+}
+
+.content-placeholder-text p:first-child {
+  text-indent: 0;
+}
+
+/* Content Block Styles */
+.content-block {
+  margin-bottom: 3rem;
+  position: relative;
+}
+
+.content-block:last-child {
+  margin-bottom: 0;
+}
+
+.content-block-header {
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.content-block-title {
+  font-size: 2.25rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  color: #2c3e50;
+}
+
+.content-block-subtitle {
+  font-size: 1.125rem;
+  color: #6c757d;
+  line-height: 1.6;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.content-block-body {
+  position: relative;
+}
+
+/* Padding variations */
+.content-block-padding-none {
+  padding: 0;
+}
+
+.content-block-padding-sm {
+  padding: 1rem;
+}
+
+.content-block-padding-md {
+  padding: 2rem;
+}
+
+.content-block-padding-lg {
+  padding: 3rem;
+}
+
+.content-block-padding-xl {
+  padding: 4rem;
+}
+
+/* Layout Styles */
+.content-layout {
+  width: 100%;
+}
+
+.content-layout-single {
+  display: block;
+}
+
+.content-layout-two-column {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: start;
+}
+
+.content-layout-three-column {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  align-items: start;
+}
+
+.content-layout-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  align-items: start;
+}
+
+/* Gap variations */
+.content-gap-none {
+  gap: 0;
+}
+
+.content-gap-sm {
+  gap: 1rem;
+}
+
+.content-gap-md {
+  gap: 2rem;
+}
+
+.content-gap-lg {
+  gap: 3rem;
+}
+
+.content-gap-xl {
+  gap: 4rem;
+}
+
+/* Responsive Design */
+
+/* Extra large screens */
+@media (min-width: 1400px) {
+  .content-placeholder {
+    padding: 8rem 4rem 4rem 4rem;
+    max-width: 1200px;
+    gap: 4rem;
+  }
+  
+  .content-placeholder-title {
+    font-size: 4rem;
+  }
+  
+  .content-placeholder-title::after {
+    width: 140px;
+    height: 4px;
+  }
+  
+  .content-placeholder-text {
+    font-size: 1.6rem;
+    line-height: 1.9;
+    columns: 2;
+    column-gap: 3rem;
+  }
+  
+  .content-placeholder-text p {
+    text-indent: 0;
+    break-inside: avoid;
+    margin-bottom: 1rem;
+  }
+}
+
+/* Large screens */
+@media (min-width: 1200px) and (max-width: 1399px) {
+  .content-placeholder {
+    padding: 7rem 3rem 3.5rem 3rem;
+    max-width: 1100px;
+    gap: 3.5rem;
+  }
+  
+  .content-placeholder-text {
+    font-size: 1.5rem;
+    line-height: 1.8;
+    columns: 2;
+    column-gap: 2.5rem;
+  }
+  
+  .content-placeholder-text p {
+    text-indent: 0;
+    break-inside: avoid;
+    margin-bottom: 1rem;
+  }
+}
+
+/* Desktop screens */
+@media (min-width: 992px) and (max-width: 1199px) {
+  .content-placeholder {
+    padding: 6rem 2.5rem 3rem 2.5rem;
+    max-width: 1000px;
+    gap: 3rem;
+  }
+  
+  .content-placeholder-text {
+    line-height: 1.7;
+  }
+}
+
+/* Tablet landscape */
+@media (max-width: 991px) and (min-width: 768px) {
+  .content-placeholder {
+    padding: 5rem 2rem 2.5rem 2rem;
+    max-width: 900px;
+    gap: 2.5rem;
+  }
+  
+  .content-placeholder-title::after {
+    width: clamp(50px, 12vw, 100px);
+  }
+  
+  .content-placeholder-text {
+    text-align: justify;
+    text-align-last: left;
+  }
+}
+
+/* Tablet portrait */
+@media (max-width: 767px) and (min-width: 576px) {
+  .content-placeholder {
+    padding: 4rem 1.5rem 2rem 1.5rem;
+    max-width: 100%;
+    gap: 2rem;
+  }
+  
+  .content-placeholder-title::after {
+    width: clamp(40px, 10vw, 80px);
+    height: 2px;
+  }
+  
+  .content-placeholder-text {
+    font-size: 1.2rem;
+    line-height: 1.7;
+  }
+  
+  .content-placeholder-text p {
+    text-align: justify;
+    text-align-last: left;
+    text-indent: 1em;
+  }
+  
+  .content-placeholder-text p:first-child {
+    text-indent: 0;
+  }
+}
+
+/* Mobile landscape */
+@media (max-width: 575px) and (min-width: 480px) {
+  .content-placeholder {
+    padding: 3rem 1rem 1.5rem 1rem;
+    gap: 1.8rem;
+  }
+  
+  .content-placeholder-title::after {
+    width: clamp(35px, 8vw, 70px);
+    height: 2px;
+  }
+  
+  .content-placeholder-text p {
+    text-align: justify;
+    text-align-last: left;
+    text-indent: 1em;
+  }
+  
+  .content-placeholder-text p:first-child {
+    text-indent: 0;
+  }
+}
+
+/* Mobile portrait */
+@media (max-width: 479px) {
+  .content-placeholder {
+    padding: 2.5rem 0.75rem 1.25rem 0.75rem;
+    gap: 1.5rem;
+  }
+  
+  .content-placeholder-title::after {
+    width: clamp(30px, 6vw, 60px);
+    height: 2px;
+    bottom: -0.3rem;
+  }
+  
+  .content-placeholder-text {
+    line-height: 1.6;
+  }
+  
+  .content-placeholder-text p {
+    text-align: justify;
+    text-align-last: left;
+    text-indent: 0.8em;
+  }
+  
+  .content-placeholder-text p:first-child {
+    text-indent: 0;
+  }
+}
+
+/* Very small screens */
+@media (max-width: 360px) {
+  .content-placeholder {
+    padding: 2rem 0.5rem 1rem 0.5rem;
+    gap: 1.2rem;
+  }
+  
+  .content-placeholder-title::after {
+    width: clamp(25px, 5vw, 50px);
+    height: 1.5px;
+  }
+}
+
+/* Ultra small screens */
+@media (max-width: 320px) {
+  .content-placeholder {
+    padding: 1.5rem 0.25rem 0.75rem 0.25rem;
+    gap: 1rem;
+  }
+  
+  .content-placeholder-title::after {
+    width: 20px;
+    height: 1px;
+  }
+  
+  .content-placeholder-text p {
+    text-indent: 0.5em;
+  }
+  
+  .content-placeholder-text p:first-child {
+    text-indent: 0;
+  }
+}
+
+/* Landscape orientation on mobile */
+@media (orientation: landscape) and (max-height: 500px) {
+  .content-placeholder {
+    padding: 1.5rem 1rem 0.75rem 1rem;
+    gap: 1rem;
+  }
+  
+  .content-placeholder-title::after {
+    bottom: -0.2rem;
+  }
+}
+
+/* Accessibility and performance optimizations */
+@media (prefers-reduced-motion: reduce) {
+  .content-placeholder-title::after {
+    transition: none;
+  }
+}
+
+/* High contrast mode */
+@media (prefers-contrast: high) {
+  .content-placeholder-title {
+    background: #000000 !important;
+    -webkit-background-clip: text !important;
+    -webkit-text-fill-color: transparent !important;
+    background-clip: text !important;
+  }
+  
+  .content-placeholder-title::after {
+    background: #000000 !important;
+  }
+  
+  .content-placeholder-text {
+    color: #000000 !important;
+  }
+}
+
+/* Dark mode preference */
+@media (prefers-color-scheme: dark) {
+  .content-placeholder-title {
+    background: linear-gradient(135deg, #ffffff 15%, #f0f0f0 80%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  
+  .content-placeholder-title::after {
+    background: linear-gradient(90deg, #ffffff 0%, #f0f0f0 100%);
+  }
+  
+  .content-placeholder-text {
+    color: #ffffff;
+  }
+}
+
+/* Print styles */
+@media print {
+  .content-placeholder {
+    padding: 2rem 1rem 1rem 1rem !important;
+  }
+  
+  .content-placeholder-title {
+    background: #000000 !important;
+    -webkit-background-clip: text !important;
+    -webkit-text-fill-color: transparent !important;
+    background-clip: text !important;
+  }
+  
+  .content-placeholder-title::after {
+    background: #000000 !important;
+  }
+  
+  .content-placeholder-text {
+    color: #000000 !important;
+    columns: 1 !important;
+  }
+  
+  .content-placeholder-text p {
+    text-indent: 0 !important;
+    break-inside: avoid;
+  }
+}
