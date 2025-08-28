@@ -1,118 +1,268 @@
+/* Header основные стили */
 .header {
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  padding: 1rem 2rem;
-  background: white;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  justify-content: space-between;
+  padding: 0.75rem 1rem;
+  background: #ffffff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   position: sticky;
   top: 0;
-  z-index: 100;
+  z-index: 1000;
+  min-height: 60px;
 }
 
-.header__logo-menu {
-  display: flex;
-  align-items: center;
-  gap: 2rem;
-}
-
+/* Logo */
 .header__logo {
-  height: 40px;
-  width: auto;
+  flex-shrink: 0;
 }
 
+.header__logo-img {
+  height: 32px;
+  width: auto;
+  transition: opacity 0.3s ease;
+  transform: translateY(-6px);
+}
+
+.header__logo-img:hover {
+  opacity: 0.8;
+}
+
+/* Navigation */
 .header__nav {
   display: flex;
-  gap: 2rem;
   align-items: center;
+  gap: 2rem;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
 }
 
 .header__nav a {
   text-decoration: none;
   color: #333;
   font-weight: 500;
+  font-size: 0.95rem;
   transition: color 0.3s ease;
+  white-space: nowrap;
 }
 
 .header__nav a:hover {
-  color: #007bff;
+  color: #bfa77a;
 }
 
+/* Actions (profile button + burger) */
 .header__actions {
   display: flex;
   align-items: center;
   gap: 1rem;
+  flex-shrink: 0;
 }
 
 .header__profile-button {
-  padding: 0.5rem 1rem;
-  background: #007bff;
-  color: white;
+  padding: 0.6rem 1.5rem;
+  background: #bfa77a;
+  color: #fff;
   text-decoration: none;
-  border-radius: 4px;
-  font-weight: 500;
-  transition: background 0.3s ease;
+  border-radius: 6px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  transition: all 0.3s ease;
+  white-space: nowrap;
 }
 
 .header__profile-button:hover {
-  background: #0056b3;
+  background: #a8956a;
+  transform: translateY(-1px);
 }
 
-/* Mobile Menu */
+/* Burger menu */
 .header__burger {
   display: none;
   flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  background: none;
+  border: none;
   cursor: pointer;
-  gap: 4px;
-  padding: 0.5rem;
+  padding: 6px;
+  width: 36px;
+  height: 24px;
+  position: relative;
 }
 
 .header__burger span {
-  width: 25px;
+  width: 24px;
   height: 3px;
   background: #333;
-  transition: all 0.3s ease;
+  transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  border-radius: 1px;
+  display: block;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.header__burger span:nth-child(1) {
+  top: 0;
+}
+
+.header__burger span:nth-child(2) {
+  top: 50%;
+  transform: translateX(-50%) translateY(-50%);
+}
+
+.header__burger span:nth-child(3) {
+  bottom: 0;
 }
 
 .header__burger.active span:nth-child(1) {
-  transform: rotate(45deg) translate(5px, 5px);
+  top: 50%;
+  transform: translateX(-50%) translateY(-50%) rotate(45deg);
 }
 
 .header__burger.active span:nth-child(2) {
   opacity: 0;
+  transform: translateX(-50%) translateY(-50%) scale(0);
 }
 
 .header__burger.active span:nth-child(3) {
-  transform: rotate(-45deg) translate(7px, -6px);
+  bottom: 50%;
+  transform: translateX(-50%) translateY(50%) rotate(-45deg);
 }
 
-/* Mobile */
+/* Адаптивность для планшетов и средних экранов */
+@media (max-width: 1024px) {
+  .header {
+    padding: 0.75rem 1.5rem;
+  }
+  
+  .header__nav {
+    gap: 1.5rem;
+  }
+  
+  .header__nav a {
+    font-size: 0.9rem;
+  }
+  
+  .header__profile-button {
+    padding: 0.5rem 1.2rem;
+    font-size: 0.85rem;
+  }
+}
+
+@media (max-width: 900px) {
+  .header__nav {
+    gap: 1.2rem;
+  }
+  
+  .header__nav a {
+    font-size: 0.85rem;
+  }
+}
+
+/* Мобильная адаптивность */
 @media (max-width: 768px) {
   .header {
-    padding: 1rem;
+    padding: 0.75rem 1rem;
+    min-height: 56px;
   }
-
+  
+  .header__logo-img {
+    height: 28px;
+  }
+  
+  /* Скрываем обычную навигацию */
   .header__nav {
-    display: none;
-    position: absolute;
-    top: 100%;
+    position: fixed;
+    top: 56px;
     left: 0;
-    right: 0;
-    background: white;
+    width: 100vw;
+    background: #ffffff;
     flex-direction: column;
-    padding: 1rem;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    gap: 0;
+    padding: 1rem 0;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    transform: translateY(-100%);
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+    z-index: 999;
   }
-
+  
   .header__nav.mobile-open {
-    display: flex;
+    transform: translateY(0);
+    opacity: 1;
+    visibility: visible;
   }
-
+  
+  .header__nav a {
+    display: block;
+    padding: 1rem 2rem;
+    font-size: 1rem;
+    border-bottom: 1px solid #f0f0f0;
+    text-align: left;
+  }
+  
+  .header__nav a:last-child {
+    border-bottom: none;
+  }
+  
   .header__burger {
     display: flex;
   }
-
+  
+  /* Profile button остается видимым на мобильных */
   .header__profile-button {
-    display: none;
+    padding: 0.5rem 1rem;
+    font-size: 0.8rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .header {
+    padding: 0.6rem 0.8rem;
+    min-height: 52px;
+  }
+  
+  .header__logo-img {
+    height: 26px;
+  }
+  
+  .header__nav {
+    top: 52px;
+  }
+  
+  .header__profile-button {
+    padding: 0.4rem 0.8rem;
+    font-size: 0.75rem;
+  }
+  
+  .header__actions {
+    gap: 0.8rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .header {
+    padding: 0.5rem 0.6rem;
+    min-height: 48px;
+  }
+  
+  .header__logo-img {
+    height: 24px;
+  }
+  
+  .header__nav {
+    top: 48px;
+  }
+  
+  .header__profile-button {
+    padding: 0.35rem 0.7rem;
+    font-size: 0.7rem;
+  }
+  
+  .header__actions {
+    gap: 0.6rem;
   }
 }

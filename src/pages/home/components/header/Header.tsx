@@ -1,6 +1,4 @@
 import { Link } from 'react-router-dom'
-import Navigation from './navigation' 
-import MobileMenu from './MobileMenu'
 import { useMobileMenu } from './useMobileMenu'
 import type { HeaderProps } from './types'
 import logo from '../../../../assets/logo2.png'
@@ -11,20 +9,32 @@ const Header = ({ className = '' }: HeaderProps) => {
 
   return (
     <header className={`header ${className}`}>
-      <div className="header__logo-menu">
+      <div className="header__logo">
         <Link to="/">
-          <img src={logo} alt="Logo" className="header__logo" />
+          <img src={logo} alt="BitForce" className="header__logo-img" />
         </Link>
-        <Navigation mobileMenuOpen={mobileMenuOpen} />
       </div>
+
+      <nav className={`header__nav ${mobileMenuOpen ? 'mobile-open' : ''}`}>
+        <Link to="/products" onClick={() => toggleMobileMenu()}>Продукты</Link>
+        <Link to="/about" onClick={() => toggleMobileMenu()}>О нас</Link>
+        <Link to="/contacts" onClick={() => toggleMobileMenu()}>Контакты</Link>
+      </nav>
+
       <div className="header__actions">
         <Link to="/profile" className="header__profile-button">
           Личный кабинет
         </Link>
-        <MobileMenu 
-          isOpen={mobileMenuOpen} 
-          onToggle={toggleMobileMenu} 
-        />
+        
+        <button 
+          className={`header__burger ${mobileMenuOpen ? 'active' : ''}`}
+          onClick={toggleMobileMenu}
+          aria-label="Меню"
+        >
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
       </div>
     </header>
   )
