@@ -6,126 +6,25 @@ import logo from '../assets/logo2.png'
 import mainlogo from '../assets/mainlogo.png'
 import leadImage from '../assets/lead.png'
 
-// Типы для пулов
-type PoolData = {
-  id: string
-  date: string
-  buyRate: number
-  sellRate: number
-  currentVolume: number
-  maxVolume: number
-  status: string
-  statusColor: string
-}
-
-type PoolsData = {
-  main: PoolData
-  reserve: PoolData
-}
-
 const Home = memo(() => {
-  const [activeOption, setActiveOption] = useState<number | null>(0)
-
-  const [showTradingDescription, setShowTradingDescription] = useState(true)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
-  const [selectedAction, setSelectedAction] = useState('buy')
-  const [selectedPool, setSelectedPool] = useState<'main' | 'reserve'>('main')
-  const [poolType, setPoolType] = useState<'active' | 'completed'>('active')
-
-  const handleOptionClick = useCallback((index: number) => {
-    setActiveOption(prev => prev === index ? null : index)
-  }, [])
 
   const toggleMobileMenu = useCallback(() => {
     setMobileMenuOpen(prev => !prev)
-  }, [])
-
-  const toggleTradingDescription = useCallback(() => {
-    setShowTradingDescription(prev => !prev)
   }, [])
 
   const handleActionChange = useCallback((action: string) => {
     setSelectedAction(action)
   }, [])
 
-  const handlePoolChange = useCallback((pool: string) => {
-    setSelectedPool(pool as 'main' | 'reserve')
-  }, [])
-
-  const handlePoolTypeChange = useCallback((type: string) => {
-    setPoolType(type as 'active' | 'completed')
-  }, [])
-
-  // Данные активных пулов
-  const activePools: PoolsData = useMemo(() => ({
-    main: {
-      id: 'MAIN-2024-001',
-      date: '2024-01-15',
-      buyRate: 94.20,
-      sellRate: 93.80,
-      currentVolume: 8500,
-      maxVolume: 25000,
-      status: 'active',
-      statusColor: '#22c55e'
-    },
-    reserve: {
-      id: 'RESERVE-2024-001', 
-      date: '2024-01-15',
-      buyRate: 94.00,
-      sellRate: 93.60,
-      currentVolume: 12000,
-      maxVolume: 20000,
-      status: 'filling',
-      statusColor: '#f59e0b'
-    }
-  }), [])
-
-  // Данные завершенных пулов
-  const completedPools: PoolsData = useMemo(() => ({
-    main: {
-      id: 'MAIN-2024-002',
-      date: '2024-01-10',
-      buyRate: 93.85,
-      sellRate: 93.45,
-      currentVolume: 30000,
-      maxVolume: 30000,
-      status: 'completed',
-      statusColor: '#64748b'
-    },
-    reserve: {
-      id: 'RESERVE-2024-002',
-      date: '2024-01-08', 
-      buyRate: 93.60,
-      sellRate: 93.20,
-      currentVolume: 15000,
-      maxVolume: 15000,
-      status: 'completed',
-      statusColor: '#64748b'
-    }
-  }), [])
-
-  // Выбираем текущие пулы в зависимости от типа
-  const currentPools = poolType === 'active' ? activePools : completedPools
-  const currentPool = currentPools[selectedPool]
-
-  const conversionSectionClass = useMemo(() => {
-    return `conversion-section ${activeOption !== null ? 'with-expanded-content' : ''}`
-  }, [activeOption])
-
-  const optionItems = useMemo(() => [
-    { id: 0, text: 'Торговля сразу' },
-    { id: 1, text: 'Торговля в 1 этап' },
-    { id: 2, text: 'Торговля в 2 этапа' }
-  ], [])
-
   const stepColumns = useMemo(() => [
     [
       { number: 1, title: 'Регистрация', description: 'Создайте аккаунт и пройдите верификацию' },
-      { number: 2, title: 'Выбор суммы', description: 'Определите количество для обмена' },
-      { number: 3, title: 'Перевод средств', description: 'Отправьте активы в общий пул' }
+      { number: 2, title: 'Покупка/продажа', description: 'Определите, что вы хотите, купить или продать криптовалюту' },
+      { number: 3, title: 'Укажите сумму', description: 'Сумма для обмена, в рублях' }
     ],
     [
-      { number: 4, title: 'Ожидание группы', description: 'Дождитесь формирования группы' },
+      { number: 4, title: 'Фиксация курса', description: 'На момент активной сделки, курс фиксируется' },
       { number: 5, title: 'Обработка заявки', description: 'Автоматическая обработка операции' },
       { number: 6, title: 'Получение средств', description: 'Получите конвертированные активы' }
     ]
@@ -165,17 +64,16 @@ const Home = memo(() => {
         <div className="hero__content">
           <div className="hero__text-section">
             <div className="hero__main-text">
-              <h1 className="hero__main-title">Ваш <span className="accent-partner">надежный партнер</span><br />в мире инвестиций<br />и цифровых активов</h1>
+              <h1 className="hero__main-title">Ваш <span className="accent-partner">надежный партнер</span><br />в мире<br />цифровых активов</h1>
             </div>
             <div className="hero__logo-section">
-              <div className="hero__main-logo">
+                <div className="hero__main-logo">
                 <img src={mainlogo} alt="BitForce" className="hero__main-logo-img" />
                 <img src={logo} alt="BitForce Logo2" className="hero__logo2-img" />
-              </div>
-              <p className="hero__subtitle">
-                <span className="accent-first">Первый в России</span> хедж-фонд цифровых активов<br />
-                с офлайн офисом<br /><br />
-              </p>
+                </div>
+                <p className="hero__subtitle">
+                <span className="accent-first">Первый в России</span> хедж-фонд <br /><span className="center-text">цифровых активов</span><br /> <br /><br />
+                </p>
             </div>
           </div>
         </div>
@@ -183,88 +81,21 @@ const Home = memo(() => {
 
       <section id="services" className="trading-section">
         <div className="trading-container">
-          <button 
-            className="trading-btn"
-            onClick={toggleTradingDescription}
-          >
-            Проприетарный трейдинг
-            <span className="arrow-down">▼</span>
-          </button>
-          
-          {showTradingDescription && (
-            <div className="trading-description">
-              <p>Проприетарный трейдинг — это торговля на финансовых рынках, где трейдер получает возможность использовать капитал компании для совершения сделок, получая часть прибыли</p>
-            </div>
-          )}
-          
-          <div className="info-banner">
-            <div className="info-icon">ℹ️</div>
-            <p>Вам будет предоставлен субсчет, в зависимости от купленного плана. Также трейдер должен соблюдать лимиты убытков: не более 5% от депозита за весь период и 3% дневной просадки, и нарушать правила платформы Bybit или законы РФ</p>
-          </div>
-          
-          <div className="trading-options active">
-            <div className="options-row">
-              {optionItems.map((item) => (
-                <div 
-                  key={item.id}
-                  className={`option-item ${activeOption === item.id ? 'selected' : ''}`}
-                  onClick={() => handleOptionClick(item.id)}
-                >
-                  <span>{item.text}</span>
-                  <span className="option-arrow">→</span>
-                </div>
-              ))}
-            </div>
-            
-            <div className="options-container">
-              <div className="option-info">
-                <div className={`info-content ${activeOption === 0 ? 'active' : ''}`}>
-                  <h3>Торговля сразу</h3>
-                  <p>Моментальный доступ к торговле с полным функционалом. Идеально для опытных трейдеров.</p>
-                  <div className="trading-details">
-                    <div className="detail-item">
-                      <span className="detail-label">Максимальный убыток:</span>
-                      <span className="detail-value">5%</span>
-                    </div>
-                    <div className="detail-item">
-                      <span className="detail-label">Проходное значение:</span>
-                      <span className="detail-value">8%</span>
-                    </div>
-                    <div className="detail-item">
-                      <span className="detail-label">Стоимость:</span>
-                      <span className="detail-value price">8000₽</span>
-                    </div>
-                    <div className="detail-item">
-                      <span className="detail-label">Торговый депозит:</span>
-                      <span className="detail-value">1000$</span>
-                    </div>
-                  </div>
-                  <button className="purchase-btn">Приобрести</button>
-                </div>
-              
-                <div className={`info-content ${activeOption === 1 ? 'active' : ''}`}>
-                  <h3>Торговля в 1 этап</h3>
-                  <p>Одноэтапная верификация с базовыми возможностями торговли.</p>
-                </div>
-              
-                <div className={`info-content ${activeOption === 2 ? 'active' : ''}`}>
-                  <h3>Торговля в 2 этапа</h3>
-                  <p>Двухэтапная верификация с расширенными возможностями и повышенными лимитами.</p>
-                </div>
-              </div>
-            </div>
+          <div className="coming-soon-card">
+            <h3>Проприетарный трейдинг</h3>
+            <p>Скоро</p>
           </div>
         </div>
       </section>
       
-      <section id="conversion" className={conversionSectionClass}>
+      <section id="conversion" className="conversion-section">
         <div className="conversion-container">
           <h2>Конвертация</h2>
           <p className="conversion-description">
-            Наша компания обеспечивает безопасную конвертацию цифровых активов через объединение участников в группы, снижая риски P2P-обмена. Вы пополняете «общий банк», а мы выступаем гарантом. Мы не взаимодействуем с ненадежными сторонами, делая обмен безопасным и прозрачным.
+            Наша компания обеспечивает безопасную конвертацию цифровых активов, снижая риски P2P-обмена. Мы являемся агентом по покупке/продаже криптовалюты. Не взаимодействуем с ненадежными сторонами, делая обмен безопасным и прозрачным, предоставляя всю соответствующую документацию.
           </p>
           
-          <h3 className="steps-title">Шаги обмена и участия в пуле</h3>
+          <h3 className="steps-title">Процесс конвертации</h3>
           
           <div className="steps-grid">
             {stepColumns.map((column, columnIndex) => (
@@ -306,110 +137,6 @@ const Home = memo(() => {
               </div>
             </div>
           </div>
-          
-          {/* Слайдер пулов под кнопками */}
-          <div className="pools-slider">
-            <div className="pools-slider-header">
-              <h3>Выберите пул для {selectedAction === 'buy' ? 'покупки' : 'продажи'}</h3>
-              <div className="pool-controls">
-                <div className="pool-type-toggle">
-                  <button 
-                    className={`pool-type-btn ${poolType === 'active' ? 'active' : ''}`}
-                    onClick={() => handlePoolTypeChange('active')}
-                  >
-                    Активные
-                  </button>
-                  <button 
-                    className={`pool-type-btn ${poolType === 'completed' ? 'active' : ''}`}
-                    onClick={() => handlePoolTypeChange('completed')}
-                  >
-                    Завершенные
-                  </button>
-                </div>
-                <div className="pool-toggle">
-                  <button 
-                    className={`pool-toggle-btn ${selectedPool === 'main' ? 'active' : ''}`}
-                    onClick={() => handlePoolChange('main')}
-                  >
-                    Основной
-                  </button>
-                  <button 
-                    className={`pool-toggle-btn ${selectedPool === 'reserve' ? 'active' : ''}`}
-                    onClick={() => handlePoolChange('reserve')}
-                  >
-                    Резервный
-                  </button>
-                </div>
-              </div>
-            </div>
-            
-            <div className="pools-grid">
-              <div className={`pool-card ${currentPool.status}`}>
-                <div className="pool-header">
-                  <div className="pool-currency">
-                    <span className="currency-symbol">USDT</span>
-                    <div className="pool-info-header">
-                      <span className="pool-number">#{currentPool.id}</span>
-                      <div className="pool-status" style={{ backgroundColor: currentPool.statusColor }}>
-                        {currentPool.status === 'active' ? 'Активный' : 
-                         currentPool.status === 'filling' ? 'Набирается' : 
-                         currentPool.status === 'completed' ? 'Завершен' : 'Резервный'}
-                      </div>
-                    </div>
-                  </div>
-                  <div className="pool-date">{currentPool.date}</div>
-                </div>
-
-                <div className="pool-info">
-                  <div className="info-item">
-                    <span className="info-label">Курс {selectedAction === 'buy' ? 'покупки' : 'продажи'}:</span>
-                    <span className="info-value rate">
-                      {selectedAction === 'buy' ? currentPool.buyRate.toFixed(2) : currentPool.sellRate.toFixed(2)} ₽
-                    </span>
-                  </div>
-
-                  <div className="info-item">
-                    <span className="info-label">Объем пула:</span>
-                    <span className="info-value volume">
-                      {currentPool.currentVolume.toLocaleString()}/{currentPool.maxVolume.toLocaleString()} USDT
-                    </span>
-                  </div>
-
-                  <div className="info-item">
-                    <span className="info-label">Цель пула:</span>
-                    <span className="info-value">
-                      {currentPool.maxVolume.toLocaleString()} USDT
-                    </span>
-                  </div>
-
-                  <div className="pool-progress">
-                    <div className="progress-bar">
-                      <div 
-                        className="progress-fill"
-                        style={{ 
-                          width: `${Math.round((currentPool.currentVolume / currentPool.maxVolume) * 100)}%`,
-                          backgroundColor: currentPool.statusColor
-                        }}
-                      ></div>
-                    </div>
-                    <span className="progress-text">
-                      {Math.round((currentPool.currentVolume / currentPool.maxVolume) * 100)}%
-                    </span>
-                  </div>
-                </div>
-
-                {poolType === 'active' ? (
-                  <Link to={`/${selectedAction}`} className="participate-btn">
-                    {selectedAction === 'buy' ? 'Купить' : 'Продать'}
-                  </Link>
-                ) : (
-                  <button className="participate-btn disabled" disabled>
-                    Завершен
-                  </button>
-                )}
-              </div>
-            </div>
-          </div>
         </div>
       </section>
 
@@ -418,8 +145,8 @@ const Home = memo(() => {
         <div className="about-container">
           <h2 className="about-title">О нас</h2>
           <p className="about-description">
-            BitForce — первый в России хедж-фонд цифровых активов с офлайн офисом в Санкт-Петербурге. 
-            Мы не только предлагаем инновационные решения для инвестирования в цифровые активы, но и помогаем 
+            BitForce — первый в России хедж-фонд цифровых активов в Санкт-Петербурге. 
+            Мы предлагаем инновационные решения для инвестирования в цифровые активы, но и помогаем 
             безопасно и выгодно конвертировать цифровые активы, выступая гарантом каждой сделки.
           </p>
           
@@ -432,10 +159,6 @@ const Home = memo(() => {
               <div className="feature-card">
                 <h4>Прозрачность</h4>
                 <p>Мы обеспечиваем ясность и безопасность в каждом шаге нашего сотрудничества</p>
-              </div>
-              <div className="feature-card">
-                <h4>Качественный подход</h4>
-                <p>Персонализированные стратегии, учитывающие ваши цели и уровень риска</p>
               </div>
             </div>
             
@@ -453,4 +176,12 @@ const Home = memo(() => {
 
 Home.displayName = 'Home'
 
-export default Home 
+export default Home
+
+function setSelectedAction(action: string) {
+  if (action === 'buy') {
+    window.location.href = '/buy'
+  } else if (action === 'sell') {
+    window.location.href = '/sell'
+  }
+}
