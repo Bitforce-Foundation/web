@@ -471,7 +471,7 @@ const Profile = memo(() => {
 
         {/* Самые прибыльные и неприбыльные пары */}
         <div className="profile__cards">
-          <div className="profile__card">
+          <div className="profile__card profitable-pairs">
             <h3><span className="material-icons">north_east</span>Самые прибыльные пары</h3>
             <ul className="pairs-list">
               {propTradingData.pairs[selectedTariff].best.map((p, idx) => (
@@ -482,7 +482,7 @@ const Profile = memo(() => {
               ))}
             </ul>
           </div>
-          <div className="profile__card">
+          <div className="profile__card unprofitable-pairs">
             <h3><span className="material-icons">south_west</span>Самые неприбыльные пары</h3>
             <ul className="pairs-list">
               {propTradingData.pairs[selectedTariff].worst.map((p, idx) => (

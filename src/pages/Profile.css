@@ -2,25 +2,30 @@
 
 /* Базовые стили профиля */
 .profile-main {
-  background: #e5e7eb !important;
-  min-height: 100vh !important;
+  background: #e5e7eb;
+  min-height: 100vh;
   margin-left: 80px; /* отступ для свернутого sidebar */
-  padding: 2rem !important;
+  padding: 2rem;
   display: flex;
   flex-direction: column;
   position: relative;
   transition: margin-left 0.3s ease;
+  width: calc(100% - 80px);
+  box-sizing: border-box;
 }
 
 .profile-main.sidebar-expanded {
   margin-left: 280px; /* отступ для развернутого sidebar */
+  width: calc(100% - 280px);
 }
 
 .profile-main .page-container {
-  background: transparent !important;
-  padding: 0 !important;
-  margin: 0 !important;
-  max-width: 100% !important;
+  background: transparent;
+  padding: 0;
+  margin: 0;
+  max-width: 100%;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 /* Сайдбар с возможностью сворачивания */
@@ -49,6 +54,11 @@
   gap: 1rem;
   height: 80px;
   box-sizing: border-box;
+  justify-content: center;
+}
+
+.profile__sidebar.expanded .profile__sidebar-header {
+  justify-content: flex-start;
 }
 
 .profile__toggle-btn {
@@ -58,8 +68,13 @@
   padding: 0.5rem;
   border-radius: 6px;
   color: white;
-  transition: all 0.2s ease;
+  transition: all 0.3s ease;
   flex-shrink: 0;
+}
+
+.profile__sidebar:not(.expanded) .profile__toggle-btn {
+  padding: 0.75rem;
+  border-radius: 8px;
 }
 
 .profile__toggle-btn:hover {
@@ -73,6 +88,12 @@
   object-fit: cover;
   border: 2px solid rgba(255, 255, 255, 0.2);
   opacity: 1;
+  transition: all 0.3s ease;
+}
+
+.profile__sidebar:not(.expanded) .profile__user-avatar {
+  width: 48px;
+  height: 48px;
 }
 
 /* Навигация сайдбара как на фото */
@@ -99,7 +120,21 @@
   font-size: 0.95rem;
   width: 100%;
   box-sizing: border-box;
-  border-left: 3px solid transparent;
+  justify-content: center;
+}
+
+.profile__sidebar.expanded .profile__nav-item {
+  justify-content: flex-start;
+  padding: 1rem 1.5rem;
+}
+
+.profile__sidebar:not(.expanded) .profile__nav-item {
+  padding: 1rem;
+  gap: 0;
+}
+
+.profile__sidebar.expanded .profile__nav-item {
+  justify-content: flex-start;
 }
 
 .profile__nav-item:hover {
@@ -108,15 +143,28 @@
 }
 
 .profile__nav-item.active {
-  background: rgba(219, 192, 143, 0.1);
+  background: rgba(219, 192, 143, 0.05);
   color: #dbc08f;
-  border-left-color: #dbc08f;
+  border-left-color: transparent;
+}
+
+.profile__sidebar:not(.expanded) .profile__nav-item.active {
+  border-left-color: transparent;
+  background: rgba(219, 192, 143, 0.08);
+  border-radius: 8px;
 }
 
 .profile__nav-icon {
   font-size: 1.25rem;
   flex-shrink: 0;
   min-width: 24px;
+  transition: all 0.3s ease;
+}
+
+.profile__sidebar:not(.expanded) .profile__nav-icon {
+  font-size: 1.4rem;
+  min-width: 32px;
+  text-align: center;
 }
 
 .profile__nav-text {
@@ -144,13 +192,14 @@
   bottom: 0;
   left: 0;
   right: 0;
-  background: #ffffff;
-  border-top: 1px solid #e2e8f0;
+  background: #1f2937;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
   padding: 0.5rem;
   z-index: 1000;
   justify-content: space-around;
   align-items: center;
   min-height: 60px;
+  box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.15);
 }
 
 .profile__mobile-nav-item {
@@ -158,31 +207,56 @@
   flex-direction: column;
   align-items: center;
   gap: 0.25rem;
-  padding: 0.5rem;
+  padding: 0.75rem 1rem;
   border: none;
   background: none;
-  color: #64748b;
+  color: #9ca3af;
   text-decoration: none;
-  border-radius: 6px;
+  border-radius: 12px;
   cursor: pointer;
-  transition: all 0.2s ease;
-  min-width: 60px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  min-width: 80px;
   font-size: 0.7rem;
+  position: relative;
 }
 
-.profile__mobile-nav-item:hover,
+.profile__mobile-nav-item:hover {
+  color: #d1d5db;
+  background: rgba(255, 255, 255, 0.05);
+}
+
 .profile__mobile-nav-item.active {
-  color: #dbc08f;
+  color: #ffffff;
+  background: #dbc08f;
+  box-shadow: 0 2px 8px rgba(219, 192, 143, 0.3);
+  transform: translateY(-2px);
 }
 
 .profile__mobile-icon {
   font-size: 1.2rem;
+  transition: transform 0.2s ease;
+}
+
+.profile__mobile-nav-item:hover .profile__mobile-icon {
+  transform: scale(1.1);
+}
+
+.profile__mobile-nav-item.active .profile__mobile-icon {
+  transform: scale(1.15);
+  color: #ffffff;
 }
 
 .profile__mobile-text {
   font-size: 0.7rem;
   text-align: center;
   white-space: nowrap;
+  font-weight: 500;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.profile__mobile-nav-item.active .profile__mobile-text {
+  color: #ffffff;
+  font-weight: 600;
 }
 
 /* Стили для шапки профиля как на фото */
@@ -455,6 +529,28 @@
   color: #dbc08f;
 }
 
+/* Специальные стили для карточек прибыльных/неприбыльных пар */
+.profile__card:has(.material-icons:contains("north_east")) {
+  border-left: 4px solid #22c55e;
+  background: linear-gradient(135deg, #f0fdf4 0%, #ffffff 100%);
+}
+
+.profile__card:has(.material-icons:contains("south_west")) {
+  border-left: 4px solid #ef4444;
+  background: linear-gradient(135deg, #fef2f2 0%, #ffffff 100%);
+}
+
+/* Альтернативный способ для браузеров без поддержки :has() */
+.profile__card.profitable-pairs {
+  border-left: 4px solid #22c55e;
+  background: linear-gradient(135deg, #f0fdf4 0%, #ffffff 100%);
+}
+
+.profile__card.unprofitable-pairs {
+  border-left: 4px solid #ef4444;
+  background: linear-gradient(135deg, #fef2f2 0%, #ffffff 100%);
+}
+
 /* Тарифы */
 .tariffs-grid {
   display: grid;
@@ -636,7 +732,7 @@
   display: flex;
   align-items: end;
   justify-content: space-between;
-  height: 300px !important;
+  height: 600px !important;
   padding: 2rem;
   background: white !important;
   border-radius: 8px;
@@ -656,7 +752,7 @@
 }
 
 .profile__chart-bar-container {
-  height: 200px;
+  height: 400px;
   width: 100%;
   display: flex;
   align-items: end;
@@ -1222,102 +1318,658 @@
   }
 }
 
-@media (max-width: 480px) {
+/* ===== АДАПТИВНОСТЬ ДЛЯ МОБИЛЬНЫХ УСТРОЙСТВ ===== */
+
+/* Планшеты и средние экраны */
+@media (max-width: 1024px) {
   .profile-main {
-    padding: 0.75rem;
+    margin-left: 0 !important;
+    padding: 1rem !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+  }
+  
+  .profile__sidebar {
+    transform: translateX(-100%);
+    z-index: 2000;
+  }
+  
+  .profile__sidebar.expanded {
+    transform: translateX(0);
+    width: 280px;
   }
   
   .profile-main-card {
-    padding: 1rem;
-    gap: 1rem;
+    flex-direction: column !important;
+    text-align: center !important;
+    gap: 1.5rem !important;
+    padding: 1.5rem !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+  }
+  
+  .profile-main-avatar {
+    width: 70px !important;
+    height: 70px !important;
   }
   
   .profile-main-name {
-    font-size: 1.5rem;
+    font-size: 1.5rem !important;
   }
   
   .profile__chart {
-    gap: 8px;
-    height: 180px;
-    padding: 1rem;
+    gap: 6px !important;
+    height: 280px !important;
+    padding: 1rem !important;
   }
   
   .profile__chart-bar {
-    min-width: 35px;
-    max-width: 50px;
-    gap: 0.5rem;
+    min-width: 20px !important;
+    max-width: 30px !important;
   }
   
   .profile__chart-bar-container {
-    height: 100px;
+    height: 140px !important;
   }
   
   .profile__chart-container {
-    padding: 1.25rem;
-    margin-top: 1.5rem;
-    margin-bottom: 1.5rem;
+    padding: 1rem !important;
+  }
+  
+  .profile__period-selector {
+    gap: 0.5rem !important;
+  }
+  
+  .profile__period-btn {
+    padding: 0.5rem 0.75rem !important;
+    font-size: 0.8rem !important;
+  }
+  
+  .profile__cards {
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)) !important;
+    gap: 1rem !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+  }
+  
+  .pairs-list {
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)) !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+  }
+  
+  .tariffs-grid {
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)) !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+  }
+  
+  .conversion-info-grid {
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)) !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+  }
+}
+
+/* Мобильные устройства */
+@media (max-width: 768px) {
+  .profile-main {
+    padding: 0.5rem !important;
+    margin-left: 0 !important;
+    margin-bottom: 80px !important; /* Место для мобильной навигации */
+    width: 100% !important;
+    box-sizing: border-box !important;
+  }
+  
+  .profile-header {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 0.75rem !important;
+    margin-bottom: 1rem !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+  }
+  
+  .profile-header .page-title {
+    font-size: 1.5rem !important;
+    line-height: 1.2 !important;
+    word-wrap: break-word !important;
+    overflow-wrap: break-word !important;
+  }
+  
+  .profile-header .page-subtitle {
+    font-size: 0.85rem !important;
+    line-height: 1.3 !important;
+  }
+  
+  .edit-profile-button {
+    width: 100% !important;
+    justify-content: center !important;
+    padding: 0.875rem !important;
+    font-size: 0.9rem !important;
+  }
+  
+  .profile-main-card {
+    padding: 1rem !important;
+    gap: 0.875rem !important;
+    margin-bottom: 1rem !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+  }
+  
+  .profile-main-avatar {
+    width: 55px !important;
+    height: 55px !important;
+  }
+  
+  .profile-main-name {
+    font-size: 1.1rem !important;
+    line-height: 1.2 !important;
+  }
+  
+  .profile-main-username {
+    font-size: 0.85rem !important;
+    line-height: 1.3 !important;
+  }
+  
+  .profile-verification {
+    padding: 0.35rem 0.7rem !important;
+    font-size: 0.75rem !important;
+  }
+  
+  .profile__chart {
+    gap: 3px;
+    height: 220px;
+    padding: 0.625rem;
+  }
+  
+  .profile__chart-bar {
+    min-width: 16px;
+    max-width: 22px;
+  }
+  
+  .profile__chart-bar-container {
+    height: 110px;
+  }
+  
+  .profile__chart-container {
+    padding: 0.625rem;
+    margin-top: 0.875rem;
+    margin-bottom: 0.875rem;
   }
   
   .profile__period-selector {
     flex-wrap: wrap;
-    gap: 0.2rem;
+    gap: 0.25rem;
     justify-content: center;
-    width: 100%;
     padding: 0.4rem;
+    width: 100%;
+    box-sizing: border-box;
   }
-
+  
   .profile__period-btn {
-    padding: 0.3rem 0.5rem;
+    padding: 0.35rem 0.5rem;
     font-size: 0.7rem;
     min-width: 45px;
   }
   
   .profile__chart-stats {
-    gap: 0.75rem;
+    gap: 0.4rem;
+    flex-wrap: wrap;
+    width: 100%;
+    box-sizing: border-box;
   }
   
   .profile__stat {
-    padding: 0.75rem;
+    padding: 0.4rem;
+    min-width: 110px;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
   }
   
   .profile__stat-value {
-    font-size: 1.25rem;
+    font-size: 1rem;
   }
   
   .profile__stat-label {
-    font-size: 0.7rem;
+    font-size: 0.65rem;
   }
   
   .profile__cards {
-    gap: 1rem;
-    margin-top: 1.5rem;
-    margin-bottom: 1.5rem;
+    gap: 0.875rem;
+    margin-top: 0.875rem;
+    margin-bottom: 0.875rem;
   }
   
   .pairs-list {
-    gap: 1rem;
+    gap: 0.625rem;
   }
   
   .pair-item {
-    padding: 1rem;
+    padding: 0.625rem;
   }
   
   .tariffs-grid {
     grid-template-columns: 1fr;
+    gap: 0.875rem;
   }
-
+  
   .conversion-info-grid {
     grid-template-columns: 1fr;
+    gap: 0.875rem;
   }
-
+  
   .profile__history-main {
     flex-direction: column;
     align-items: flex-start;
-    gap: 0.75rem;
+    gap: 0.4rem;
   }
-
+  
   .profile__history-meta {
     flex-direction: column;
-    gap: 0.25rem;
+    gap: 0.2rem;
+  }
+  
+  /* Показываем мобильную навигацию */
+  .profile__mobile-nav {
+    display: flex !important;
+  }
+  
+  /* Скрываем десктопный сайдбар */
+  .profile__sidebar {
+    display: none !important;
+  }
+}
+
+/* Маленькие мобильные устройства */
+@media (max-width: 480px) {
+  .profile-main {
+    padding: 0.25rem !important;
+    margin-bottom: 70px !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+  }
+  
+  .profile-header .page-title {
+    font-size: 1.25rem;
+    line-height: 1.1;
+  }
+  
+  .profile-header .page-subtitle {
+    font-size: 0.75rem;
+    line-height: 1.2;
+  }
+  
+  .profile-main-card {
+    padding: 0.875rem;
+    gap: 0.625rem;
+    margin-bottom: 0.875rem;
+  }
+  
+  .profile-main-avatar {
+    width: 45px;
+    height: 45px;
+  }
+  
+  .profile-main-name {
+    font-size: 1rem;
+    line-height: 1.1;
+  }
+  
+  .profile-main-username {
+    font-size: 0.75rem;
+    line-height: 1.2;
+  }
+  
+  .profile-verification {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.65rem;
+  }
+  
+  .profile__chart {
+    gap: 2px;
+    height: 180px;
+    padding: 0.4rem;
+  }
+  
+  .profile__chart-bar {
+    min-width: 14px;
+    max-width: 18px;
+  }
+  
+  .profile__chart-bar-container {
+    height: 90px;
+  }
+  
+  .profile__chart-container {
+    padding: 0.4rem;
+    margin-top: 0.625rem;
+    margin-bottom: 0.625rem;
+  }
+  
+  .profile__period-selector {
+    gap: 0.15rem;
+    padding: 0.3rem;
+  }
+  
+  .profile__period-btn {
+    padding: 0.25rem 0.4rem;
+    font-size: 0.65rem;
+    min-width: 40px;
+  }
+  
+  .profile__chart-stats {
+    gap: 0.3rem;
+  }
+  
+  .profile__stat {
+    padding: 0.3rem;
+    min-width: 90px;
+  }
+  
+  .profile__stat-value {
+    font-size: 0.9rem;
+  }
+  
+  .profile__stat-label {
+    font-size: 0.6rem;
+  }
+  
+  .profile__cards {
+    gap: 0.625rem;
+    margin-top: 0.625rem;
+    margin-bottom: 0.625rem;
+  }
+  
+  .pairs-list {
+    gap: 0.4rem;
+  }
+  
+  .pair-item {
+    padding: 0.4rem;
+  }
+  
+  .tariffs-grid {
+    gap: 0.625rem;
+  }
+  
+  .conversion-info-grid {
+    gap: 0.625rem;
+  }
+  
+  .profile__history-main {
+    gap: 0.3rem;
+  }
+  
+  .profile__history-meta {
+    gap: 0.15rem;
+  }
+  
+  /* Мобильная навигация */
+  .profile__mobile-nav {
+    padding: 0.3rem;
+    min-height: 50px;
+  }
+  
+  .profile__mobile-nav-item {
+    padding: 0.3rem;
+    min-width: 50px;
+    font-size: 0.6rem;
+  }
+  
+  .profile__mobile-icon {
+    font-size: 1rem;
+  }
+  
+  .profile__mobile-text {
+    font-size: 0.6rem;
+  }
+}
+
+/* Очень маленькие экраны */
+@media (max-width: 360px) {
+  .profile-main {
+    padding: 0.125rem !important;
+    margin-bottom: 65px !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+  }
+  
+  .profile-header .page-title {
+    font-size: 1.125rem;
+    line-height: 1.1;
+  }
+  
+  .profile-header .page-subtitle {
+    font-size: 0.7rem;
+    line-height: 1.2;
+  }
+  
+  .profile-main-card {
+    padding: 0.75rem;
+    gap: 0.5rem;
+  }
+  
+  .profile-main-avatar {
+    width: 40px;
+    height: 40px;
+  }
+  
+  .profile-main-name {
+    font-size: 0.9rem;
+    line-height: 1.1;
+  }
+  
+  .profile-main-username {
+    font-size: 0.7rem;
+    line-height: 1.2;
+  }
+  
+  .profile__chart {
+    height: 150px;
+    padding: 0.3rem;
+  }
+  
+  .profile__chart-bar {
+    min-width: 12px;
+    max-width: 16px;
+  }
+  
+  .profile__chart-bar-container {
+    height: 75px;
+  }
+  
+  .profile__period-btn {
+    padding: 0.2rem 0.35rem;
+    font-size: 0.6rem;
+    min-width: 35px;
+  }
+  
+  .profile__stat {
+    padding: 0.25rem;
+    min-width: 80px;
+  }
+  
+  .profile__stat-value {
+    font-size: 0.85rem;
+  }
+  
+  .profile__stat-label {
+    font-size: 0.55rem;
+  }
+  
+  .profile__mobile-nav {
+    padding: 0.25rem;
+    min-height: 48px;
+  }
+  
+  .profile__mobile-nav-item {
+    padding: 0.25rem;
+    min-width: 48px;
+    font-size: 0.55rem;
+  }
+  
+  .profile__mobile-icon {
+    font-size: 0.9rem;
+  }
+  
+  .profile__mobile-text {
+    font-size: 0.55rem;
+  }
+}
+
+/* Дополнительные исправления для мобильных */
+@media (max-width: 768px) {
+  /* Исправляем отступы для всех секций */
+  .profile-section {
+    padding: 0.875rem;
+    margin-bottom: 0.875rem;
+  }
+  
+  /* Улучшаем читаемость текста */
+  .profile__chart-label {
+    font-size: 0.6rem;
+    line-height: 1.2;
+  }
+  
+  .profile__chart-value {
+    font-size: 0.65rem;
+    line-height: 1.2;
+  }
+  
+  /* Оптимизируем карточки */
+  .info-card,
+  .tariff-card,
+  .conversion-status-card,
+  .conversion-tariff-card {
+    padding: 0.875rem;
+    margin-bottom: 0.875rem;
+  }
+  
+  /* Улучшаем формы */
+  .profile__form-group {
+    margin-bottom: 0.875rem;
+    width: 100%;
+    box-sizing: border-box;
+  }
+  
+  .profile__form-group input,
+  .profile__form-group select,
+  .profile__form-group textarea {
+    padding: 0.75rem;
+    font-size: 1rem;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+  
+  /* Оптимизируем кнопки */
+  .profile__actions button {
+    width: 100%;
+    padding: 0.875rem;
+    margin-bottom: 0.5rem;
+    font-size: 0.9rem;
+  }
+  
+  /* Улучшаем таблицы */
+  .profile__history-table {
+    font-size: 0.8rem;
+  }
+  
+  .profile__history-table th,
+  .profile__history-table td {
+    padding: 0.5rem;
+  }
+  
+  /* Оптимизируем модальные окна */
+  .modal-content {
+    margin: 0.875rem;
+    padding: 0.875rem;
+    max-width: calc(100vw - 1.75rem);
+  }
+  
+  /* Исправляем проблемы с обрезанием текста */
+  .profile-header .page-title,
+  .profile-header .page-subtitle {
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    hyphens: auto;
+  }
+  
+  /* Оптимизируем карточки профиля */
+  .profile-main-card {
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+  }
+  
+  .profile-main-name,
+  .profile-main-username {
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+  }
+  
+  /* Улучшаем мобильную навигацию */
+  .profile__mobile-nav {
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+  }
+  
+  /* Оптимизируем отступы для контента */
+  .page-container {
+    padding: 0;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+  
+  /* Исправляем проблемы с overflow */
+  .profile-main {
+    overflow-x: hidden;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+  
+  /* Оптимизируем размеры для маленьких экранов */
+  .profile__cards {
+    grid-template-columns: 1fr !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+  }
+  
+  .pairs-list {
+    grid-template-columns: 1fr !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+  }
+  
+  .tariffs-grid {
+    grid-template-columns: 1fr !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+  }
+  
+  .conversion-info-grid {
+    grid-template-columns: 1fr !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+  }
+  
+  /* Убираем лишние отступы у карточек */
+  .profile-main-card,
+  .info-card,
+  .tariff-card,
+  .conversion-status-card,
+  .conversion-tariff-card {
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
   }
 }
