@@ -1,214 +1,118 @@
 import { Link } from 'react-router-dom'
-import { useState, useMemo, useCallback, memo, useEffect } from 'react'
+import { useState, useEffect, memo } from 'react'
 import Footer from '../components/Footer'
 import logo from '../assets/logo2.png'
+import { poolsService } from '../api'
+import type { PoolData as ApiPoolData, ConnectionStatus } from '../api/types/pools.types'
+import './Sell.css'
 
-// Типы для пулов продажи
-interface SellPool {
-  id: number
+// Адаптированная структура пула для UI
+interface UIPoolData {
+  id: string
   poolNumber: string
+  name: string
   date: string
   rate: number
   currentVolume: number
-  maxVolume: number
-  targetAmount: number
+  targetVolume: number
+  status: 'active' | 'filling' | 'completed' | 'inactive'
+  progress: number
   currency: string
-  status: 'active' | 'filling' | 'completed'
 }
 
 const Sell = memo(() => {
-  // Функция для генерации случайного числа от 15000 до 50000
-  const generateRandomTarget = useCallback(() => {
-    return Math.floor(Math.random() * (50000 - 15000 + 1)) + 15000
-  }, [])
+  const [pools, setPools] = useState<UIPoolData[]>([])
+  const [isLoading, setIsLoading] = useState(true)
+  const [connectionStatus, setConnectionStatus] = useState<ConnectionStatus>('connecting')
 
-  // Моковые данные пулов продажи (только USDT за рубли)
-  const [pools] = useState<SellPool[]>([
-    {
-      id: 1,
-      poolNumber: 'SELL-2024-001',
-      date: '2024-01-15',
-      rate: 94.50,
-      currentVolume: 8500, // USDT собрано
-      maxVolume: 25000, // USDT цель пула
-      targetAmount: generateRandomTarget(),
-      currency: 'USDT',
-      status: 'active'
-    },
-    {
-      id: 2,
-      poolNumber: 'SELL-2024-002',
-      date: '2024-01-15',
-      rate: 94.25,
-      currentVolume: 35000, // USDT собрано
-      maxVolume: 60000, // USDT цель пула
-      targetAmount: generateRandomTarget(),
-      currency: 'USDT',
-      status: 'filling'
-    },
-    {
-      id: 3,
-      poolNumber: 'SELL-2024-003',
-      date: '2024-01-15',
-      rate: 94.80,
-      currentVolume: 15000, // USDT собрано
-      maxVolume: 15000, // USDT цель пула
-      targetAmount: generateRandomTarget(),
-      currency: 'USDT',
-      status: 'completed'
-    },
-    {
-      id: 4,
-      poolNumber: 'SELL-2024-004',
-      date: '2024-01-15',
-      rate: 94.40,
-      currentVolume: 3200, // USDT собрано
-      maxVolume: 120000, // USDT цель пула
-      targetAmount: generateRandomTarget(),
-      currency: 'USDT',
-      status: 'active'
-    }
-  ])
-
-  const [selectedPool, setSelectedPool] = useState<SellPool | null>(null)
-  const [sellAmount, setSellAmount] = useState('')
-  const [showModal, setShowModal] = useState(false)
-  const [isRegistered, setIsRegistered] = useState(false)
-  const [agreedToOffer, setAgreedToOffer] = useState(false)
-  const [amountError, setAmountError] = useState('')
-  const [offerError, setOfferError] = useState('')
-  const [isLoading, setIsLoading] = useState(false)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
 
-  const MIN_POOL_USDT = 15000 // Минимальный объем пула в USDT
-  const MIN_PARTICIPATION_USD = 10 // Минимальное участие в USD
-
-  // Расчет минимального количества USDT для продажи
-  const getMinAmountUsdt = useCallback(() => {
-    return MIN_PARTICIPATION_USD // Минимум $10 = 10 USDT
-  }, [])
-
-  const getProgressPercentage = useCallback((current: number, max: number) => {
-    return Math.min((current / max) * 100, 100)
-  }, [])
-
-  const getStatusText = useCallback((status: string) => {
-    switch (status) {
-      case 'active': return 'Активный'
-      case 'filling': return 'Набирается'
-      case 'completed': return 'Завершен'
-      default: return 'Неизвестно'
-    }
-  }, [])
-
-  const getStatusColor = useCallback((status: string) => {
-    switch (status) {
-      case 'active': return '#4CAF50'
-      case 'filling': return '#FF9800'
-      case 'completed': return '#9E9E9E'
-      default: return '#9E9E9E'
-    }
-  }, [])
-
-  const handleParticipate = useCallback((pool: SellPool) => {
-    setSelectedPool(pool)
-    setShowModal(true)
-    setSellAmount('')
-    setAgreedToOffer(false)
-    setAmountError('')
-    setOfferError('')
-    // Здесь будет валидация с сервера
-    setIsRegistered(Math.random() > 0.5)
-  }, [])
-
-  const handleSellAmountChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value
-    setSellAmount(value)
+  // Преобразование API данных в UI формат для продажи
+  const convertApiPoolToUI = (apiPool: ApiPoolData): UIPoolData => {
+    const progress = Math.min((apiPool.currentVolume / apiPool.targetAmount) * 100, 100)
     
-    if (value) {
-      const minAmount = getMinAmountUsdt()
-      if (parseFloat(value) < minAmount) {
-        setAmountError(`Минимальная сумма продажи: ${minAmount} USDT (${MIN_PARTICIPATION_USD}$)`)
-      } else {
-        setAmountError('')
-      }
+    // Маппинг статусов API -> UI
+    let uiStatus: UIPoolData['status'] = 'inactive'
+    if (apiPool.status === 'active') uiStatus = 'active'
+    else if (apiPool.status === 'fullfilled') uiStatus = 'completed'
+    else if (progress > 0 && progress < 100) uiStatus = 'filling'
+
+    return {
+      id: `SELL-${apiPool.poolNumber}`,
+      poolNumber: apiPool.poolNumber,
+      name: apiPool.currency,
+      date: apiPool.date,
+      rate: 94.80, // Фиксированный курс для продажи (ниже покупки)
+      currentVolume: Math.round(apiPool.currentVolume / 94.80), // Конвертируем в USDT
+      targetVolume: Math.round(apiPool.targetAmount / 94.80),
+      status: uiStatus,
+      progress: Math.round(progress),
+      currency: apiPool.currency
     }
-  }, [getMinAmountUsdt])
+  }
 
-  const handleOfferChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-    setAgreedToOffer(e.target.checked)
-    if (e.target.checked) {
-      setOfferError('')
-    }
-  }, [])
-
-  const calculateReceiveAmount = useMemo(() => {
-    if (!selectedPool || !sellAmount) return 0
-    return parseFloat(sellAmount) * selectedPool.rate
-  }, [selectedPool, sellAmount])
-
-  const isFormValid = useMemo(() => {
-    if (!selectedPool || !sellAmount || !agreedToOffer) return false
-    const minAmount = getMinAmountUsdt()
-    return parseFloat(sellAmount) >= minAmount
-  }, [selectedPool, sellAmount, agreedToOffer, getMinAmountUsdt])
-
-  const handleSubmit = useCallback(async () => {
-    if (!selectedPool || !sellAmount) return
+  // Инициализация и подписка на обновления пулов
+  useEffect(() => {
+    console.log('[Sell] Инициализация пулов')
     
-    const minAmount = getMinAmountUsdt()
-    if (parseFloat(sellAmount) < minAmount) {
-      setAmountError(`Минимальная сумма продажи: ${minAmount} USDT (${MIN_PARTICIPATION_USD}$)`)
-      return
-    }
-    
-    if (!agreedToOffer) {
-      setOfferError('Необходимо согласиться с офертой')
-      return
-    }
+    // Подписка на обновления пулов
+    const unsubscribePools = poolsService.subscribeToPoolsUpdates((apiPools: ApiPoolData[]) => {
+      console.log('[Sell] Получены пулы от API:', apiPools)
+      
+      // Преобразуем API пулы в UI формат
+      const uiPools = apiPools.map(convertApiPoolToUI)
+      setPools(uiPools)
+      setIsLoading(false)
+    })
 
-    setIsLoading(true)
-    
-    try {
-      // Имитация отправки на сервер
-      await new Promise(resolve => setTimeout(resolve, 2000))
-      console.log('Продажа:', { pool: selectedPool, amount: sellAmount })
-      setShowModal(false)
-    } catch (error) {
-      console.error('Ошибка при продаже:', error)
-    } finally {
+    // Подписка на статус подключения
+    const unsubscribeConnection = poolsService.onConnectionStatusChange((status: ConnectionStatus) => {
+      console.log('[Sell] Статус подключения:', status)
+      setConnectionStatus(status)
+    })
+
+    // Получаем начальные данные
+    const initialPools = poolsService.getCurrentPools()
+    if (initialPools.length > 0) {
+      const uiPools = initialPools.map(convertApiPoolToUI)
+      setPools(uiPools)
       setIsLoading(false)
     }
-  }, [selectedPool, sellAmount, agreedToOffer, getMinAmountUsdt])
 
-  const legendItems = useMemo(() => [
-    { status: 'active', text: 'Активный' },
-    { status: 'filling', text: 'Набирается' },
-    { status: 'completed', text: 'Завершен' }
-  ], [])
+    return () => {
+      unsubscribePools()
+      unsubscribeConnection()
+    }
+  }, [])
 
-  const toggleMobileMenu = useCallback(() => {
+  const toggleMobileMenu = () => {
     setMobileMenuOpen(!mobileMenuOpen)
-    // Блокируем скролл при открытом меню
     if (!mobileMenuOpen) {
       document.body.classList.add('menu-open')
     } else {
       document.body.classList.remove('menu-open')
     }
-  }, [mobileMenuOpen])
+  }
 
-  // Функция для закрытия мобильного меню при клике на ссылку
-  const closeMobileMenu = useCallback(() => {
+  const closeMobileMenu = () => {
     setMobileMenuOpen(false)
     document.body.classList.remove('menu-open')
-  }, [])
+  }
 
-  // Очищаем класс при размонтировании
-  useEffect(() => {
-    return () => {
-      document.body.classList.remove('menu-open')
-    }
-  }, [])
+  const handlePoolRefresh = async (pool: UIPoolData) => {
+    console.log('[Sell] Обновление пула:', pool.poolNumber)
+  }
+
+  const handleAllPoolsRefresh = async () => {
+    console.log('[Sell] Обновление всех пулов')
+    setIsLoading(true)
+    await poolsService.refreshPools()
+  }
+
+  const handleParticipate = (pool: UIPoolData) => {
+    console.log('[Sell] Участие в пуле:', pool)
+    // Здесь будет логика участия в пуле
+  }
 
   return (
     <div className="app-root">
@@ -239,118 +143,158 @@ const Sell = memo(() => {
         </div>
       </header>
 
-      <main className="page-main">
-        <div className="page-container">
-          <div className="page-header">
-            <h1 className="page-title">Продать USDT</h1>
-            <p className="page-subtitle">Выберите подходящий пул для продажи USDT за рубли</p>
+      <main className="sell-main">
+        <div className="sell-container">
+          {/* Заголовок как на фото */}
+          <div className="sell-header">
+            <h1 className="sell-title">Продать USDT</h1>
+            <p className="sell-subtitle">Выберите подходящий пул для продажи USDT за рубли</p>
           </div>
 
-          <div className="pools-section">
-            <div className="pools-header">
-              <h2>Активные пулы продажи USDT</h2>
-              <div className="pools-legend">
-                {legendItems.map((item) => (
-                  <div key={item.status} className="legend-item">
-                    <div className={`legend-dot ${item.status}`}></div>
-                    <span>{item.text}</span>
+          {/* Секция пулов */}
+          <div className="sell-pools-section">
+            {/* Заголовок секции и статусы */}
+            <div className="sell-pools-header">
+              <h2 className="sell-pools-title">Активные пулы USDT</h2>
+              <div className="sell-pools-actions">
+                <button 
+                  onClick={handleAllPoolsRefresh}
+                  className="sell-refresh-all-btn"
+                  disabled={isLoading}
+                >
+                  <span className="material-icons">refresh</span>
+                  Обновить все
+                </button>
+                <div className="sell-status-legend">
+                  <div className="sell-status-item">
+                    <div className="sell-status-dot active"></div>
+                    <span>Активный</span>
                   </div>
-                ))}
+                  <div className="sell-status-item">
+                    <div className="sell-status-dot filling"></div>
+                    <span>Набирается</span>
+                  </div>
+                  <div className="sell-status-item">
+                    <div className="sell-status-dot completed"></div>
+                    <span>Завершен</span>
+                  </div>
+                </div>
               </div>
             </div>
 
-            <div className="pools-grid">
-              {pools.map((pool) => {
-                const progressPercentage = getProgressPercentage(pool.currentVolume, pool.maxVolume)
-                const statusColor = getStatusColor(pool.status)
-                const statusText = getStatusText(pool.status)
-                const poolSizeUsdt = pool.maxVolume
-                const isPoolValid = poolSizeUsdt >= MIN_POOL_USDT
-                
-                return (
-                  <div key={pool.id} className={`pool-card ${pool.status} ${!isPoolValid ? 'invalid' : ''}`}>
-                    <div className="pool-header">
-                      <div className="pool-currency">
-                        <span className="currency-symbol">{pool.currency}</span>
-                        <div className="pool-info-header">
-                          <span className="pool-number">#{pool.poolNumber}</span>
-                          <div className="pool-status" style={{ backgroundColor: statusColor }}>
-                            {statusText}
-                          </div>
-                        </div>
-                      </div>
-                      <div className="pool-date">{pool.date}</div>
-                    </div>
+            {/* Индикатор подключения */}
+            <div className={`sell-connection-indicator ${connectionStatus}`}>
+              <span className="material-icons">
+                {connectionStatus === 'connected' ? 'wifi' : 
+                 connectionStatus === 'connecting' ? 'wifi_off' : 'error'}
+              </span>
+              <span>
+                {connectionStatus === 'connected' ? 'Подключено к API' :
+                 connectionStatus === 'connecting' ? 'Подключение...' : 'Ошибка подключения'}
+              </span>
+            </div>
 
-                    <div className="pool-info">
-                      <div className="info-item">
-                        <span className="info-label">Курс продажи:</span>
-                        <span className="info-value rate">{pool.rate.toFixed(2)} ₽</span>
-                      </div>
-
-                      <div className="info-item">
-                        <span className="info-label">Объем пула:</span>
-                        <span className="info-value volume">
-                          {pool.currentVolume.toLocaleString()}/{pool.maxVolume.toLocaleString()} USDT
-                        </span>
-                      </div>
-
-                      <div className="info-item">
-                        <span className="info-label">Цель пула:</span>
-                        <span className="info-value">
-                          {pool.targetAmount.toLocaleString()} USDT
-                        </span>
-                      </div>
-
-                      <div className="pool-progress">
-                        <div className="progress-bar">
-                          <div 
-                            className="progress-fill"
-                            style={{ 
-                              width: `${progressPercentage}%`,
-                              backgroundColor: statusColor
-                            }}
-                          ></div>
-                        </div>
-                        <span className="progress-text">
-                          {Math.round(progressPercentage)}%
-                        </span>
-                      </div>
-                    </div>
-
-                    <button 
-                      className={`participate-btn ${pool.status === 'completed' || !isPoolValid ? 'disabled' : ''}`}
-                      disabled={pool.status === 'completed' || !isPoolValid}
-                      onClick={() => handleParticipate(pool)}
-                    >
-                      {!isPoolValid ? `Мин. ${MIN_POOL_USDT.toLocaleString()} USDT` : pool.status === 'completed' ? 'Завершен' : 'Участвовать'}
+            {/* Основной контент: пулы слева, инструкции справа */}
+            <div className="sell-content">
+              {/* Список пулов */}
+              <div className="sell-pools-list">
+                {isLoading ? (
+                  <div className="sell-loading">
+                    <div className="sell-loading-spinner"></div>
+                    <span>Загрузка пулов...</span>
+                  </div>
+                ) : pools.length === 0 ? (
+                  <div className="sell-no-pools">
+                    <span className="material-icons">error_outline</span>
+                    <h3>Нет доступных пулов</h3>
+                    <p>В данный момент нет активных пулов для продажи</p>
+                    <button onClick={handleAllPoolsRefresh} className="sell-retry-btn">
+                      Попробовать снова
                     </button>
                   </div>
-                )
-              })}
-            </div>
+                ) : (
+                  pools.map((pool) => (
+                    <div key={pool.id} className={`sell-pool-card ${pool.status}`}>
+                      <div className="sell-pool-header">
+                        <div className="sell-pool-currency">
+                          <span className="sell-currency-symbol">{pool.name}</span>
+                          <div className="sell-pool-info">
+                            <span className="sell-pool-id">#{pool.poolNumber}</span>
+                            <span className="sell-pool-date">{pool.date}</span>
+                          </div>
+                        </div>
+                        <div className="sell-pool-actions-header">
+                          <div className={`sell-pool-status ${pool.status}`}>
+                            {pool.status === 'active' ? 'Активный' :
+                             pool.status === 'filling' ? 'Набирается' :
+                             pool.status === 'completed' ? 'Завершен' : 'Недоступен'}
+                          </div>
+                          <button 
+                            onClick={() => handlePoolRefresh(pool)}
+                            className="sell-pool-refresh-btn"
+                            title="Обновить пул"
+                          >
+                            <span className="material-icons">refresh</span>
+                          </button>
+                        </div>
+                      </div>
 
-            <div className="pools-info-sidebar">
-              <div className="info-card">
-                <h4>Как работают пулы продажи?</h4>
-                <ul>
-                  <li>✓ Участники объединяют USDT для продажи</li>
-                  <li>✓ Продажа происходит по выгодному курсу</li>
-                  <li>✓ Снижение комиссий благодаря объему</li>
-                  <li>✓ Быстрые выплаты в рублях</li>
-                </ul>
+                      <div className="sell-pool-details">
+                        <div className="sell-detail-item">
+                          <span className="sell-detail-label">Курс:</span>
+                          <span className="sell-detail-value sell-rate">{pool.rate.toFixed(2)} ₽</span>
+                        </div>
+                        <div className="sell-detail-item">
+                          <span className="sell-detail-label">Объем пула:</span>
+                          <span className="sell-detail-value">{pool.currentVolume}/{pool.targetVolume} USDT</span>
+                        </div>
+                        <div className="sell-detail-item">
+                          <span className="sell-detail-label">Цель пула:</span>
+                          <span className="sell-detail-value">{(pool.targetVolume * 1000).toLocaleString()} USDT</span>
+                        </div>
+                      </div>
+
+                      <div className="sell-pool-progress">
+                        <div className="sell-progress-bar">
+                          <div 
+                            className={`sell-progress-fill ${pool.status}`}
+                            style={{ width: `${pool.progress}%` }}
+                          ></div>
+                        </div>
+                        <span className="sell-progress-text">{pool.progress}%</span>
+                      </div>
+
+                      <button 
+                        className={`sell-participate-btn ${pool.status === 'completed' || pool.status === 'inactive' ? 'disabled' : ''}`}
+                        disabled={pool.status === 'completed' || pool.status === 'inactive'}
+                        onClick={() => handleParticipate(pool)}
+                      >
+                        {pool.status === 'completed' ? 'Завершен' : 
+                         pool.status === 'inactive' ? 'Недоступен' : 'Участвовать'}
+                      </button>
+                    </div>
+                  ))
+                )}
               </div>
 
-              <div className="info-card">
-                <h4>Условия продажи</h4>
-                <div className="commission-info">
-                  <div className="commission-item">
-                    <span>Валюта:</span>
-                    <span>USDT за ₽</span>
-                  </div>
-                  <div className="commission-item">
-                    <span>Мин. участие:</span>
-                    <span>${MIN_PARTICIPATION_USD}</span>
+              {/* Инструкции справа */}
+              <div className="sell-instructions">
+                <div className="sell-info-card">
+                  <h3>Как работают пулы?</h3>
+                  <ul>
+                    <li>✓ Участники объединяют USDT для продажи за рубли</li>
+                    <li>✓ Продажа происходит по единому выгодному курсу</li>
+                    <li>✓ Снижение комиссий благодаря объему</li>
+                    <li>✓ Автоматическое распределение рублей</li>
+                  </ul>
+                </div>
+
+                <div className="sell-info-card">
+                  <h3>Условия продажи</h3>
+                  <div className="sell-conditions">
+                    <div className="sell-condition-item">
+                      <span>Валюта: ₽ за USDT</span>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -359,116 +303,6 @@ const Sell = memo(() => {
         </div>
       </main>
 
-      {/* Модальное окно */}
-      {showModal && selectedPool && (
-        <div className="modal-overlay" onClick={() => setShowModal(false)}>
-          <div className="modal-content responsive-modal" onClick={(e) => e.stopPropagation()}>
-            {!isRegistered ? (
-              // Окно регистрации
-              <div className="registration-modal">
-                <div className="modal-header">
-                  <h3>Регистрация</h3>
-                  <button className="modal-close" onClick={() => setShowModal(false)}>×</button>
-                </div>
-                <div className="modal-body">
-                  <p>Для участия в пулах необходимо зарегистрироваться</p>
-                  <form className="registration-form">
-                    <div className="form-group">
-                      <label>Email</label>
-                      <input type="email" className="form-input" placeholder="Введите email" />
-                    </div>
-                    <div className="form-group">
-                      <label>Пароль</label>
-                      <input type="password" className="form-input" placeholder="Введите пароль" />
-                    </div>
-                    <div className="form-group">
-                      <label>Телефон</label>
-                      <input type="tel" className="form-input" placeholder="+7 (999) 123-45-67" />
-                    </div>
-                  </form>
-                </div>
-                <div className="modal-footer">
-                  <button type="submit" className="modal-btn primary" disabled={isLoading}>
-                    {isLoading ? <span className="loading-spinner"></span> : 'Зарегистрироваться'}
-                  </button>
-                  <button className="modal-btn secondary" onClick={() => setShowModal(false)}>
-                    Отменить
-                  </button>
-                </div>
-              </div>
-            ) : (
-              // Окно участия в пуле
-              <div className="participation-modal">
-                <div className="modal-header">
-                  <h3>Продажа {selectedPool.currency}</h3>
-                  <button className="modal-close" onClick={() => setShowModal(false)}>×</button>
-                </div>
-                <div className="modal-body">
-                  <div className="pool-summary">
-                    <div className="summary-item">
-                      <span>Курс:</span>
-                      <span>{selectedPool.rate.toFixed(2)} ₽</span>
-                    </div>
-                    <div className="summary-item">
-                      <span>Статус:</span>
-                      <span>{getStatusText(selectedPool.status)}</span>
-                    </div>
-                  </div>
-
-                  <div className="form-group">
-                    <label>Количество для продажи (USDT)</label>
-                    <input 
-                      type="number" 
-                      className={`form-input ${amountError ? 'error' : ''}`}
-                      placeholder={`Мин. количество: ${getMinAmountUsdt()} USDT (${MIN_PARTICIPATION_USD}$)`}
-                      value={sellAmount}
-                      onChange={handleSellAmountChange}
-                      step="1"
-                      min={getMinAmountUsdt()}
-                    />
-                    {amountError && <span className="error-message">{amountError}</span>}
-                  </div>
-
-                  {sellAmount && parseFloat(sellAmount) >= getMinAmountUsdt() && (
-                    <div className="amount-preview">
-                      <div className="preview-item">
-                        <span>К получению:</span>
-                        <span className="amount-value">{calculateReceiveAmount.toLocaleString()} ₽</span>
-                      </div>
-                    </div>
-                  )}
-
-                  <div className="agreement-checkbox">
-                    <input 
-                      type="checkbox" 
-                      id="agreement" 
-                      checked={agreedToOffer}
-                      onChange={handleOfferChange}
-                    />
-                    <label htmlFor="agreement">
-                      Я согласен с <a href="#" target="_blank">офертой</a> и условиями сделки
-                    </label>
-                  </div>
-                  {offerError && <span className="error-message">{offerError}</span>}
-                </div>
-
-                <div className="modal-footer">
-                  <button 
-                    className={`modal-btn primary ${!isFormValid ? 'disabled' : ''}`}
-                    onClick={handleSubmit}
-                    disabled={!isFormValid || isLoading}
-                  >
-                    {isLoading ? <span className="loading-spinner"></span> : 'Продать'}
-                  </button>
-                  <button className="modal-btn secondary" onClick={() => setShowModal(false)} disabled={isLoading}>
-                    Отменить
-                  </button>
-                </div>
-              </div>
-            )}
-          </div>
-        </div>
-      )}
       <Footer />
     </div>
   )
@@ -476,4 +310,4 @@ const Sell = memo(() => {
 
 Sell.displayName = 'Sell'
 
-export default Sell 
+export default Sell

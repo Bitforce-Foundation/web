@@ -41,16 +41,16 @@
 
 .loading-logo-f {
   transform: scaleX(-1);
-  margin-left: 0px;
+  margin-left: 1px;
   position: relative;
   z-index: 2;
-  font-weight: 100;
+  font-weight: 110;
   font-family: 'Crimson Pro', serif;
 }
 
 .loading-logo-b {
   display: inline-block;
-  margin-left: -99px;
+  margin-left: -98px;
   position: relative;
   z-index: 2;
   font-weight: 100;
@@ -201,7 +201,7 @@
 
   .loading-logo-b {
     display: inline-block;
-    margin-left: -69px; /* Отдаляем на 5px от -79px */
+    margin-left: -79px; /* Отдаляем на 5px от -79px */
     position: relative;
     z-index: 2;
   }

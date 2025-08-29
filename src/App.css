@@ -518,7 +518,26 @@ html {
     padding: 0.4em 1em;
   }
   
-
+  /* Кнопка закрытия мобильного меню */
+  .header__close-menu {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: #333;
+    padding: 0.5rem;
+    border-radius: 50%;
+    transition: all 0.3s ease;
+    z-index: 1000;
+  }
+  
+  .header__close-menu:hover {
+    background: #f0f0f0;
+    color: #666;
+  }
   
   /* Блокировка скролла при открытом меню */
   body.menu-open {
@@ -2265,7 +2284,7 @@ html {
 .trading-buttons-section {
   width: 100%;
   padding: 4rem 0;
-  background: #f9f9f9;
+  background: #ffffff;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -2293,7 +2312,6 @@ html {
   text-decoration: none;
   transition: all 0.3s ease;
   min-width: 180px;
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
   position: relative;
   overflow: hidden;
 }
@@ -2335,7 +2353,7 @@ html {
 
 /* About Section Styles */
 .about-section {
-  background: white;
+  background: rgb(168, 24, 24);
   padding: 6rem 0;
 }
 
@@ -2872,7 +2890,7 @@ html {
 .pools-section {
   display: grid;
   grid-template-columns: 2fr 1fr;
-  gap: 3rem;
+  gap: 1rem;
   align-items: start;
 }
 
@@ -3011,7 +3029,7 @@ html {
 }
 
 .info-value.rate {
-  color: #bfa77a;
+  color: #7abf82;
   font-size: 1.1rem;
 }
 
@@ -3047,7 +3065,7 @@ html {
 .progress-text {
   font-size: 0.85rem;
   font-weight: 600;
-  color: #0b1e2d;
+  color: #1281d6;
   min-width: 40px;
 }
 
@@ -3059,7 +3077,7 @@ html {
   border: none;
   border-radius: 12px;
   font-size: 1.5rem;
-  font-weight: 500;
+  font-weight: 400;
   cursor: pointer;
   transition: all 0.3s ease;
   text-align: center;
@@ -4199,7 +4217,7 @@ html {
 }
 
 .profile__sidebar.expanded {
-  width: 280px;
+  width: 580px;
 }
 
 .profile__sidebar-header {
@@ -4322,7 +4340,6 @@ html {
 
 /* Упрощенные стили профиля - ТЕМНО-СИНИЙ ГРАДИЕНТ */
 .profile-main-card {
-  background: linear-gradient(135deg, #0b1e2d 0%, #1e3a5f 100%);
   border-radius: 20px;
   padding: 2rem;
   margin-bottom: 2rem;
@@ -7994,45 +8011,4 @@ button:hover,
 .profile__chart-fill {
   will-change: transform;
   transform: translateZ(0);
-}
-
-/* Блокировка скролла при открытом меню */
-body.menu-open {
-  overflow: hidden;
-}
-
-/* Стили для вторичной загрузки (между страницами) */
-.loading-container {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background: linear-gradient(135deg, #041b2f 0%, #0a2c47 50%, #041b2f 100%);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 9999;
-}
-
-.loading-container .loading-content {
-  text-align: center;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 2rem;
-}
-
-.loading-container .loading-logo2 img {
-  height: 100px;
-  width: auto;
-  object-fit: contain;
-}
-
-.loading-container .loading-subtitle {
-  color: #ffffff;
-  font-size: 1.4rem;
-  font-weight: 500;
-  margin: 0;
-  opacity: 0.9;
 }

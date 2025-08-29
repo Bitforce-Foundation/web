@@ -1,10 +1,14 @@
 import { useState, useMemo, useCallback, memo, useEffect } from 'react'
 import { Link } from 'react-router-dom'
+import { Refresh as RefreshIcon } from '@mui/icons-material'
 
 import Footer from '../components/Footer'
 import logo from '../assets/logo2.png'
 import mainlogo from '../assets/mainlogo.png'
 import leadImage from '../assets/lead.png'
+import { poolsService } from '../api'
+import type { PoolData, ConnectionStatus } from '../api/types/pools.types'
+import './Home.css'
 
 const Home = memo(() => {
   const [activeOption, setActiveOption] = useState<number | null>(0)
@@ -12,8 +16,13 @@ const Home = memo(() => {
   const [showTradingDescription, setShowTradingDescription] = useState(true)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [selectedAction, setSelectedAction] = useState('buy')
-  const [selectedPool, setSelectedPool] = useState('main')
+  const [selectedPool, setSelectedPool] = useState(0) // Изменили на число для ID пула
   const [poolType, setPoolType] = useState('active')
+  
+  // Новые состояния для API данных
+  const [pools, setPools] = useState<PoolData[]>([])
+  const [connectionStatus, setConnectionStatus] = useState<ConnectionStatus>('disconnected')
+  const [isLoading, setIsLoading] = useState(true)
 
   const handleOptionClick = useCallback((index: number) => {
     setActiveOption(prev => prev === index ? null : index)
@@ -42,6 +51,43 @@ const Home = memo(() => {
     }
   }, [])
 
+  // Инициализация данных пулов
+  useEffect(() => {
+    console.log('[Home] useEffect запущен')
+    setIsLoading(true)
+    
+    // Используем API сервис
+    if (import.meta.env.DEV) {
+      console.log('[Home] Режим разработки: используем API сервис')
+      
+      // Подписываемся на обновления пулов
+      const unsubscribePools = poolsService.subscribeToPoolsUpdates((updatedPools) => {
+        console.log('[Home] Получены обновления пулов:', updatedPools)
+        setPools(updatedPools)
+        setIsLoading(false)
+        
+        // Устанавливаем первый пул как выбранный по умолчанию
+        if (updatedPools.length > 0 && selectedPool === 0) {
+          setSelectedPool(updatedPools[0].id)
+        }
+      })
+
+      // Подписываемся на изменения статуса подключения
+      const unsubscribeStatus = poolsService.onConnectionStatusChange((status) => {
+        setConnectionStatus(status)
+        console.log('[Home] Статус подключения:', status)
+      })
+
+      // Загружаем начальные данные
+      poolsService.fetchPools()
+
+      return () => {
+        unsubscribePools()
+        unsubscribeStatus()
+      }
+    }
+  }, [selectedPool])
+
   const toggleTradingDescription = useCallback(() => {
     setShowTradingDescription(prev => !prev)
   }, [])
@@ -50,65 +96,74 @@ const Home = memo(() => {
     setSelectedAction(action)
   }, [])
 
-  const handlePoolChange = useCallback((pool: string) => {
+  const handlePoolChange = useCallback((pool: number) => {
     setSelectedPool(pool)
+  }, [])
+
+  const handleAllPoolsRefresh = useCallback(async () => {
+    console.log('[Home] Обновление всех пулов')
+    try {
+      await poolsService.refreshPools()
+    } catch (error) {
+      console.error('[Home] Ошибка обновления всех пулов:', error)
+    }
+  }, [])
+
+  const handlePoolRefresh = useCallback(async (poolId: number) => {
+    console.log('[Home] Обновление пула:', poolId)
+    try {
+      await poolsService.updatePool(poolId, {
+        id: poolId,
+        currentVolume: Math.random() * 1000 + 100
+      })
+    } catch (error) {
+      console.error('[Home] Ошибка обновления пула:', error)
+    }
   }, [])
 
   const handlePoolTypeChange = useCallback((type: string) => {
     setPoolType(type)
   }, [])
 
-  // Данные активных пулов
-  const activePools = useMemo(() => ({
-    main: {
-      id: 'MAIN-2024-001',
-      date: '2024-01-15',
-      buyRate: 94.20,
-      sellRate: 93.80,
-      currentVolume: 8500,
-      maxVolume: 25000,
-      status: 'active',
-      statusColor: '#22c55e'
-    },
-    reserve: {
-      id: 'RESERVE-2024-001', 
-      date: '2024-01-15',
-      buyRate: 94.00,
-      sellRate: 93.60,
-      currentVolume: 12000,
-      maxVolume: 20000,
-      status: 'filling',
-      statusColor: '#f59e0b'
+  // Функция для определения цвета статуса
+  const getStatusColor = useCallback((status: PoolData['status']) => {
+    switch (status) {
+      case 'active': return '#22c55e'
+      case 'fullfilled': return '#f59e0b'
+      case 'inactive': return '#64748b'
+      default: return '#64748b'
     }
-  }), [])
+  }, [])
 
-  // Данные завершенных пулов
-  const completedPools = useMemo(() => ({
-    main: {
-      id: 'MAIN-2024-002',
-      date: '2024-01-10',
-      buyRate: 93.85,
-      sellRate: 93.45,
-      currentVolume: 30000,
-      maxVolume: 30000,
-      status: 'completed',
-      statusColor: '#64748b'
-    },
-    reserve: {
-      id: 'RESERVE-2024-002',
-      date: '2024-01-08', 
-      buyRate: 93.60,
-      sellRate: 93.20,
-      currentVolume: 15000,
-      maxVolume: 15000,
-      status: 'completed',
-      statusColor: '#64748b'
+  // Функция для получения текста статуса
+  const getStatusText = useCallback((status: PoolData['status']) => {
+    switch (status) {
+      case 'active': return 'Активный'
+      case 'fullfilled': return 'Заполнен'
+      case 'inactive': return 'Недействительный'
+      default: return 'Неизвестно'
     }
-  }), [])
+  }, [])
 
-  // Выбираем текущие пулы в зависимости от типа
-  const currentPools = poolType === 'active' ? activePools : completedPools
-  const currentPool = currentPools[selectedPool as keyof typeof currentPools]
+  // Получаем текущий выбранный пул из API данных
+  const currentPool = useMemo(() => {
+    const pool = pools.find(p => p.id === selectedPool)
+    if (!pool && pools.length > 0) {
+      return pools[0]
+    }
+    return pool
+  }, [pools, selectedPool])
+
+  // Фильтруем пулы по статусу
+  const filteredPools = useMemo(() => {
+    return pools.filter(pool => {
+      if (poolType === 'active') {
+        return pool.status === 'active' || pool.status === 'fullfilled'
+      } else {
+        return pool.status === 'inactive'
+      }
+    })
+  }, [pools, poolType])
 
   const conversionSectionClass = useMemo(() => {
     return `conversion-section ${activeOption !== null ? 'with-expanded-content' : ''}`
@@ -309,109 +364,140 @@ const Home = memo(() => {
             </div>
           </div>
           
-          {/* Слайдер пулов под кнопками */}
-          <div className="pools-slider">
-            <div className="pools-slider-header">
-              <h3>Выберите пул для {selectedAction === 'buy' ? 'покупки' : 'продажи'}</h3>
-              <div className="pool-controls">
-                <div className="pool-type-toggle">
-                  <button 
-                    className={`pool-type-btn ${poolType === 'active' ? 'active' : ''}`}
-                    onClick={() => handlePoolTypeChange('active')}
-                  >
-                    Активные
-                  </button>
-                  <button 
-                    className={`pool-type-btn ${poolType === 'completed' ? 'active' : ''}`}
-                    onClick={() => handlePoolTypeChange('completed')}
-                  >
-                    Завершенные
-                  </button>
-                </div>
-                <div className="pool-toggle">
-                  <button 
-                    className={`pool-toggle-btn ${selectedPool === 'main' ? 'active' : ''}`}
-                    onClick={() => handlePoolChange('main')}
-                  >
-                    Основной
-                  </button>
-                  <button 
-                    className={`pool-toggle-btn ${selectedPool === 'reserve' ? 'active' : ''}`}
-                    onClick={() => handlePoolChange('reserve')}
-                  >
-                    Резервный
-                  </button>
-                </div>
+
+        </div>
+      </section>
+
+      {/* Компактный раздел с пулами */}
+      <section className="home-pools-section">
+        <div className="home-pools-container">
+          <div className="home-pools-header">
+            <h3>Текущий пул</h3>
+            <div className="home-pools-actions">
+              <div className="home-pool-controls">
+                <button 
+                  className={`home-pool-btn ${poolType === 'active' ? 'active' : ''}`}
+                  onClick={() => handlePoolTypeChange('active')}
+                >
+                  Активные
+                </button>
+                <button 
+                  className={`home-pool-btn ${poolType === 'completed' ? 'active' : ''}`}
+                  onClick={() => handlePoolTypeChange('completed')}
+                >
+                  Завершенные
+                </button>
               </div>
+              
+              <button 
+                onClick={() => handleAllPoolsRefresh()}
+                className="home-refresh-all-btn"
+                title="Обновить все пулы"
+              >
+                <RefreshIcon className="home-refresh-icon" />
+                Обновить все
+              </button>
             </div>
-            
-            <div className="pools-grid">
-              <div className={`pool-card ${currentPool.status}`}>
-                <div className="pool-header">
-                  <div className="pool-currency">
-                    <span className="currency-symbol">USDT</span>
-                    <div className="pool-info-header">
-                      <span className="pool-number">#{currentPool.id}</span>
-                      <div className="pool-status" style={{ backgroundColor: currentPool.statusColor }}>
-                        {currentPool.status === 'active' ? 'Активный' : 
-                         currentPool.status === 'filling' ? 'Набирается' : 
-                         currentPool.status === 'completed' ? 'Завершен' : 'Резервный'}
-                      </div>
-                    </div>
-                  </div>
-                  <div className="pool-date">{currentPool.date}</div>
+          </div>
+
+          {/* Индикатор статуса подключения */}
+          <div className="home-connection-status">
+            <span className={`home-connection-indicator ${connectionStatus}`}>
+              {connectionStatus === 'connected' && '🟢 Подключено к API'}
+              {connectionStatus === 'connecting' && '🟡 Подключение к API...'}
+              {connectionStatus === 'disconnected' && '🔴 Отключено от API'}
+            </span>
+          </div>
+
+          {isLoading ? (
+            <div className="home-loading">
+              <div className="home-loading-spinner"></div>
+              <p>Загрузка пулов...</p>
+            </div>
+          ) : currentPool ? (
+            <div className="home-pool-card">
+              <div className="home-pool-info">
+                <div className="home-pool-main">
+                  <span className="home-pool-currency">{currentPool.currency}</span>
+                  <span className="home-pool-number">#{currentPool.poolNumber}</span>
+                  <span className="home-pool-status" style={{ backgroundColor: getStatusColor(currentPool.status) }}>
+                    {getStatusText(currentPool.status)}
+                  </span>
                 </div>
-
-                <div className="pool-info">
-                  <div className="info-item">
-                    <span className="info-label">Курс {selectedAction === 'buy' ? 'покупки' : 'продажи'}:</span>
-                    <span className="info-value rate">
-                      {selectedAction === 'buy' ? currentPool.buyRate.toFixed(2) : currentPool.sellRate.toFixed(2)} ₽
+                
+                <div className="home-pool-details">
+                  <div className="home-pool-row">
+                    <span>Адрес пула:</span>
+                    <span className="home-pool-address">
+                      {currentPool.poolAddress ? `${currentPool.poolAddress.slice(0, 8)}...${currentPool.poolAddress.slice(-6)}` : 'Не указан'}
                     </span>
                   </div>
-
-                  <div className="info-item">
-                    <span className="info-label">Объем пула:</span>
-                    <span className="info-value volume">
-                      {currentPool.currentVolume.toLocaleString()}/{currentPool.maxVolume.toLocaleString()} USDT
-                    </span>
+                  <div className="home-pool-row">
+                    <span>Объем:</span>
+                    <span>{currentPool.currentVolume.toLocaleString()}/{currentPool.targetAmount.toLocaleString()} {currentPool.currency}</span>
                   </div>
-
-                  <div className="info-item">
-                    <span className="info-label">Цель пула:</span>
-                    <span className="info-value">
-                      {currentPool.maxVolume.toLocaleString()} USDT
-                    </span>
-                  </div>
-
-                  <div className="pool-progress">
-                    <div className="progress-bar">
+                  <div className="home-pool-progress">
+                    <div className="home-progress-bar">
                       <div 
-                        className="progress-fill"
+                        className="home-progress-fill"
                         style={{ 
-                          width: `${Math.round((currentPool.currentVolume / currentPool.maxVolume) * 100)}%`,
-                          backgroundColor: currentPool.statusColor
+                          width: `${Math.round((currentPool.currentVolume / currentPool.targetAmount) * 100)}%`,
+                          backgroundColor: getStatusColor(currentPool.status)
                         }}
                       ></div>
                     </div>
-                    <span className="progress-text">
-                      {Math.round((currentPool.currentVolume / currentPool.maxVolume) * 100)}%
+                    <span className="home-progress-text">
+                      {Math.round((currentPool.currentVolume / currentPool.targetAmount) * 100)}%
                     </span>
                   </div>
                 </div>
 
-                {poolType === 'active' ? (
-                  <Link to={`/${selectedAction}`} className="participate-btn">
-                    {selectedAction === 'buy' ? 'Купить' : 'Продать'}
-                  </Link>
-                ) : (
-                  <button className="participate-btn disabled" disabled>
-                    Завершен
-                  </button>
-                )}
+                <div className="home-pool-actions">
+                  <div className="home-pool-toggle">
+                    {filteredPools.map((pool, index) => (
+                      <button 
+                        key={pool.id}
+                        className={`home-toggle-btn ${selectedPool === pool.id ? 'active' : ''}`}
+                        onClick={() => handlePoolChange(pool.id)}
+                      >
+                        Пул {index + 1}
+                      </button>
+                    ))}
+                  </div>
+                  
+                  <div className="home-pool-main-actions">
+                    {currentPool.status === 'active' ? (
+                      <Link to={`/${selectedAction}`} className="home-participate-btn">
+                        {selectedAction === 'buy' ? 'Купить' : 'Продать'}
+                      </Link>
+                    ) : (
+                      <button className="home-participate-btn disabled" disabled>
+                        {currentPool.status === 'fullfilled' ? 'Заполнен' : 'Недействительный'}
+                      </button>
+                    )}
+                    
+                    <button 
+                      onClick={() => handlePoolRefresh(currentPool.id)}
+                      className="home-refresh-btn"
+                      title="Обновить данные пула"
+                    >
+                      <RefreshIcon className="home-refresh-icon" />
+                    </button>
+                  </div>
+                </div>
               </div>
             </div>
-          </div>
+          ) : (
+            <div className="home-no-pools">
+              <p>Нет доступных пулов</p>
+              <button 
+                onClick={() => poolsService.fetchPools()}
+                className="home-reconnect-btn"
+              >
+                Обновить данные
+              </button>
+            </div>
+          )}
         </div>
       </section>
 

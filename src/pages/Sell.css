@@ -1,0 +1,579 @@
+/* Sell.css - Стили для страницы продажи как на фото */
+
+/* Основные стили страницы */
+.sell-main {
+  background: #f8fafc;
+  min-height: 100vh;
+  padding-top: 2rem;
+}
+
+.sell-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+/* Заголовок страницы */
+.sell-header {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.sell-title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #0b1e2d;
+  margin-bottom: 1rem;
+}
+
+.sell-subtitle {
+  font-size: 1.2rem;
+  color: #64748b;
+  max-width: 600px;
+  margin: 0 auto;
+  line-height: 1.6;
+}
+
+/* Секция пулов */
+.sell-pools-section {
+  background: white;
+  border-radius: 20px;
+  padding: 2rem;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+  border: 1px solid #f1f5f9;
+}
+
+/* Заголовок секции и статусы */
+.sell-pools-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.sell-pools-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #0b1e2d;
+  margin: 0;
+}
+
+.sell-pools-actions {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  flex-wrap: wrap;
+}
+
+.sell-refresh-all-btn {
+  background: #f8fafc;
+  color: #64748b;
+  border: 1px solid #e2e8f0;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.sell-refresh-all-btn:hover:not(:disabled) {
+  background: #e2e8f0;
+  color: #475569;
+}
+
+.sell-refresh-all-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.sell-refresh-all-btn .material-icons {
+  font-size: 1rem;
+}
+
+/* Легенда статусов (горизонтально как на фото) */
+.sell-status-legend {
+  display: flex;
+  gap: 1.5rem;
+  align-items: center;
+}
+
+.sell-status-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.9rem;
+  color: #64748b;
+}
+
+.sell-status-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.sell-status-dot.active {
+  background-color: #22c55e;
+}
+
+.sell-status-dot.filling {
+  background-color: #f59e0b;
+}
+
+.sell-status-dot.completed {
+  background-color: #64748b;
+}
+
+/* Индикатор подключения */
+.sell-connection-indicator {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  margin-bottom: 1.5rem;
+  transition: all 0.3s ease;
+}
+
+.sell-connection-indicator.connected {
+  background: #dcfce7;
+  color: #166534;
+  border: 1px solid #bbf7d0;
+}
+
+.sell-connection-indicator.connecting {
+  background: #fef3c7;
+  color: #92400e;
+  border: 1px solid #fde68a;
+}
+
+.sell-connection-indicator.error {
+  background: #fee2e2;
+  color: #991b1b;
+  border: 1px solid #fecaca;
+}
+
+.sell-connection-indicator .material-icons {
+  font-size: 1.1rem;
+}
+
+/* Основной контент: две колонки */
+.sell-content {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3rem;
+  align-items: start;
+}
+
+/* Список пулов слева */
+.sell-pools-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* Состояния загрузки */
+.sell-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  padding: 3rem;
+  text-align: center;
+  color: #64748b;
+}
+
+.sell-loading-spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid #f3f4f6;
+  border-top: 4px solid #ef4444;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.sell-no-pools {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  padding: 3rem;
+  text-align: center;
+  background: white;
+  border-radius: 12px;
+  border: 1px solid #e5e7eb;
+}
+
+.sell-no-pools .material-icons {
+  font-size: 3rem;
+  color: #94a3b8;
+}
+
+.sell-no-pools h3 {
+  margin: 0;
+  color: #0b1e2d;
+  font-size: 1.25rem;
+}
+
+.sell-no-pools p {
+  margin: 0;
+  color: #64748b;
+}
+
+.sell-retry-btn {
+  background: #ef4444;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 0.75rem 1.5rem;
+  cursor: pointer;
+  font-size: 0.875rem;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.sell-retry-btn:hover {
+  background: #dc2626;
+}
+
+/* Карточка пула */
+.sell-pool-card {
+  background: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 16px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease;
+}
+
+.sell-pool-card:hover {
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+  transform: translateY(-2px);
+}
+
+.sell-pool-card.completed {
+  opacity: 0.7;
+}
+
+.sell-pool-card.inactive {
+  opacity: 0.5;
+}
+
+.sell-pool-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1.5rem;
+}
+
+.sell-pool-actions-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.sell-pool-refresh-btn {
+  background: none;
+  border: none;
+  color: #64748b;
+  cursor: pointer;
+  padding: 0.25rem;
+  border-radius: 4px;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.sell-pool-refresh-btn:hover {
+  background: #f1f5f9;
+  color: #475569;
+}
+
+.sell-pool-refresh-btn .material-icons {
+  font-size: 1.2rem;
+}
+
+.sell-pool-currency {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.sell-currency-symbol {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #0b1e2d;
+}
+
+.sell-pool-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.sell-pool-id {
+  font-size: 0.9rem;
+  color: #64748b;
+  font-weight: 500;
+}
+
+.sell-pool-date {
+  font-size: 0.8rem;
+  color: #94a3b8;
+}
+
+.sell-pool-status {
+  background-color: #22c55e;
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Детали пула */
+.sell-pool-details {
+  margin-bottom: 2rem;
+}
+
+.sell-detail-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem 0;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.sell-detail-item:last-child {
+  border-bottom: none;
+}
+
+.sell-detail-label {
+  font-size: 0.9rem;
+  color: #64748b;
+  font-weight: 500;
+}
+
+.sell-detail-value {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #0b1e2d;
+}
+
+.sell-detail-value.sell-rate {
+  color: #ef4444;
+  font-size: 1.1rem;
+}
+
+/* Прогресс бар */
+.sell-pool-progress {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.sell-progress-bar {
+  flex: 1;
+  height: 8px;
+  background: #e2e8f0;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.sell-progress-fill {
+  height: 100%;
+  border-radius: 4px;
+  transition: width 0.3s ease;
+}
+
+.sell-progress-fill.active {
+  background: #22c55e;
+}
+
+.sell-progress-fill.filling {
+  background: #f59e0b;
+}
+
+.sell-progress-fill.completed {
+  background: #64748b;
+}
+
+.sell-progress-fill.inactive {
+  background: #ef4444;
+}
+
+.sell-progress-text {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #0b1e2d;
+  min-width: 40px;
+}
+
+/* Кнопка участия */
+.sell-participate-btn {
+  width: 100%;
+  background: linear-gradient(135deg, #ef4444, #dc2626);
+  color: white;
+  border: none;
+  border-radius: 12px;
+  padding: 1rem 2rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.sell-participate-btn:hover:not(.disabled) {
+  background: linear-gradient(135deg, #dc2626, #b91c1c);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(239, 68, 68, 0.3);
+}
+
+.sell-participate-btn.disabled {
+  background: #f1f5f9;
+  color: #94a3b8;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+/* Инструкции справа */
+.sell-instructions {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.sell-info-card {
+  background: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 16px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.sell-info-card h3 {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #0b1e2d;
+  margin-bottom: 1rem;
+}
+
+.sell-info-card ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.sell-info-card li {
+  padding: 0.5rem 0;
+  color: #64748b;
+  line-height: 1.5;
+  font-size: 0.95rem;
+}
+
+.sell-conditions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.sell-condition-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.sell-condition-item:last-child {
+  border-bottom: none;
+}
+
+.sell-condition-item span {
+  font-size: 0.95rem;
+  color: #64748b;
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+  .sell-container {
+    padding: 0 1rem;
+  }
+  
+  .sell-title {
+    font-size: 2rem;
+  }
+  
+  .sell-pools-section {
+    padding: 1.5rem;
+  }
+  
+  .sell-pools-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+  
+  .sell-status-legend {
+    gap: 1rem;
+  }
+  
+  .sell-content {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+  
+  .sell-pool-card {
+    padding: 1.5rem;
+  }
+  
+  .sell-currency-symbol {
+    font-size: 1.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .sell-title {
+    font-size: 1.75rem;
+  }
+  
+  .sell-pools-section {
+    padding: 1rem;
+    border-radius: 16px;
+  }
+  
+  .sell-pool-card {
+    padding: 1rem;
+  }
+  
+  .sell-status-legend {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+  
+  .sell-participate-btn {
+    padding: 0.875rem 1.5rem;
+    font-size: 1rem;
+  }
+}
