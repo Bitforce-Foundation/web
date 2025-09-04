@@ -1,6 +1,6 @@
 import { Routes, Route } from 'react-router-dom'
 import { lazy, Suspense, useState, useEffect } from 'react'
-import LoadingScreen from './components/LoadingScreen'
+import LoadingScreen from './pages/loading/LoadingScreen'
 import './App.css'
 
 // Ленивая загрузка компонентов
