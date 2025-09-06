@@ -5,6 +5,7 @@ import './App.css'
 
 // Ленивая загрузка компонентов
 const Home = lazy(() => import('./pages/home/Home'))
+const Registration = lazy(() => import('./pages/auth/Auth'))
 const Profile = lazy(() => import('./pages/profile/Profile'))
 
 // Компонент загрузки для переходов между страницами
@@ -18,7 +19,7 @@ const LoadingSpinner = () => (
       <div className="loading-logo2">
         <img src="/src/assets/logo2.png" alt="Logo 2" />
       </div>
-      <p className="loading-subtitle">Загружаем цифровые активы...</p>
+      <p className="loading-subtitle">Загрузка...</p>
     </div>
   </div>
 )
@@ -51,6 +52,7 @@ function App() {
     <Suspense fallback={<LoadingSpinner />}>
       <Routes>
         <Route path="/" element={<Home />} />
+        <Route path="/registration" element={<Registration />} />
         <Route path="/profile" element={<Profile />} />
       </Routes>
     </Suspense>
