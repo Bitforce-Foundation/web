@@ -1,4 +1,3 @@
-import React from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useRegistrationForm } from './hooks'
 import { FormSection, SuccessMessage, ErrorMessage, FieldRenderer } from './components'
@@ -24,7 +23,6 @@ const Registration: React.FC<RegistrationProps> = ({ onSuccess, onError }) => {
     errors,
     isLoading,
     isSuccess,
-    session,
     updateField,
     submitForm,
     resetForm,
@@ -77,30 +75,6 @@ const Registration: React.FC<RegistrationProps> = ({ onSuccess, onError }) => {
               message={PAGE_TEXTS.success.message}
               onClose={resetForm}
             />
-            
-            {/* Информация о созданной сессии */}
-            {session && (
-              <div style={{ 
-                marginTop: '20px', 
-                padding: '15px', 
-                backgroundColor: '#e7f3ff', 
-                borderRadius: '8px',
-                border: '1px solid #b3d9ff'
-              }}>
-                <h4 style={{ margin: '0 0 10px 0', color: '#0066cc' }}>
-                  ✅ Сессия создана успешно
-                </h4>
-                <div style={{ fontSize: '14px', color: '#004d99' }}>
-                  <div><strong>Session ID:</strong> {session.session_id}</div>
-                  <div><strong>Тип токена:</strong> {session.token_type}</div>
-                  <div><strong>Срок действия:</strong> {session.expires_in} секунд</div>
-                  <div style={{ marginTop: '8px', fontSize: '12px', color: '#666' }}>
-                    Токены сохранены в локальном хранилище браузера
-                  </div>
-                </div>
-              </div>
-            )}
-            
             <div className={CSS_CLASSES.actions}>
               <Button onClick={handleGoToProfile} variant="primary">
                 {PAGE_TEXTS.success.buttonText}

@@ -1,6 +1,7 @@
 import { Routes, Route } from 'react-router-dom'
 import { lazy, Suspense, useState, useEffect } from 'react'
 import LoadingScreen from './pages/loading/LoadingScreen'
+import { SessionActivityProvider } from './pages/auth/SessionActivityProvider'
 import './App.css'
 
 // Ленивая загрузка компонентов
@@ -49,13 +50,15 @@ function App() {
   }
 
   return (
-    <Suspense fallback={<LoadingSpinner />}>
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/registration" element={<Registration />} />
-        <Route path="/profile" element={<Profile />} />
-      </Routes>
-    </Suspense>
+    <SessionActivityProvider>
+      <Suspense fallback={<LoadingSpinner />}>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/registration" element={<Registration />} />
+          <Route path="/profile" element={<Profile />} />
+        </Routes>
+      </Suspense>
+    </SessionActivityProvider>
   )
 }
 
