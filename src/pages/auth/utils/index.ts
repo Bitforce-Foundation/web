@@ -158,9 +158,9 @@ export const formatBik = (value: string): string => {
 
 export const TokenManager = {
   // Ключи для localStorage
-  ACCESS_TOKEN_KEY: 'access_token',
-  REFRESH_TOKEN_KEY: 'refresh_token',
-  SESSION_ID_KEY: 'session_id',
+  ACCESS_TOKEN_KEY: 'access_token.bitforce',
+  REFRESH_TOKEN_KEY: 'refresh_token.bitforce',
+  SESSION_ID_KEY: 'session_id.bitforce',
   
   // Сохранение токенов из ответа сессии
   saveTokens: (sessionResponse: SessionResponse): void => {
@@ -170,7 +170,7 @@ export const TokenManager = {
     
     // Сохраняем время истечения токена
     const expiresAt = Date.now() + (sessionResponse.expires_in * 1000)
-    localStorage.setItem('token_expires_at', expiresAt.toString())
+    localStorage.setItem('token_expires_at.bitforce', expiresAt.toString())
   },
   
   // Сохранение обновленных токенов
@@ -247,13 +247,13 @@ export const TokenManager = {
       if (refreshToken) {
         try {
           // Динамический импорт, чтобы избежать циклических зависимостей
-          const { SessionAPI } = await import('../api')
+          const { PostSessionAPI } = await import('../api/methods/session/post')
           
           // Получаем информацию о клиенте для refresh запроса
-          const clientInfo = SessionAPI.getClientInfo()
-          const refreshResponse = await SessionAPI.refreshToken(
-            refreshToken, 
-            clientInfo.ip_address, 
+          const clientInfo = PostSessionAPI.IP.getClientInfo()
+          const refreshResponse = await PostSessionAPI.refresh_token(
+            refreshToken,
+            clientInfo.ip_address,
             clientInfo.user_agent
           )
           
