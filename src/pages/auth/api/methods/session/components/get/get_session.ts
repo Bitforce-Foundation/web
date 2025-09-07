@@ -1,5 +1,5 @@
 import type {
-  UserSessionsParams,
+    UserSessionsParams,
     UserSessionsResponse,
 } from '../../../../../types'
 
@@ -10,7 +10,6 @@ import {
 
 export class GetUserSessions {
     static async getUserSessions(params: UserSessionsParams): Promise<UserSessionsResponse> {
-        console.log('Получение сессий пользователя:', params.user_id)
     
         const searchParams = new URLSearchParams()
         

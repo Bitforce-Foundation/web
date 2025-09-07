@@ -239,7 +239,6 @@ export const TokenManager = {
     return { Authorization: `Bearer ${token}` }
   },
   
-  // Создание заголовка авторизации с автоматическим обновлением токена
   getAuthHeaderWithRefresh: async (): Promise<{ Authorization: string } | null> => {
     // Если токен скоро истечет, попытаемся его обновить
     if (TokenManager.isTokenExpiringSoon()) {

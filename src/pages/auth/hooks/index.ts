@@ -318,7 +318,6 @@ export const useSession = () => {
     }
   }, [logout])
 
-  // Получение заголовка авторизации
   const getAuthHeader = useCallback(async (): Promise<{ Authorization: string } | null> => {
     return await TokenManager.getAuthHeaderWithRefresh()
   }, [])
