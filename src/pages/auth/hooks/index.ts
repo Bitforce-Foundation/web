@@ -1,21 +1,37 @@
-import { useState, useCallback, useEffect } from 'react'
-import type { RegistrationFormData, FormErrors, RegistrationResponse, SessionCreateData, SessionResponse } from '../types'
-import { validateForm, TokenManager } from '../utils'
-import { RegistrationAPI, SessionAPI } from '../api'
+import { 
+  useState, 
+  useCallback, 
+  useEffect 
+} from 'react'
 
-const initialFormData: RegistrationFormData = {
-  username: '',
-  email: '',
-  phone: '',
-  full_name: '',
-  birth_date: '',
-  eth_wallet_address: '',
-  bank_account_number: '',
-  bank_bik: '',
-  bank_card_number: '',
-  password: '',
-  password_confirm: ''
-}
+import {
+  initialFormData
+} from './data'
+
+import type { 
+  RegistrationFormData, 
+  FormErrors, 
+  RegistrationResponse, 
+  SessionCreateData, 
+  SessionResponse 
+} from '../types'
+
+import { 
+  validateForm, 
+  TokenManager 
+} from '../utils'
+
+import { 
+  PostSessionAPI 
+} from '../api/methods/session/post'
+
+import { 
+  PostRegistrationAPI 
+} from '../api/methods/registration/post'
+
+export { 
+  useSessionActivity
+} from './useSessionActivity'
 
 export const useRegistrationForm = () => {
   const [formData, setFormData] = useState<RegistrationFormData>(initialFormData)
@@ -26,7 +42,6 @@ export const useRegistrationForm = () => {
 
   const updateField = useCallback((field: keyof RegistrationFormData, value: string) => {
     setFormData(prev => ({ ...prev, [field]: value }))
-    // Очищаем ошибку для этого поля при изменении
     if (errors[field]) {
       setErrors(prev => {
         const newErrors = { ...prev }
@@ -60,13 +75,12 @@ export const useRegistrationForm = () => {
 
     try {
       // Сначала регистрируем пользователя
-      const registrationResponse = await RegistrationAPI.register(formData)
-      console.log('Пользователь зарегистрирован:', registrationResponse)
+      const registrationResponse = await PostRegistrationAPI.register_new_user(formData)
       
       // После успешной регистрации создаем сессию
-      const clientInfo = SessionAPI.getClientInfo()
+      const clientInfo = PostSessionAPI.IP.getClientInfo()
       const sessionData: SessionCreateData = {
-        user_id: registrationResponse.user_id, // Используем user_id вместо id
+        user_id: registrationResponse.user_id
       }
       
       // Добавляем опциональные поля только если они есть
@@ -78,10 +92,7 @@ export const useRegistrationForm = () => {
         sessionData.user_agent = clientInfo.user_agent
       }
       
-      console.log('Данные для создания сессии:', sessionData)
-
-      const sessionResponse = await SessionAPI.createSession(sessionData)
-      console.log('Сессия создана:', sessionResponse)
+      const sessionResponse = await PostSessionAPI.create_session(sessionData)
       
       // Сохраняем токены в localStorage
       TokenManager.saveTokens(sessionResponse)
@@ -94,7 +105,6 @@ export const useRegistrationForm = () => {
         session: sessionResponse 
       }
     } catch (error) {
-      console.error('Registration or session creation error:', error)
       
       if (error instanceof Error) {
         setErrors({ general: error.message })
@@ -152,7 +162,7 @@ export const useSession = () => {
           access_token: accessToken,
           refresh_token: TokenManager.getRefreshToken() || '',
           token_type: 'bearer',
-          expires_in: 0 // Не храним это значение в localStorage
+          expires_in: 0
         })
       }
     }
@@ -172,16 +182,16 @@ export const useSession = () => {
     setError(null)
 
     try {
-      // Получаем информацию о клиенте
-      const clientInfo = SessionAPI.getClientInfo()
-      
+      // Получаем информацию о клиенте с IP-адресом
+      const clientInfo = await PostSessionAPI.IP.getClientInfoAsync()
+
       const sessionData: SessionCreateData = {
         user_id: userId,
-        ip_address: clientInfo.ip_address,
+        ip_address: clientInfo.ip_address || undefined,
         user_agent: clientInfo.user_agent,
       }
 
-      const response = await SessionAPI.createSession(sessionData)
+      const response = await PostSessionAPI.create_session(sessionData)
       
       // Сохраняем токены
       TokenManager.saveTokens(response)
@@ -212,11 +222,11 @@ export const useSession = () => {
     setError(null)
 
     try {
-      // Получаем информацию о клиенте для refresh запроса
-      const clientInfo = SessionAPI.getClientInfo()
-      const response = await SessionAPI.refreshToken(
+      // Получаем информацию о клиенте с IP-адресом для refresh запроса
+      const clientInfo = await PostSessionAPI.IP.getClientInfoAsync()
+      const response = await PostSessionAPI.refresh_token(
         refreshToken, 
-        clientInfo.ip_address, 
+        clientInfo.ip_address || undefined, 
         clientInfo.user_agent
       )
       
@@ -262,8 +272,8 @@ export const useSession = () => {
     setError(null)
 
     try {
-      const response = await SessionAPI.validateSession(sessionId, jti)
-      
+      const response = await PostSessionAPI.validate_session(sessionId, jti)
+
       if (response.is_valid) {
         setIsAuthenticated(true)
         return true
@@ -295,7 +305,7 @@ export const useSession = () => {
     setError(null)
 
     try {
-      await SessionAPI.revokeSession(sessionId, reason)
+      await PostSessionAPI.revoke_session(sessionId, reason)
       logout()
       return true
     } catch (err) {
