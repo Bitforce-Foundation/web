@@ -1,13 +1,14 @@
 import { Routes, Route } from 'react-router-dom'
 import { lazy, Suspense, useState, useEffect } from 'react'
 import LoadingScreen from './pages/loading/LoadingScreen'
-import { SessionActivityProvider } from './pages/auth/SessionActivityProvider'
+import { SessionActivityProvider } from './pages/registration/SessionActivityProvider'
 import './App.css'
 
 // Ленивая загрузка компонентов
 const Home = lazy(() => import('./pages/home/Home'))
-const Registration = lazy(() => import('./pages/auth/Auth'))
+const Registration = lazy(() => import('./pages/registration/Auth'))
 const Profile = lazy(() => import('./pages/profile/Profile'))
+const Payment = lazy(() => import('./pages/payment/Payment'))
 
 // Компонент загрузки для переходов между страницами
 const LoadingSpinner = () => (
@@ -56,6 +57,7 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/registration" element={<Registration />} />
           <Route path="/profile" element={<Profile />} />
+          <Route path="/payment" element={<Payment />} />
         </Routes>
       </Suspense>
     </SessionActivityProvider>

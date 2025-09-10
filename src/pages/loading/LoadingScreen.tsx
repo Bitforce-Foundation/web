@@ -11,15 +11,13 @@ const LoadingScreen = ({ onLoadingComplete }: LoadingScreenProps) => {
   const [isComplete, setIsComplete] = useState(false)
 
   useEffect(() => {
-    // Таймер для завершения анимации загрузки
     const timer = setTimeout(() => {
       setIsComplete(true)
       setTimeout(() => {
         onLoadingComplete()
       }, 500)
-    }, 3500) // Возвращаю оригинальное время
+    }, 3500)
 
-    // Таймаут безопасности - если что-то пойдет не так, показываем контент через 10 секунд
     const safetyTimer = setTimeout(() => {
       console.warn('LoadingScreen safety timeout triggered')
       onLoadingComplete()
@@ -41,7 +39,6 @@ const LoadingScreen = ({ onLoadingComplete }: LoadingScreenProps) => {
             className="loading-main-logo"
             onError={(e) => {
               console.error('Failed to load mainlogo:', e)
-              // Fallback на буквы если изображение не загрузилось
               const target = e.target as HTMLImageElement
               target.style.display = 'none'
               const fallback = document.createElement('div')
@@ -59,7 +56,6 @@ const LoadingScreen = ({ onLoadingComplete }: LoadingScreenProps) => {
             alt="BitForce Logo" 
             onError={(e) => {
               console.error('Failed to load logo2:', e)
-              // Fallback на текст если изображение не загрузилось
               const target = e.target as HTMLImageElement
               target.style.display = 'none'
               const fallback = document.createElement('div')

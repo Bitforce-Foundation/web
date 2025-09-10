@@ -5,7 +5,6 @@ import { ContentSection } from './components/principes'
 import { PositioningSection } from './components/positioning'
 import Footer from '../../components/Footer'
 
-// Импорт стилей компонентов
 import './components/header/Header.css'
 import './components/hero/HeroSection.css'
 import './components/principes/PrincipesSection.css'

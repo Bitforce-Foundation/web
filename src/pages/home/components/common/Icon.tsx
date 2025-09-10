@@ -6,7 +6,6 @@ const Icon = ({
   className = '', 
   color = 'currentColor' 
 }: IconProps) => {
-  // Предопределенные SVG иконки
   const icons = {
     'arrow-up': "M8 0L16 8H12V16H4V8H0L8 0Z",
     'arrow-down': "M8 16L0 8H4V0H12V8H16L8 16Z",
