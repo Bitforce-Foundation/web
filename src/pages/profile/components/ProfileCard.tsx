@@ -10,7 +10,6 @@ interface ProfileCardProps {
 
 export const ProfileCard: React.FC<ProfileCardProps> = ({
   userInfo,
-  sessionInfo,
   onLogout,
   onRefresh,
 }) => {
@@ -23,38 +22,6 @@ export const ProfileCard: React.FC<ProfileCardProps> = ({
       })
     } catch {
       return dateString
-    }
-  }
-
-  const formatDateTime = (dateString: string) => {
-    try {
-      return new Date(dateString).toLocaleString('ru-RU', {
-        year: 'numeric',
-        month: 'short',
-        day: 'numeric',
-        hour: '2-digit',
-        minute: '2-digit',
-      })
-    } catch {
-      return dateString
-    }
-  }
-
-  const getStatusColor = (status: string) => {
-    if (!status) return 'status-default'
-    
-    switch (status.toLowerCase()) {
-      case 'active':
-      case 'активный':
-        return 'status-active'
-      case 'pending':
-      case 'в ожидании':
-        return 'status-pending'
-      case 'blocked':
-      case 'заблокирован':
-        return 'status-blocked'
-      default:
-        return 'status-default'
     }
   }
 
@@ -124,12 +91,6 @@ export const ProfileCard: React.FC<ProfileCardProps> = ({
         <div className="profile-section">
           <h2 className="section-title">Статус</h2>
           <div className="status-grid">
-            <div className="status-item">
-              <label className="info-label">Статус аккаунта:</label>
-              <span className={`status-badge ${getStatusColor(userInfo.status || 'INITIAL')}`}>
-                {userInfo.status || 'INITIAL'}
-              </span>
-            </div>
             
             <div className="status-item">
               <label className="info-label">KYC статус:</label>
@@ -154,57 +115,10 @@ export const ProfileCard: React.FC<ProfileCardProps> = ({
             </div>
             
             <div className="info-item">
-              <label className="info-label">БИК банка:</label>
-              <span className="info-value">{userInfo.bank_bik}</span>
-            </div>
-            
-            <div className="info-item">
               <label className="info-label">Номер банковской карты:</label>
               <span className="info-value">
                 {userInfo.bank_card_number.replace(/(\d{4})(?=\d)/g, '$1 ')}
               </span>
-            </div>
-          </div>
-        </div>
-
-        {sessionInfo && (
-          <div className="profile-section">
-            <h2 className="section-title">Информация о сессии</h2>
-            <div className="info-grid">
-              <div className="info-item">
-                <label className="info-label">ID сессии:</label>
-                <span className="info-value session-id">{sessionInfo.id}</span>
-              </div>
-              
-              <div className="info-item">
-                <label className="info-label">Последняя активность:</label>
-                <span className="info-value">{formatDateTime(sessionInfo.last_seen_at)}</span>
-              </div>
-              
-              <div className="info-item">
-                <label className="info-label">Истекает:</label>
-                <span className="info-value">{formatDateTime(sessionInfo.expires_at)}</span>
-              </div>
-              
-              <div className="info-item">
-                <label className="info-label">IP-адрес:</label>
-                <span className="info-value">{sessionInfo.ip_address}</span>
-              </div>
-            </div>
-          </div>
-        )}
-
-        <div className="profile-section">
-          <h2 className="section-title">Даты</h2>
-          <div className="info-grid">
-            <div className="info-item">
-              <label className="info-label">Дата создания:</label>
-              <span className="info-value">{formatDateTime(userInfo.created_at)}</span>
-            </div>
-            
-            <div className="info-item">
-              <label className="info-label">Последнее обновление:</label>
-              <span className="info-value">{formatDateTime(userInfo.updated_at)}</span>
             </div>
           </div>
         </div>

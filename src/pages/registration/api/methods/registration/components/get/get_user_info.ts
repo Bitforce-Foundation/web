@@ -5,14 +5,18 @@ import type {
 
 import {
     BASE_URL,
-    getUserInfoEP
+    getUserInfoEP,
+    createAuthHeaders
 } from '../../../../components/url'
 
 export class GetUserInfo {
     static async get_user_info(user_id: UserId): Promise<UserInfoResponse> {
         try {
             const userIdString = typeof user_id === 'string' ? user_id : user_id.user_id
-            const response = await fetch(`${BASE_URL}${getUserInfoEP}/${userIdString}`)
+            const response = await fetch(`${BASE_URL}${getUserInfoEP}/${userIdString}`, {
+                method: 'GET',
+                headers: createAuthHeaders()
+            })
 
             if (!response.ok) {
                 const errorData = await response.json()

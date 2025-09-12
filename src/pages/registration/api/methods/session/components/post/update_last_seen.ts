@@ -8,7 +8,8 @@ import {
 
 import {
   BASE_URL,
-  updateLastSeenEP
+  updateLastSeenEP,
+  createAuthHeaders
 } from '../../../../components/url'
 
 export class UpdateLastSeen {
@@ -29,6 +30,7 @@ export class UpdateLastSeen {
     
         const response = await fetch(requestUrl, {
           method: 'POST',
+          headers: createAuthHeaders()
         })
         
         if (!response.ok) {

@@ -66,13 +66,6 @@ export const validateForm = (data: RegistrationFormData): FormErrors => {
     errors.bank_account_number = 'Номер банковского счета должен содержать 20 цифр'
   }
 
-  const bikRegex = /^[0-9]{9}$/
-  if (!data.bank_bik) {
-    errors.bank_bik = 'БИК банка обязателен'
-  } else if (!bikRegex.test(data.bank_bik)) {
-    errors.bank_bik = 'БИК должен содержать 9 цифр'
-  }
-
   const cardRegex = /^[0-9]{16}$/
   if (!data.bank_card_number) {
     errors.bank_card_number = 'Номер банковской карты обязателен'
@@ -155,7 +148,7 @@ export const TokenManager = {
     localStorage.setItem(TokenManager.ACCESS_TOKEN_KEY, refreshResponse.access_token)
     localStorage.setItem(TokenManager.REFRESH_TOKEN_KEY, refreshResponse.refresh_token)
     
-    // Обновляем время истечения токена
+    // Обновляет время истечения токена
     const expiresAt = Date.now() + (refreshResponse.expires_in * 1000)
     localStorage.setItem('token_expires_at', expiresAt.toString())
   },

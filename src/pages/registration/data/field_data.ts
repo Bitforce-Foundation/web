@@ -95,15 +95,6 @@ export const FORM_FIELDS: FieldConfig[] = [
     useCustomHandler: true
   },
   {
-    name: 'bank_bik',
-    label: 'БИК банка',
-    placeholder: '9 цифр',
-    required: true,
-    maxLength: 9,
-    section: 'banking',
-    useCustomHandler: true
-  },
-  {
     name: 'bank_card_number',
     label: 'Номер банковской карты',
     placeholder: '1234 5678 9012 3456',

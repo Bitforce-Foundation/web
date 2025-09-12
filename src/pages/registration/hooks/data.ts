@@ -14,7 +14,6 @@ const initialFormData: RegistrationFormData = {
   birth_date: '',
   eth_wallet_address: '',
   bank_account_number: '',
-  bank_bik: '',
   bank_card_number: '',
   password: '',
   password_confirm: ''

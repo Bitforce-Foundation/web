@@ -5,7 +5,8 @@ import type {
 
 import {
   BASE_URL,
-  getUserSessionsEP
+  getUserSessionsEP,
+  createAuthHeaders
 } from '../../../../components/url'
 
 export class GetUserSessions {
@@ -25,7 +26,10 @@ export class GetUserSessions {
           searchParams.append('offset', params.offset.toString())
         }
     
-        const response = await fetch(`${BASE_URL}${getUserSessionsEP}/${params.user_id}?${searchParams.toString()}`)
+        const response = await fetch(`${BASE_URL}${getUserSessionsEP}/${params.user_id}?${searchParams.toString()}`, {
+            method: 'GET',
+            headers: createAuthHeaders()
+        })
     
         if (!response.ok) {
           const errorData = await response.json()

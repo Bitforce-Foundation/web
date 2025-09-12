@@ -6,7 +6,6 @@ export interface RegistrationFormData {
   birth_date: string
   eth_wallet_address: string
   bank_account_number: string
-  bank_bik: string
   bank_card_number: string
   password: string
   password_confirm: string
@@ -24,9 +23,7 @@ export interface UserInfoResponse {
   birth_date: string
   eth_wallet_address: string
   bank_account_number: string
-  bank_bik: string
   bank_card_number: string
-  status: string
   kyc_status: string
   created_at: string
   updated_at: string
@@ -35,8 +32,6 @@ export interface UserInfoResponse {
 export interface RegistrationResponse {
   message: string
   user_id: string
-  status: string
-  kyc_status: string
   next_step: string
 }
 
@@ -62,7 +57,6 @@ export interface FormErrors {
   birth_date?: string
   eth_wallet_address?: string
   bank_account_number?: string
-  bank_bik?: string
   bank_card_number?: string
   password?: string
   password_confirm?: string

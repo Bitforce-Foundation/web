@@ -1,8 +1,39 @@
 export {
     BASE_URL,
     POST,
-    loginEP
+    loginEP,
+    createAuthHeaders,
+    createPostWithAuth
 }
+
+// Утилиты для авторизации
+const createAuthHeaders = (authType: 'bearer' | 'x-api-key' = 'bearer') => {
+  const apiKey = import.meta.env.VITE_API
+  
+  const baseHeaders = {
+    'Content-Type': 'application/json'
+  }
+
+  switch (authType) {
+    case 'bearer':
+      return {
+        ...baseHeaders,
+        'Authorization': `Bearer ${apiKey}`
+      }
+    case 'x-api-key':
+      return {
+        ...baseHeaders,
+        'X-API-Key': apiKey
+      }
+    default:
+      return baseHeaders
+  }
+}
+
+const createPostWithAuth = (authType: 'bearer' | 'x-api-key' = 'bearer') => ({
+  method: 'POST',
+  headers: createAuthHeaders(authType)
+})
 
 const getApiBaseUrl = () => {
   if (import.meta.env.PROD) {
@@ -24,7 +55,8 @@ const BASE_URL = getApiBaseUrl()
 const POST = {
   method: 'POST',
   headers: {
-    'Content-Type': 'application/json'
+    'Content-Type': 'application/json',
+    'Authorization': `Bearer ${import.meta.env.VITE_API}`
   }
 }
 

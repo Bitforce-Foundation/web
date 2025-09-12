@@ -8,14 +8,18 @@ import {
 
 import {
   BASE_URL,
-  getSessionByIdEP
+  getSessionByIdEP,
+  createAuthHeaders
 } from '../../../../components/url'
 
 
 export class GetSessionById {
     static async getSessionById(sessionId: string): Promise<SessionInfo> {
 
-        const response = await fetch(`${BASE_URL}${getSessionByIdEP}/${sessionId}`)
+        const response = await fetch(`${BASE_URL}${getSessionByIdEP}/${sessionId}`, {
+            method: 'GET',
+            headers: createAuthHeaders()
+        })
 
         if (!response.ok) {
           const errorData = await response.json()

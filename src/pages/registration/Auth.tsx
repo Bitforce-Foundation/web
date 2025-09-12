@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom'
 import { useRegistrationForm } from './hooks'
 import { FormSection, SuccessMessage, ErrorMessage, FieldRenderer } from './components'
-import { formatPhoneNumber, formatCardNumber, formatBankAccount, formatBik } from './utils'
+import { formatPhoneNumber, formatCardNumber, formatBankAccount } from './utils'
 import Button from '../home/components/common/Button'
 import Container from '../home/components/common/Container'
 import type { RegistrationProps } from './types'
@@ -42,10 +42,6 @@ const Registration: React.FC<RegistrationProps> = ({ onSuccess, onError }) => {
     bank_account_number: (value: string) => {
       const formatted = formatBankAccount(value)
       updateField('bank_account_number', formatted)
-    },
-    bank_bik: (value: string) => {
-      const formatted = formatBik(value)
-      updateField('bank_bik', formatted)
     }
   }
 
