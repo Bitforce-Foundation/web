@@ -6,32 +6,15 @@ import './App.css'
 import './layout.css'
 import './components/components.css'
 
-// Импортируем testApi для отладки в консоли браузера
-import { testApi } from './api/services/poolsService'
-import { testApiEndpoints, checkWalletConnection, getPoolBalance, getPoolStatus } from './api/config/api.config'
-
-// Делаем testApi доступным в глобальной области для отладки в консоли браузера
-declare global {
-  interface Window {
-    testApi: () => Promise<void>
-    testApiEndpoints: () => Promise<void>
-             checkWalletConnection: (address: string) => Promise<any>
-         getPoolBalance: (address: string) => Promise<any>
-         getPoolStatus: (address: string, poolId: string) => Promise<any>
-  }
-}
-
-window.testApi = testApi
-window.testApiEndpoints = testApiEndpoints
-window.checkWalletConnection = checkWalletConnection
-window.getPoolBalance = getPoolBalance
-window.getPoolStatus = getPoolStatus
+// Убраны отладочные вызовы API при старте приложения, чтобы не засорять консоль ошибок
 
 // Ленивая загрузка компонентов
 const Home = lazy(() => import('./pages/Home'))
 const Buy = lazy(() => import('./pages/Buy'))
 const Sell = lazy(() => import('./pages/Sell'))
 const Profile = lazy(() => import('./pages/Profile'))
+const Login = lazy(() => import('./pages/Login.tsx'))
+const Auth = lazy(() => import('./pages/Auth'))
 
 // Компонент загрузки для переходов между страницами
 const LoadingSpinner = () => (
@@ -64,13 +47,7 @@ function App() {
       console.log(' Показываем начальную загрузку')
     }
 
-    // Тестируем API при загрузке приложения
-    console.log('🧪 Тестируем API при загрузке...')
-    testApi()
-    
-    // Дополнительно тестируем эндпоинты
-    console.log('🔍 Тестируем эндпоинты API...')
-    testApiEndpoints()
+    // Убрано: тестовые вызовы API
   }, [])
 
   const handleLoadingComplete = () => {
@@ -94,6 +71,8 @@ function App() {
         <Route path="/buy" element={<Buy />} />
         <Route path="/sell" element={<Sell />} />
         <Route path="/profile" element={<Profile />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/auth" element={<Auth />} />
       </Routes>
     </Suspense>
   )

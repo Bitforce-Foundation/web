@@ -37,7 +37,7 @@ apiClient.interceptors.response.use(
 
 export const API_ENDPOINTS = {
   ROOT: '/',
-  HEALTH: '/health',
+  HEALTH: '/common/health',
   DOCS: '/docs',
   // Эндпоинты для работы с кошельками
   WALLET_CHECK_CONNECTION: '/wallet/check-connection',

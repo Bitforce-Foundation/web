@@ -1,6 +1,21 @@
 // Экспорт основных сервисов
 export { poolsService } from './services/poolsService'
 
+// Экспорт Auth сервиса
+export {
+  authCheckHealth,
+  registrationInitial,
+  getRegistrationUser,
+  authLogin,
+  sessionCreate,
+  sessionUpdateLastSeen,
+  sessionRefresh,
+  sessionValidate,
+  sessionRevoke,
+  getSessionById,
+  withAccessToken,
+} from './services/auth.service'
+
 // Экспорт конфигурации
 export { 
   apiClient, 

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-empty-object-type */
 // Типы для пулов на основе реального API BitForce
 export interface PoolData {
   id: number
@@ -50,7 +51,7 @@ export interface PoolsResponse extends ApiResponse<PoolData[]> {}
 export interface PoolResponse extends ApiResponse<PoolData> {}
 export interface PoolApiResponse extends ApiResponse<PoolApiData> {}
 export interface WalletResponse extends ApiResponse<WalletData> {}
-export interface StatusResponse extends ApiResponse<PoolStatus> {}
+export type StatusResponse = ApiResponse<PoolStatus>
 export interface BalanceResponse extends ApiResponse<PoolBalance> {}
 
 // Типы для статуса подключения

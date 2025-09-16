@@ -646,8 +646,8 @@
 .profile__chart-info {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
-  color: #64748b;
+  gap: 0.8rem;
+  color: #7a16d7;
   font-size: 0.9rem;
 }
 
@@ -700,7 +700,7 @@
 
 .profile__stat-value {
   font-size: 1.5rem;
-  font-weight: 700;
+  font-weight: 900;
 }
 
 .profile__stat-value.positive {
@@ -713,7 +713,7 @@
 
 .profile__stat-label {
   font-size: 0.8rem;
-  color: #64748b;
+  color: #0a203e;
   font-weight: 500;
 }
 
@@ -721,20 +721,18 @@
 .profile__chart-container {
   margin-top: 3rem;
   margin-bottom: 3rem;
-  background: white !important;
   border-radius: 12px;
   padding: 3rem;
-  border: 1px solid #e5e7eb !important;
-  box-shadow: none !important;
+  border: 3px solid #f8e59a ;
+  box-shadow: none ;
 }
 
 .profile__chart {
   display: flex;
   align-items: end;
   justify-content: space-between;
-  height: 600px !important;
+  height: 600px ;
   padding: 2rem;
-  background: white !important;
   border-radius: 8px;
   overflow-x: auto;
   position: relative;
@@ -756,13 +754,10 @@
   width: 100%;
   display: flex;
   align-items: end;
-  background: #f8fafc;
   border-radius: 6px;
   overflow: hidden;
   position: relative;
 }
-
-
 
 .profile__chart-fill {
   width: 100%;
@@ -773,11 +768,11 @@
 }
 
 .profile__chart-fill.positive {
-  background: linear-gradient(to top, #22c55e, #16a34a) !important;
+  background: linear-gradient(to top, #04f55c, #05772f) !important;
 }
 
 .profile__chart-fill.negative {
-  background: linear-gradient(to top, #ef4444, #dc2626) !important;
+  background: linear-gradient(to top, #a10404, #dc2626) !important;
 }
 
 .profile__chart-label {
@@ -789,13 +784,13 @@
 }
 
 .profile__chart-value {
-  font-size: 0.875rem;
-  font-weight: 600;
+  font-size: 0.975rem;
+  font-weight: 900;
   text-align: center;
   margin: 0;
   padding: 0.25rem 0.5rem;
   border-radius: 4px;
-  background: rgba(255, 255, 255, 0.8);
+  background: rgba(249, 227, 158, 0.8);
 }
 
 .profile__chart-value.positive {
@@ -1174,7 +1169,7 @@
 
 @media (max-width: 768px) {
   .profile-main {
-    margin-left: 0 !important;
+    margin-left: 0 ;
     padding: 1rem;
     padding-bottom: 80px; /* место для мобильной навигации */
   }
@@ -1241,7 +1236,7 @@
   }
   
   .profile__chart-value {
-    font-size: 0.65rem;
+    font-size: 0.85rem;
     padding: 0.2rem 0.4rem;
   }
   
@@ -1529,7 +1524,7 @@
   }
   
   .profile__stat-value {
-    font-size: 1rem;
+    font-size: 1.2rem;
   }
   
   .profile__stat-label {
@@ -1644,19 +1639,19 @@
   
   .profile__chart-container {
     padding: 0.4rem;
-    margin-top: 0.625rem;
+    margin-top: 1.6rem;
     margin-bottom: 0.625rem;
   }
   
   .profile__period-selector {
-    gap: 0.15rem;
-    padding: 0.3rem;
+    gap: 0.9rem;
+    padding: 0.4rem;
   }
   
   .profile__period-btn {
     padding: 0.25rem 0.4rem;
     font-size: 0.65rem;
-    min-width: 40px;
+    min-width: 60px;
   }
   
   .profile__chart-stats {
@@ -1669,11 +1664,11 @@
   }
   
   .profile__stat-value {
-    font-size: 0.9rem;
+    font-size: 1.4rem;
   }
   
   .profile__stat-label {
-    font-size: 0.6rem;
+    font-size: 0.8rem;
   }
   
   .profile__cards {
@@ -1820,7 +1815,7 @@
 }
 
 /* Дополнительные исправления для мобильных */
-@media (max-width: 768px) {
+@media (max-width: 770px) {
   /* Исправляем отступы для всех секций */
   .profile-section {
     padding: 0.875rem;
@@ -1834,8 +1829,8 @@
   }
   
   .profile__chart-value {
-    font-size: 0.65rem;
-    line-height: 1.2;
+    font-size: 0.70rem;
+    line-height: 1.1;
   }
   
   /* Оптимизируем карточки */

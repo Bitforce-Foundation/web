@@ -1,12 +1,15 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { useState, useMemo, useCallback, memo, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { Refresh as RefreshIcon } from '@mui/icons-material'
-
+import { useAuth } from "../components/AuthContext"
+import { useNavigate } from "react-router-dom"
 import Footer from '../components/Footer'
 import logo from '../assets/logo2.png'
 import mainlogo from '../assets/mainlogo.png'
 import leadImage from '../assets/lead.png'
 import { poolsService } from '../api'
+import PaymentButton from '../components/PaymentButton'
 import type { PoolData, ConnectionStatus } from '../api/types/pools.types'
 import './Home.css'
 
@@ -135,6 +138,18 @@ const Home = memo(() => {
     }
   }, [])
 
+
+  const { user } = useAuth()
+  const navigate = useNavigate()
+
+  const handleProfileClick = () => {
+    if (!user) {
+      navigate("/login")
+    } else {
+      navigate("/profile")
+    }
+  }
+
   // Функция для получения текста статуса
   const getStatusText = useCallback((status: PoolData['status']) => {
     switch (status) {
@@ -189,7 +204,7 @@ const Home = memo(() => {
   ], [])
 
   return (
-    <div className="app-root">
+    <div className="app-root home-page">
       <header className="header">
         <div className="header__logo-menu">
           <Link to="/">
@@ -255,7 +270,7 @@ const Home = memo(() => {
           )}
           
           <div className="info-banner">
-            <div className="info-icon">ℹ️</div>
+            <div className="info-icon"><span className="material-icons">info</span></div>
             <p>Вам будет предоставлен субсчет, в зависимости от купленного плана. Также трейдер должен соблюдать лимиты убытков: не более 5% от депозита за весь период и 3% дневной просадки, и нарушать правила платформы Bybit или законы РФ</p>
           </div>
           
@@ -280,11 +295,11 @@ const Home = memo(() => {
                   <p>Моментальный доступ к торговле с полным функционалом. Идеально для опытных трейдеров.</p>
                   <div className="trading-details">
                     <div className="detail-item">
-                      <span className="detail-label">Максимальный убыток:</span>
+                      <span className="detail-label">Макс. убыток:</span>
                       <span className="detail-value">5%</span>
                     </div>
                     <div className="detail-item">
-                      <span className="detail-label">Проходное значение:</span>
+                      <span className="detail-label">Проходное:</span>
                       <span className="detail-value">8%</span>
                     </div>
                     <div className="detail-item">
@@ -292,21 +307,24 @@ const Home = memo(() => {
                       <span className="detail-value price">8000₽</span>
                     </div>
                     <div className="detail-item">
-                      <span className="detail-label">Торговый депозит:</span>
+                      <span className="detail-label">Депозит:</span>
                       <span className="detail-value">1000$</span>
                     </div>
                   </div>
-                  <button className="purchase-btn">Приобрести</button>
+                  <PaymentButton amount="8000.00" description="Торговля сразу" />
+
                 </div>
               
                 <div className={`info-content ${activeOption === 1 ? 'active' : ''}`}>
                   <h3>Торговля в 1 этап</h3>
                   <p>Одноэтапная верификация с базовыми возможностями торговли.</p>
+                  <button className="purchase-btn">Приобрести</button>
                 </div>
               
                 <div className={`info-content ${activeOption === 2 ? 'active' : ''}`}>
                   <h3>Торговля в 2 этапа</h3>
                   <p>Двухэтапная верификация с расширенными возможностями и повышенными лимитами.</p>
+                  <button className="purchase-btn">Приобрести</button>
                 </div>
               </div>
             </div>
