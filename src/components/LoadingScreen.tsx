@@ -74,6 +74,10 @@ const LoadingScreen = ({ onLoadingComplete }: LoadingScreenProps) => {
             }}
           />
         </div>
+        
+        <div className="loading-progress">
+          <div className="loading-progress-bar"></div>
+        </div>
       </div>
     </div>
   )

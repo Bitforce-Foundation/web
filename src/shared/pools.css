@@ -1,0 +1,408 @@
+/* shared/pools.css - Общие стили для пулов */
+
+/* Общие стили pools-section для страниц, которые могут их использовать */
+.pools-section {
+  padding: 2rem 0;
+  background: transparent;
+}
+
+.pools-container {
+  max-width: 1600px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+.pools-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.pools-header h2 {
+  font-size: 2rem;
+  font-weight: 600;
+  color: #0b1e2d;
+  margin-bottom: 0.5rem;
+}
+
+.pools-description {
+  font-size: 1rem;
+  color: #64748b;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.pool-controls {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+}
+
+.pool-type-toggle {
+  display: flex;
+  gap: 0.25rem;
+  background: #f8fafc;
+  padding: 0.25rem;
+  border-radius: 8px;
+  border: 1px solid #e5e7eb;
+}
+
+.pool-type-btn {
+  padding: 0.5rem 1rem;
+  border: none;
+  background: transparent;
+  color: #64748b;
+  font-weight: 500;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 0.9rem;
+}
+
+.pool-type-btn.active {
+  background: #bfa77a;
+  color: white;
+}
+
+.pool-type-btn:hover:not(.active) {
+  background: #f1f5f9;
+  color: #374151;
+}
+
+.pool-toggle {
+  display: flex;
+  gap: 0.25rem;
+  background: #f8fafc;
+  padding: 0.25rem;
+  border-radius: 8px;
+  border: 1px solid #e5e7eb;
+}
+
+.pool-toggle-btn {
+  padding: 0.5rem 1rem;
+  border: none;
+  background: transparent;
+  color: #64748b;
+  font-weight: 500;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 0.9rem;
+}
+
+.pool-toggle-btn.active {
+  background: #3b82f6;
+  color: white;
+}
+
+.pool-toggle-btn:hover:not(.active) {
+  background: #f1f5f9;
+  color: #374151;
+}
+
+.pools-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  max-width: 100%;
+  margin: 0;
+}
+
+/* Стили для карточки пула */
+.pools-section .pool-card {
+  background: white;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  border: 1px solid #e5e7eb;
+  transition: all 0.3s ease;
+  min-height: 180px;
+  width: 100%;
+}
+
+.pools-section .pool-card:hover {
+  border-color: #bfa77a;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+}
+
+.pools-section .pool-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.pools-section .pool-currency {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.pools-section .currency-symbol {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #0b1e2d;
+}
+
+.pools-section .pool-info-header {
+  display: flex;
+  flex-direction: row;
+  gap: 0.75rem;
+  align-items: center;
+}
+
+.pools-section .pool-number {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #374151;
+}
+
+.pools-section .pool-status {
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: white;
+  text-align: center;
+}
+
+/* Цвета для статусов пулов */
+.pools-section .pool-status.active {
+  background-color: #22c55e !important;
+}
+
+.pools-section .pool-status.filling {
+  background-color: #f59e0b !important;
+}
+
+.pools-section .pool-status.completed {
+  background-color: #64748b !important;
+}
+
+.pools-section .pool-status.inactive {
+  background-color: #ef4444 !important;
+}
+
+.pools-section .pool-date {
+  color: #6b7280;
+  font-size: 0.8rem;
+  font-weight: 400;
+}
+
+.pools-section .pool-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.pools-section .info-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.25rem 0;
+}
+
+.pools-section .info-label {
+  color: #6b7280;
+  font-size: 0.9rem;
+  font-weight: 400;
+}
+
+.pools-section .info-value {
+  font-weight: 500;
+  color: #0b1e2d;
+  font-size: 1rem;
+}
+
+.pools-section .info-value.rate {
+  color: #bfa77a;
+  font-size: 1.1rem;
+}
+
+.pools-section .info-value.volume {
+  color: #0b1e2d;
+}
+
+.pools-section .pool-progress {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.pools-section .progress-bar {
+  flex: 1;
+  height: 8px;
+  background: #e2e8f0;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.pools-section .progress-fill {
+  height: 100%;
+  border-radius: 4px;
+  transition: width 0.3s ease;
+}
+
+.pools-section .progress-text {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #0b1e2d;
+  min-width: 40px;
+  text-align: right;
+}
+
+.pools-section .pool-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 1rem;
+}
+
+.pools-section .participate-btn {
+  background: #bfa77a;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-decoration: none;
+  display: inline-block;
+  text-align: center;
+}
+
+.pools-section .participate-btn:hover:not(.disabled) {
+  background: #a8956a;
+  transform: translateY(-1px);
+}
+
+.pools-section .participate-btn.disabled {
+  background: #f1f5f9;
+  color: #94a3b8;
+  cursor: not-allowed;
+}
+
+/* Двухколоночная структура */
+.pools-content {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3rem;
+  align-items: start;
+}
+
+/* Левая колонка с пулами */
+.pools-left-column {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* Правая колонка с информацией */
+.pools-right-column {
+  position: sticky;
+  top: 2rem;
+}
+
+/* Адаптивность для pools section */
+@media (max-width: 768px) {
+  .pools-section {
+    padding: 2rem 0;
+  }
+  
+  .pools-container {
+    padding: 0 0.5rem;
+    max-width: 100%;
+  }
+  
+  .pools-header h2 {
+    font-size: 2rem;
+  }
+  
+  .pool-controls {
+    flex-direction: column;
+    gap: 1rem;
+  }
+  
+  .pools-section .pool-card {
+    padding: 1.5rem;
+    min-height: 250px;
+    width: 100%;
+    margin: 0 0.5rem;
+  }
+  
+  .pools-section .pool-header {
+    margin-bottom: 1.5rem;
+  }
+  
+  .pools-section .currency-symbol {
+    font-size: 1.5rem;
+  }
+  
+  .pools-section .info-label {
+    font-size: 0.9rem;
+  }
+  
+  .pools-section .info-value {
+    font-size: 1rem;
+  }
+  
+  .pools-section .participate-btn {
+    padding: 1rem 2rem;
+    font-size: 1.1rem;
+  }
+}
+
+/* Адаптивность для планшетов */
+@media (max-width: 1024px) and (min-width: 769px) {
+  .pools-container {
+    max-width: 98%;
+    padding: 0 1rem;
+  }
+  
+  .pools-content {
+    gap: 2rem;
+  }
+  
+  .pools-section .pool-card {
+    padding: 1.25rem;
+    min-height: 180px;
+  }
+  
+  .pools-info-sidebar {
+    padding: 1.5rem;
+  }
+}
+
+/* Адаптивность для мобильных устройств */
+@media (max-width: 768px) {
+  .pools-content {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+  
+  .pools-right-column {
+    position: static;
+    order: -1;
+  }
+  
+  .pools-section .pool-card {
+    padding: 1rem;
+    min-height: 180px;
+  }
+  
+  .pools-section .pool-header {
+    margin-bottom: 0.75rem;
+  }
+  
+  .pools-section .pool-info {
+    gap: 0.75rem;
+    margin-bottom: 0.75rem;
+  }
+}

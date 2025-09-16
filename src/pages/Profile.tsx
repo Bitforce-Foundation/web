@@ -7,7 +7,7 @@ import './Profile.css'
 
 const Profile = memo(() => {
   const [activeSection, setActiveSection] = useState('general')
-  const [sidebarOpen, setSidebarOpen] = useState(false)
+  const [sidebarOpen, setSidebarOpen] = useState(true) // По умолчанию развернут
 
   // Данные юзеров
   const [userInfo, setUserInfo] = useState({
@@ -213,33 +213,33 @@ const Profile = memo(() => {
   const renderGeneralInfo = () => (
     <section className="profile-section">
       <div className="profile-header">
-        <h1 className="page-title">Личный кабинет</h1>
-        <p className="page-subtitle">Управление профилем и настройками</p>
+        <div>
+          <h1 className="page-title">Личный кабинет</h1>
+          <p className="page-subtitle">Управление профилем и настройками</p>
+        </div>
         <button className="edit-profile-button" onClick={() => setIsEditPanelOpen(true)}>
           <span className="material-icons">edit</span>
           Редактировать профиль
         </button>
       </div>
       
-      {/* Главная карточка */}
+      {/* Главная карточка как на фото */}
       <div className="profile-main-card">
-        <div className="profile-avatar-section">
-          <img src={userIcon} alt="Profile" className="profile-avatar" />
-          <div className="profile-user-info">
-            <h3>{userInfo.fullName}</h3>
-            <p>@{userInfo.nickname}</p>
-            <div className="status-badge">
-              <span className="material-icons">verified</span>
-              Верифицирован
-            </div>
+        <img src={userIcon} alt="Profile" className="profile-main-avatar" />
+        <div className="profile-main-info">
+          <h2 className="profile-main-name">{userInfo.fullName}</h2>
+          <p className="profile-main-username">@{userInfo.nickname}</p>
+          <div className="profile-verification">
+            <span className="material-icons">verified</span>
+            Верифицирован
           </div>
         </div>
-        <div className="profile-wallet">
-          <div className="wallet-header">
+        <div className="profile-wallet-info">
+          <div className="profile-wallet-label">
             <span className="material-icons">account_balance_wallet</span>
-            <span>Привязанный кошелек</span>
+            Привязанный кошелек
           </div>
-          <div className="wallet-address">{userInfo.walletAddress}</div>
+          <div className="profile-wallet-address">{userInfo.walletAddress}</div>
         </div>
       </div>
 
@@ -471,7 +471,7 @@ const Profile = memo(() => {
 
         {/* Самые прибыльные и неприбыльные пары */}
         <div className="profile__cards">
-          <div className="profile__card">
+          <div className="profile__card profitable-pairs">
             <h3><span className="material-icons">north_east</span>Самые прибыльные пары</h3>
             <ul className="pairs-list">
               {propTradingData.pairs[selectedTariff].best.map((p, idx) => (
@@ -482,7 +482,7 @@ const Profile = memo(() => {
               ))}
             </ul>
           </div>
-          <div className="profile__card">
+          <div className="profile__card unprofitable-pairs">
             <h3><span className="material-icons">south_west</span>Самые неприбыльные пары</h3>
             <ul className="pairs-list">
               {propTradingData.pairs[selectedTariff].worst.map((p, idx) => (
@@ -712,7 +712,7 @@ const Profile = memo(() => {
               <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/>
             </svg>
           </button>
-          <img src={userIcon} alt="User" className="profile__user-avatar" />
+          {sidebarOpen && <img src={userIcon} alt="User" className="profile__user-avatar" />}
         </div>
         
         <nav className="profile__sidebar-nav">
@@ -754,7 +754,7 @@ const Profile = memo(() => {
       </nav>
 
       {/* Main Content */}
-      <main className="page-main profile-main">
+      <main className={`page-main profile-main ${sidebarOpen ? 'sidebar-expanded' : ''}`}>
         <div className="page-container">
           {activeSection === 'general' && renderGeneralInfo()}
           {activeSection === 'prop-trading' && renderPropTrading()}
