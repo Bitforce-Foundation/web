@@ -5,10 +5,11 @@ import { SessionActivityProvider } from './pages/registration/SessionActivityPro
 import './App.css'
 
 // Ленивая загрузка компонентов
-const Home = lazy(() => import('./pages/home/Home'))
+const Home = lazy(() => import('./pages/home/home'))
 const Registration = lazy(() => import('./pages/registration/Auth'))
 const Profile = lazy(() => import('./pages/profile/Profile'))
 const Payment = lazy(() => import('./pages/payment/Payment'))
+const Data = lazy(() => import('./pages/data/Data'))
 
 // Компонент загрузки для переходов между страницами
 const LoadingSpinner = () => (
@@ -58,6 +59,7 @@ function App() {
           <Route path="/registration" element={<Registration />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/payment" element={<Payment />} />
+          <Route path="/data" element={<Data />} />
         </Routes>
       </Suspense>
     </SessionActivityProvider>
