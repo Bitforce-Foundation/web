@@ -124,8 +124,7 @@ export const formatBik = (value: string): string => {
   return cleaned.slice(0, 9)
 }
 
-// Утилиты для работы с токенами и сессиями
-
+// Упрощенные утилиты для работы с токенами
 export const TokenManager = {
   // Ключи для localStorage
   ACCESS_TOKEN_KEY: 'access_token.bitforce',
@@ -137,20 +136,6 @@ export const TokenManager = {
     localStorage.setItem(TokenManager.ACCESS_TOKEN_KEY, sessionResponse.access_token)
     localStorage.setItem(TokenManager.REFRESH_TOKEN_KEY, sessionResponse.refresh_token)
     localStorage.setItem(TokenManager.SESSION_ID_KEY, sessionResponse.session_id)
-    
-    // Сохраняем время истечения токена
-    const expiresAt = Date.now() + (sessionResponse.expires_in * 1000)
-    localStorage.setItem('token_expires_at.bitforce', expiresAt.toString())
-  },
-  
-  // Сохранение обновленных токенов
-  saveRefreshedTokens: (refreshResponse: { access_token: string; refresh_token: string; expires_in: number }): void => {
-    localStorage.setItem(TokenManager.ACCESS_TOKEN_KEY, refreshResponse.access_token)
-    localStorage.setItem(TokenManager.REFRESH_TOKEN_KEY, refreshResponse.refresh_token)
-    
-    // Обновляет время истечения токена
-    const expiresAt = Date.now() + (refreshResponse.expires_in * 1000)
-    localStorage.setItem('token_expires_at', expiresAt.toString())
   },
   
   // Получение токенов
@@ -166,75 +151,25 @@ export const TokenManager = {
     return localStorage.getItem(TokenManager.SESSION_ID_KEY)
   },
   
-  // Проверка истечения токена
-  isTokenExpired: (): boolean => {
-    const expiresAt = localStorage.getItem('token_expires_at')
-    if (!expiresAt) return true
-    
-    return Date.now() > parseInt(expiresAt)
-  },
-  
-  // Проверка истечения токена в ближайшие 5 минут
-  isTokenExpiringSoon: (): boolean => {
-    const expiresAt = localStorage.getItem('token_expires_at')
-    if (!expiresAt) return true
-    
-    const fiveMinutesFromNow = Date.now() + (5 * 60 * 1000) // 5 минут
-    return fiveMinutesFromNow > parseInt(expiresAt)
-  },
-  
   // Очистка всех токенов
   clearTokens: (): void => {
     localStorage.removeItem(TokenManager.ACCESS_TOKEN_KEY)
     localStorage.removeItem(TokenManager.REFRESH_TOKEN_KEY)
     localStorage.removeItem(TokenManager.SESSION_ID_KEY)
-    localStorage.removeItem('token_expires_at')
   },
   
-  // Проверка наличия активной сессии
-  hasActiveSession: (): boolean => {
+  // Проверка наличия токенов
+  hasTokens: (): boolean => {
     const accessToken = TokenManager.getAccessToken()
     const sessionId = TokenManager.getSessionId()
-    
-    return !!(accessToken && sessionId && !TokenManager.isTokenExpired())
+    return !!(accessToken && sessionId)
   },
   
-  // Создание заголовка авторизации
+  // Создание заголовка авторизации просто возвращает токен
   getAuthHeader: (): { Authorization: string } | null => {
     const token = TokenManager.getAccessToken()
-    if (!token || TokenManager.isTokenExpired()) {
-      return null
-    }
+    if (!token) return null
     
     return { Authorization: `Bearer ${token}` }
-  },
-  
-  getAuthHeaderWithRefresh: async (): Promise<{ Authorization: string } | null> => {
-    // Если токен скоро истечет, попытаемся его обновить
-    if (TokenManager.isTokenExpiringSoon()) {
-      const refreshToken = TokenManager.getRefreshToken()
-      if (refreshToken) {
-        try {
-          // Динамический импорт, чтобы избежать циклических зависимостей
-          const { PostSessionAPI } = await import('../api/methods/session/post')
-          
-          // Получаем информацию о клиенте для refresh запроса
-          const clientInfo = PostSessionAPI.IP.getClientInfo()
-          const refreshResponse = await PostSessionAPI.refresh_token(
-            refreshToken,
-            clientInfo.ip_address,
-            clientInfo.user_agent
-          )
-          
-          TokenManager.saveRefreshedTokens(refreshResponse)
-        } catch (error) {
-          console.error('Ошибка обновления токена:', error)
-          TokenManager.clearTokens()
-          return null
-        }
-      }
-    }
-    
-    return TokenManager.getAuthHeader()
   }
 }

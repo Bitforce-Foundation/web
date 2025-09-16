@@ -146,12 +146,12 @@ export const useSession = () => {
   const [error, setError] = useState<string | null>(null)
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false)
 
-  // Проверяет наличие активной сессии при монтировании компонента
+  // Проверяет наличие токенов при монтировании компонента
   useEffect(() => {
-    const hasSession = TokenManager.hasActiveSession()
-    setIsAuthenticated(hasSession)
+    const hasTokens = TokenManager.hasTokens()
+    setIsAuthenticated(hasTokens)
     
-    if (hasSession) {
+    if (hasTokens) {
       // Восстанавливает информацию о сессии из localStorage
       const sessionId = TokenManager.getSessionId()
       const accessToken = TokenManager.getAccessToken()
@@ -222,7 +222,6 @@ export const useSession = () => {
     setError(null)
 
     try {
-      // Получает информацию о клиенте с IP-адресом для refresh запроса
       const clientInfo = await PostSessionAPI.IP.getClientInfoAsync()
       const response = await PostSessionAPI.refresh_token(
         refreshToken, 
@@ -230,8 +229,14 @@ export const useSession = () => {
         clientInfo.user_agent
       )
       
-      // Сохраняет обновленные токены
-      TokenManager.saveRefreshedTokens(response)
+      // Сохраняет новые токены
+      TokenManager.saveTokens({
+        access_token: response.access_token,
+        refresh_token: response.refresh_token,
+        session_id: response.session_id,
+        token_type: 'bearer',
+        expires_in: response.expires_in
+      })
       
       // Обновляет состояние сессии
       setSession(prev => prev ? {
@@ -249,16 +254,13 @@ export const useSession = () => {
       setError(errorMessage)
       console.error('Token refresh error:', err)
       
-      // При ошибке обновления токенов очищает сессию
-      TokenManager.clearTokens()
-      setSession(null)
-      setIsAuthenticated(false)
-      setError(null)
+      // При ошибке очищает сессию
+      logout()
       return false
     } finally {
       setIsLoading(false)
     }
-  }, [])
+  }, [logout])
 
   // Валидация сессии
   const validateSession = useCallback(async (jti: string): Promise<boolean> => {
@@ -318,8 +320,9 @@ export const useSession = () => {
     }
   }, [logout])
 
-  const getAuthHeader = useCallback(async (): Promise<{ Authorization: string } | null> => {
-    return await TokenManager.getAuthHeaderWithRefresh()
+  // Получение заголовка авторизации
+  const getAuthHeader = useCallback((): { Authorization: string } | null => {
+    return TokenManager.getAuthHeader()
   }, [])
 
   // Очистка ошибки
