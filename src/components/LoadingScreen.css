@@ -14,27 +14,6 @@
   overflow: hidden;
 }
 
-/* Добавляем анимированный фон */
-.loading-screen::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: radial-gradient(circle at 20% 80%, rgba(191, 167, 122, 0.1) 0%, transparent 50%),
-              radial-gradient(circle at 80% 20%, rgba(212, 194, 154, 0.1) 0%, transparent 50%);
-  animation: backgroundPulse 4s ease-in-out infinite;
-}
-
-@keyframes backgroundPulse {
-  0%, 100% {
-    opacity: 0.3;
-  }
-  50% {
-    opacity: 0.6;
-  }
-}
 
 .loading-screen.fade-out {
   opacity: 0;
@@ -49,7 +28,7 @@
 }
 
 .loading-logo {
-  font-size: 16rem;
+  font-size: 20rem;
   color: #dbc08f;
   letter-spacing: 0;
   line-height: 1;
@@ -66,7 +45,6 @@
 
 .loading-logo-f {
   transform: scaleX(-1);
-  margin-left: 1px;
   position: relative;
   z-index: 2;
   font-weight: 110;
@@ -75,7 +53,7 @@
 
 .loading-logo-b {
   display: inline-block;
-  margin-left: -98px;
+  margin-left: -102px;
   position: relative;
   z-index: 2;
   font-weight: 100;
@@ -85,9 +63,9 @@
 .loading-growth-line {
   position: absolute;
   width: 600px;
-  height: 100px;
-  top: calc(50% + 50px);
-  left: calc(50% + 7px);
+  height: 150px;
+  top: calc(50% + 48px);
+  left: calc(50% + 11px);
   transform: translate(-50%, -50%);
   pointer-events: none;
   z-index: 1;
@@ -230,14 +208,27 @@
 /* Адаптивность для планшетов */
 @media (max-width: 1024px) {
   .loading-logo {
-    font-size: 12rem;
+    font-size: 18rem;
   }
-  
+
+  .loading-logo-f {
+    transform: scaleX(-1);
+    margin-left: -10px;
+    position: relative;
+    z-index: 2;
+  }
+
+  .loading-logo-b {
+    display: inline-block;
+    margin-left: -85px;
+    position: relative;
+    z-index: 2;
+  }
   .loading-growth-line {
-    width: 550px;
-    height: 95px;
-    top: calc(50% + 30px);
-    left: calc(50% + 5px);
+    width: 730px;
+    height: 130px;
+    top: calc(50% + 43px);
+    left: calc(50% + 1px);
   }
   
   .loading-logo2 img {
@@ -246,7 +237,7 @@
   
   .loading-progress {
     width: 180px;
-    height: 3px;
+    height: 7px;
     margin-top: 1.8rem;
   }
 }
@@ -254,29 +245,28 @@
 /* Адаптивность для мобильных устройств */
 @media (max-width: 768px) {
   .loading-logo {
-    font-size: 8rem;
+    font-size: 12rem;
   }
   
   .loading-logo-f {
     transform: scaleX(-1);
-    margin-left: 0px;
     position: relative;
     z-index: 2;
   }
 
   .loading-logo-b {
     display: inline-block;
-    margin-left: -55px;
     position: relative;
+    margin-left: -54px;
     z-index: 2;
   }
 
   .loading-growth-line {
     position: absolute;
-    width: 400px;
-    height: 80px;
-    top: calc(50% + 15px);
-    left: calc(50% + 2px);
+    width: 600px;
+    height: 90px;
+    top: calc(50% + 38px);
+    left: calc(50% + 9px);
     transform: translate(-50%, -50%);
     pointer-events: none;
     z-index: 1;
@@ -301,7 +291,7 @@
 /* Адаптивность для очень маленьких экранов */
 @media (max-width: 480px) {
   .loading-logo {
-    font-size: 6rem;
+    font-size: 11rem;
   }
   
   .loading-logo-f {
@@ -313,7 +303,7 @@
 
   .loading-logo-b {
     display: inline-block;
-    margin-left: -40px;
+    margin-left: -50px;
     position: relative;
     z-index: 2;
   }
@@ -321,9 +311,9 @@
   .loading-growth-line {
     position: absolute;
     width: 300px;
-    height: 60px;
-    top: calc(50% + 10px);
-    left: calc(50% + 1px);
+    height: 90px;
+    top: calc(50% + 30px);
+    left: calc(50% + 3px);
     transform: translate(-50%, -50%);
     pointer-events: none;
     z-index: 1;
@@ -340,7 +330,7 @@
   
   .loading-progress {
     width: 150px;
-    height: 3px;
+    height: 5px;
     margin-top: 1.5rem;
   }
 }

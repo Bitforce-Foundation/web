@@ -15,14 +15,14 @@ const LoadingScreen = ({ onLoadingComplete }: LoadingScreenProps) => {
       setIsComplete(true)
       setTimeout(() => {
         onLoadingComplete()
-      }, 500)
-    }, 3500) // Возвращаю оригинальное время
+      }, 3000)
+    }, 3000) // Возвращаю оригинальное время
 
     // Таймаут безопасности - если что-то пойдет не так, показываем контент через 10 секунд
     const safetyTimer = setTimeout(() => {
       console.warn('LoadingScreen safety timeout triggered')
       onLoadingComplete()
-    }, 10000)
+    }, 5000)
 
     return () => {
       clearTimeout(timer)
