@@ -1,4 +1,4 @@
-import { BASE_URL, POST, loginEP } from '../components/url'
+import { BASE_URL, loginEP, createAuthHeaders } from '../components/url'
 
 interface LoginRequest {
   username: string
@@ -15,7 +15,8 @@ export class PostLoginAPI {
   static async login(credentials: LoginRequest): Promise<LoginResponse> {
     try {
       const response = await fetch(`${BASE_URL}${loginEP}`, {
-        ...POST,
+        method: 'POST',
+        headers: createAuthHeaders('x-api-key'),
         body: JSON.stringify(credentials),
       })
 

@@ -14,13 +14,12 @@ export const usePayment = () => {
 
     try {
       const paymentRequest: PaymentCreateRequest = {
-        amount: parseFloat(formData.amount),
+        amount: {
+          value: parseFloat(formData.amount),
+        },
         description: {
-          user_id: user.id,
-        },
-        metadata: {
-          [formData.operation]: formData.currency,
-        },
+          user_id: user.id
+        }
       };
 
       const result = await createPayment(paymentRequest);

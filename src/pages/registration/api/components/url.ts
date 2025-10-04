@@ -1,6 +1,5 @@
 export { 
   BASE_URL, 
-  POST, 
   initialRegistrationEP,
   getUserInfoEP,
   sessionCreateEP, 
@@ -12,8 +11,12 @@ export {
   getSessionByIdEP,
   updateLastSeenEP,
   createAuthHeaders,
-  createPostWithAuth
+  createPostWithAuth,
+  createJWTHeaders,
+  createPostWithJWT
 }
+
+import { TokenManager } from '../../utils'
 
 const BASE_URL = 'https://bitforce-api.ru'
 
@@ -40,19 +43,24 @@ const createAuthHeaders = (authType: 'bearer' | 'x-api-key' = 'bearer') => {
   }
 }
 
+const createJWTHeaders = () => {
+  const authHeader = TokenManager.getAuthHeader()
+  
+  return {
+    'Content-Type': 'application/json',
+    ...(authHeader && authHeader)
+  }
+}
+
 const createPostWithAuth = (authType: 'bearer' | 'x-api-key' = 'bearer') => ({
   method: 'POST',
   headers: createAuthHeaders(authType)
 })
 
-
-const POST = {
+const createPostWithJWT = () => ({
   method: 'POST',
-  headers: {
-    'Content-Type': 'application/json',
-    'Authorization': `Bearer ${import.meta.env.VITE_API}`
-  }
-}
+  headers: createJWTHeaders()
+})
 
 const initialRegistrationEP = `/api/v1/registration/initial`
 

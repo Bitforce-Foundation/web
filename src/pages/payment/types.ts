@@ -1,11 +1,9 @@
 export interface PaymentCreateRequest {
-  amount: number;
+  amount: {
+    value: number;
+  };
   description: {
     user_id: string;
-  };
-  metadata: {
-    buy?: string;
-    sell?: string;
   };
 }
 

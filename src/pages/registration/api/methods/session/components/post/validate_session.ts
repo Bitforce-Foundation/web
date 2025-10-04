@@ -5,7 +5,7 @@ import type {
 
 import {
   BASE_URL,
-  POST,
+  createPostWithJWT,
   sessionValidateEP,
 } from '../../../../components/url'
 
@@ -18,7 +18,7 @@ export class ValidateSession {
     }
 
     const response = await fetch(`${BASE_URL}${sessionValidateEP}`, {
-      ...POST,
+      ...createPostWithJWT(),
       body: JSON.stringify(requestBody),
     })
 

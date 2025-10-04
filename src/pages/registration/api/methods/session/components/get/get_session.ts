@@ -5,9 +5,10 @@ import type {
 
 import {
   BASE_URL,
-  getUserSessionsEP,
-  createAuthHeaders
+  getUserSessionsEP
 } from '../../../../components/url'
+
+import { authenticatedApiRequest } from '../../../../../../../utils/apiInterceptor'
 
 export class GetUserSessions {
     static async getUserSessions(params: UserSessionsParams): Promise<UserSessionsResponse> {
@@ -26,9 +27,8 @@ export class GetUserSessions {
           searchParams.append('offset', params.offset.toString())
         }
     
-        const response = await fetch(`${BASE_URL}${getUserSessionsEP}/${params.user_id}?${searchParams.toString()}`, {
-            method: 'GET',
-            headers: createAuthHeaders()
+        const response = await authenticatedApiRequest(`${BASE_URL}${getUserSessionsEP}/${params.user_id}?${searchParams.toString()}`, {
+            method: 'GET'
         })
     
         if (!response.ok) {

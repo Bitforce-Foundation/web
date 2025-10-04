@@ -1,7 +1,7 @@
 import {
   BASE_URL,
   initialRegistrationEP,
-  POST
+  createAuthHeaders
 } from '../../../../components/url'
 
 import type { 
@@ -14,7 +14,11 @@ export class RegisterNewUser {
     try {
       const response = await fetch(
         `${BASE_URL}${initialRegistrationEP}`, 
-        {...POST, body: JSON.stringify(data)}
+        {
+          method: 'POST',
+          headers: createAuthHeaders('x-api-key'),
+          body: JSON.stringify(data)
+        }
       )
 
       if (!response.ok) {

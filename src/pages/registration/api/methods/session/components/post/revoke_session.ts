@@ -5,7 +5,7 @@ import type {
 
 import {
   BASE_URL,
-  POST,
+  createPostWithJWT,
   sessionRevokeEP,
 } from '../../../../components/url'
 
@@ -22,7 +22,7 @@ export class RevokeSession {
     }
 
     const response = await fetch(`${BASE_URL}${sessionRevokeEP}`, {
-      ...POST,
+      ...createPostWithJWT(),
       body: JSON.stringify(requestBody),
     })
 

@@ -1,7 +1,7 @@
 import {
     BASE_URL,
     sessionCreateEP,
-    POST,
+    createPostWithAuth,
 } from '../../../../components/url'
 
 import type { 
@@ -12,7 +12,7 @@ import type {
 export class CreateSession {
     static async createSession(data: SessionCreateData): Promise<SessionResponse> {
     const response = await fetch(`${BASE_URL}${sessionCreateEP}`, {
-      ...POST,
+      ...createPostWithAuth('x-api-key'),
       body: JSON.stringify(data)}
     )
 

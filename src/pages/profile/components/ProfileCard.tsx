@@ -1,5 +1,7 @@
-import React from 'react'
+import React, { useState } from 'react'
 import type { UserInfoResponse, SessionInfo } from '../../registration/types'
+import { authenticatedApiRequest } from '../../../utils/apiInterceptor'
+import { useTokens } from '../../../hooks/useAuth'
 
 interface ProfileCardProps {
   userInfo: UserInfoResponse
@@ -13,6 +15,43 @@ export const ProfileCard: React.FC<ProfileCardProps> = ({
   onLogout,
   onRefresh,
 }) => {
+  const [testApiLoading, setTestApiLoading] = useState(false)
+  const [testApiResult, setTestApiResult] = useState<string>('')
+  const { accessToken, hasTokens } = useTokens()
+
+  const testProtectedApi = async () => {
+    if (!hasTokens) {
+      setTestApiResult('❌ Нет токенов авторизации')
+      return
+    }
+
+    setTestApiLoading(true)
+    setTestApiResult('')
+
+    try {
+      console.log('🧪 Тестируем защищенный API с токеном:', accessToken?.substring(0, 20) + '...')
+      
+      const response = await authenticatedApiRequest('http://0.0.0.0:7821/api/v1/session/validate', {
+        method: 'GET'
+      })
+
+      if (response.ok) {
+        const data = await response.json()
+        setTestApiResult(`✅ API успешно: ${JSON.stringify(data, null, 2)}`)
+        console.log('✅ Защищенный API ответил успешно:', data)
+      } else {
+        const errorText = await response.text()
+        setTestApiResult(`❌ API ошибка ${response.status}: ${errorText}`)
+        console.log('❌ Ошибка защищенного API:', response.status, errorText)
+      }
+    } catch (error) {
+      const errorMsg = error instanceof Error ? error.message : 'Неизвестная ошибка'
+      setTestApiResult(`❌ Ошибка запроса: ${errorMsg}`)
+      console.error('❌ Ошибка тестирования API:', error)
+    } finally {
+      setTestApiLoading(false)
+    }
+  }
   const formatDate = (dateString: string) => {
     try {
       return new Date(dateString).toLocaleDateString('ru-RU', {
@@ -50,6 +89,13 @@ export const ProfileCard: React.FC<ProfileCardProps> = ({
         <div className="profile-actions">
           <button onClick={onRefresh} className="refresh-button">
             Обновить
+          </button>
+          <button 
+            onClick={testProtectedApi}
+            disabled={testApiLoading || !hasTokens}
+            className="test-api-button"
+          >
+            {testApiLoading ? 'Тестируем...' : 'Тест API'}
           </button>
           <button onClick={onLogout} className="logout-button">
             Выйти
@@ -122,6 +168,13 @@ export const ProfileCard: React.FC<ProfileCardProps> = ({
             </div>
           </div>
         </div>
+
+        {testApiResult && (
+          <div className="profile-section">
+            <h2 className="section-title">Результат тестирования API</h2>
+            <pre className="api-test-result">{testApiResult}</pre>
+          </div>
+        )}
       </div>
     </div>
   )

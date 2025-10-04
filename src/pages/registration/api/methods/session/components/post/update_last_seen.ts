@@ -8,9 +8,10 @@ import {
 
 import {
   BASE_URL,
-  updateLastSeenEP,
-  createAuthHeaders
+  updateLastSeenEP
 } from '../../../../components/url'
+
+import { publicApiRequest } from '../../../../../../../utils/apiInterceptor'
 
 export class UpdateLastSeen {
     static async updateLastSeen(params: { session_id: string; ip_address?: string | null; user_agent?: string | null }): Promise<SessionInfo> {
@@ -28,9 +29,8 @@ export class UpdateLastSeen {
 
         const requestUrl = `${BASE_URL}${updateLastSeenEP}?${searchParams.toString()}`
     
-        const response = await fetch(requestUrl, {
-          method: 'POST',
-          headers: createAuthHeaders()
+        const response = await publicApiRequest(requestUrl, {
+          method: 'POST'
         })
         
         if (!response.ok) {

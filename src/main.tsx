@@ -3,6 +3,10 @@ import { createRoot } from 'react-dom/client'
 import { BrowserRouter } from 'react-router-dom'
 import './index.css'
 import App from './App.tsx'
+import { createApiInterceptor } from './utils/apiInterceptor'
+
+// Инициализируем перехватчик API для автоматического обновления токенов
+createApiInterceptor()
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>

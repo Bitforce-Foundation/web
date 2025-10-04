@@ -187,7 +187,8 @@
 
 .refresh-button,
 .logout-button,
-.retry-button {
+.retry-button,
+.test-api-button {
   padding: 10px 20px;
   border: none;
   border-radius: 6px;
@@ -224,6 +225,38 @@
 .retry-button:hover {
   background: #219a52;
   transform: translateY(-1px);
+}
+
+.test-api-button {
+  background: #9b59b6;
+  color: white;
+}
+
+.test-api-button:hover:not(:disabled) {
+  background: #8e44ad;
+  transform: translateY(-1px);
+}
+
+.test-api-button:disabled {
+  background: #bdc3c7;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Результат тестирования API */
+.api-test-result {
+  background: #f8f9fa;
+  border: 1px solid #e9ecef;
+  border-radius: 6px;
+  padding: 15px;
+  font-family: 'Courier New', monospace;
+  font-size: 14px;
+  line-height: 1.4;
+  max-height: 300px;
+  overflow-y: auto;
+  white-space: pre-wrap;
+  word-break: break-word;
+  margin: 0;
 }
 
 /* Карточка профиля */

@@ -5,17 +5,19 @@ import type {
 
 import {
     BASE_URL,
-    getUserInfoEP,
-    createAuthHeaders
+    getUserInfoEP
 } from '../../../../components/url'
+
+import { publicApiRequest } from '../../../../../../../utils/apiInterceptor'
 
 export class GetUserInfo {
     static async get_user_info(user_id: UserId): Promise<UserInfoResponse> {
         try {
             const userIdString = typeof user_id === 'string' ? user_id : user_id.user_id
-            const response = await fetch(`${BASE_URL}${getUserInfoEP}/${userIdString}`, {
-                method: 'GET',
-                headers: createAuthHeaders()
+            const url = `${BASE_URL}${getUserInfoEP}/${userIdString}`
+            
+            const response = await publicApiRequest(url, {
+                method: 'GET'
             })
 
             if (!response.ok) {

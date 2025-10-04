@@ -6,7 +6,7 @@ import type {
 import {
     BASE_URL,
     sessionRefreshEP,
-    POST
+    createPostWithAuth
 } from '../../../../components/url'
 
 
@@ -26,7 +26,7 @@ export class RefreshToken {
     }
 
     const response = await fetch(`${BASE_URL}${sessionRefreshEP}`, {
-      ...POST,
+      ...createPostWithAuth('x-api-key'), // refresh может использовать API key
       body: JSON.stringify(requestBody),
     })
 

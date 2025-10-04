@@ -8,17 +8,16 @@ import {
 
 import {
   BASE_URL,
-  getSessionByIdEP,
-  createAuthHeaders
+  getSessionByIdEP
 } from '../../../../components/url'
+
+import { publicApiRequest } from '../../../../../../../utils/apiInterceptor'
 
 
 export class GetSessionById {
     static async getSessionById(sessionId: string): Promise<SessionInfo> {
-
-        const response = await fetch(`${BASE_URL}${getSessionByIdEP}/${sessionId}`, {
-            method: 'GET',
-            headers: createAuthHeaders()
+        const response = await publicApiRequest(`${BASE_URL}${getSessionByIdEP}/${sessionId}`, {
+            method: 'GET'
         })
 
         if (!response.ok) {
